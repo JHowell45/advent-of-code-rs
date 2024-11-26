@@ -28,6 +28,12 @@ impl Present {
             + (2 * self.height_length_area()) + self.slack()
     }
 
+    pub fn total_ribbon(&self) -> i32 {
+        let mut lengths = vec![self.length, self.width, self.height];
+        lengths.sort();
+        (2 * lengths[0]) + (2 * lengths[1]) + (self.length * self.width * self.height)
+    }
+
     fn slack(&self) -> i32 {
         *vec![
             self.length_width_area(),
