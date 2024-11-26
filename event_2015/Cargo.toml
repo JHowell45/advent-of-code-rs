@@ -1,0 +1,8 @@
+[package]
+name = "event_2015"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rstest = "0.23.0"
+core = { path = "../core" }
