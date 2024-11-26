@@ -1,3 +1,6 @@
+use core::{enums::Part, file_reader::get_file_contents};
+
+#[derive(Debug)]
 pub struct Present {
     length: i32,
     width: i32,
@@ -10,6 +13,14 @@ impl Present {
             length,
             width,
             height,
+        }
+    }
+
+    pub fn from_strings(length: &str, width: &str, height: &str) -> Self {
+        Self {
+            length: length.parse::<i32>().unwrap(),
+            width: width.parse::<i32>().unwrap(),
+            height: height.parse::<i32>().unwrap(),
         }
     }
 
@@ -43,7 +54,13 @@ impl Present {
 }
 
 pub fn part_a() {
-    
+    let mut total: i32 = 0;    
+    for line in get_file_contents(2015, 2, Part::A).lines().into_iter() {
+        let [l, w, h]: [&str; 3] = line.split("x").collect::<Vec<&str>>().try_into().unwrap();
+        let present = Present::from_strings(l, w, h);
+        total += present.surface_area();
+    }
+    println!("Total wrapping paper: {total} square feet");
 }
 
 #[cfg(test)]
