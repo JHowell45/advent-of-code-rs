@@ -26,7 +26,6 @@ mod tests {
     ) {
         let mut santa = SantaLocation::new();
         santa.apply_directions(directions);
-        println!("{:#?}", santa);
         assert_eq!(santa.unique_houses_visited(), houses_visited);
     }
 }
