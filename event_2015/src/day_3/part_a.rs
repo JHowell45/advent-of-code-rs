@@ -14,8 +14,6 @@ pub fn part_a() {
 #[cfg(test)]
 mod tests {
     use crate::day_3::shared::SantaLocation;
-
-    use super::*;
     use rstest::rstest;
 
     #[rstest]
