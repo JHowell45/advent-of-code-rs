@@ -3,15 +3,12 @@ use std::collections::HashMap;
 #[derive(Debug)]
 pub struct Location {
     x: i32,
-    y: i32
+    y: i32,
 }
 
 impl Location {
     pub fn new() -> Self {
-        Self {
-            x: 0,
-            y: 0
-        }
+        Self { x: 0, y: 0 }
     }
 
     pub fn add_direction(&mut self, direction: char) {
