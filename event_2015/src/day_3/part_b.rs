@@ -1,8 +1,13 @@
-use std::collections::HashMap;
+use core::{enums::Part, file_reader::get_file_contents};
 
 use super::shared::{Location, VisitedHouses};
 
-pub fn part_b() {}
+pub fn part_b() {
+    let directions = get_file_contents(2015, 3, Part::A);
+    let mut santa = RoboSantaAndSantaLocations::new();
+    santa.apply_directions(directions.as_str());
+    println!("Total Houses: {}", santa.unique_houses_visited());
+}
 
 struct RoboSantaAndSantaLocations {
     santa: Location,
