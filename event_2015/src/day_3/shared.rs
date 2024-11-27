@@ -3,7 +3,7 @@ use std::collections::HashMap;
 pub struct SantaLocation {
     x: i32,
     y: i32,
-    all_houses_visited: usize,
+    pub all_houses_visited: usize,
     visited: HashMap<String, usize>,
 }
 
@@ -17,14 +17,8 @@ impl SantaLocation {
         }
     }
 
-    pub fn houses_with_n_presents(&self, n: usize) -> usize {
-        let mut count = 0;
-        for (_, v) in self.visited.iter() {
-            if *v == n {
-                count += 1;
-            }
-        }
-        return count;
+    pub fn unique_houses_visited(&self) -> usize {
+        self.visited.keys().count()
     }
 
     pub fn apply_directions(&mut self, directions: &str) {
@@ -82,8 +76,14 @@ mod tests {
     }
 
     #[rstest]
-    fn part_a_examples() {
-
+    #[case(">", 2, 2)]
+    #[case("^>v<", 4, 3)]
+    #[case("^v^v^v^v^v", 10, 2)]
+    fn part_a_examples(#[case] directions: &str, #[case] houses_visited: usize, #[case] unique_houses_visited: usize) {
+        let mut santa = SantaLocation::new();
+        santa.apply_directions(directions);
+        assert_eq!(santa.all_houses_visited, houses_visited);
+        assert_eq!(santa.unique_houses_visited(), unique_houses_visited);
     }
 
 }
