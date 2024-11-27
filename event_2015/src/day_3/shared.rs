@@ -31,23 +31,48 @@ impl Location {
 }
 
 #[derive(Debug)]
-pub struct SantaLocation {
-    location: Location,
-    visited: HashMap<String, usize>,
+pub struct VisitedHouses {
+    visited: HashMap<String, usize>
 }
 
-impl SantaLocation {
+impl VisitedHouses {
     pub fn new() -> Self {
         let mut visited: HashMap<String, usize> = HashMap::new();
         visited.insert(String::from("00"), 1);
         Self {
+            visited: visited
+        }
+    }
+
+    pub fn houses_visited(&self) -> usize {
+        self.visited.keys().count()
+    }
+
+    pub fn has_visited(&mut self, key: String) {
+        if self.visited.contains_key(&key) {
+            *self.visited.get_mut(&key).unwrap() += 1;
+        } else {
+            self.visited.insert(key.clone(), 1);
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct SantaLocation {
+    location: Location,
+    visited: VisitedHouses,
+}
+
+impl SantaLocation {
+    pub fn new() -> Self {
+        Self {
             location: Location::new(),
-            visited: visited,
+            visited: VisitedHouses::new(),
         }
     }
 
     pub fn unique_houses_visited(&self) -> usize {
-        self.visited.keys().count()
+        self.visited.houses_visited()
     }
 
     pub fn apply_directions(&mut self, directions: &str) {
@@ -58,15 +83,7 @@ impl SantaLocation {
 
     pub fn move_house(&mut self, direction: char) {
         self.location.add_direction(direction);
-        self.has_visited(self.location.create_location_key());
-    }
-
-    fn has_visited(&mut self, key: String) {
-        if self.visited.contains_key(&key) {
-            *self.visited.get_mut(&key).unwrap() += 1;
-        } else {
-            self.visited.insert(key.clone(), 1);
-        }
+        self.visited.has_visited(self.location.create_location_key());
     }
 }
 
