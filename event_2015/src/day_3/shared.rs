@@ -9,11 +9,13 @@ pub struct SantaLocation {
 
 impl SantaLocation {
     pub fn new() -> Self {
+        let mut visited: HashMap<String, usize> = HashMap::new();
+        visited.insert(String::from("00"), 1);
         Self {
             x: 0,
             y: 0,
-            all_houses_visited: 0,
-            visited: HashMap::new(),
+            all_houses_visited: 1,
+            visited: visited,
         }
     }
 
