@@ -32,8 +32,8 @@ impl SantaLocation {
         match direction {
             '<' => self.x -= 1,
             '>' => self.x += 1,
-            '^' => self.y -= 1,
-            'v' => self.y += 1,
+            '^' => self.y += 1,
+            'v' => self.y -= 1,
             _ => panic!("Invalid direction! {}", direction),
         }
         self.has_visited();
@@ -65,8 +65,8 @@ mod tests {
     #[rstest]
     #[case::no_panic('>', [1, 0])]
     #[case::no_panic('<', [-1, 0])]
-    #[case::no_panic('^', [0, -1])]
-    #[case::no_panic('v', [0, 1])]
+    #[case::no_panic('^', [0, 1])]
+    #[case::no_panic('v', [0, -1])]
     #[should_panic(expected = "Invalid direction! q")]
     #[case::panic_with_message("q", [0, 0])]
     fn move_house(#[case] direction: char, #[case] location: [i32; 2]) {
