@@ -20,6 +20,10 @@ impl Cli {
                     Part::A => event_2015::day_2::part_a::part_a(),
                     Part::B => event_2015::day_2::part_b::part_b(),
                 },
+                3 => match self.part {
+                    Part::A => event_2015::day_3::part_a::part_a(),
+                    Part::B => event_2015::day_3::part_b::part_b(),
+                },
                 _ => panic!("Invalid day!"),
             },
             _ => panic!("Invalid year!"),
