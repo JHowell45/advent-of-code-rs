@@ -1,6 +1,35 @@
 use std::collections::HashMap;
 
 #[derive(Debug)]
+pub struct Location {
+    x: i32,
+    y: i32
+}
+
+impl Location {
+    pub fn new() -> Self {
+        Self {
+            x: 0,
+            y: 0
+        }
+    }
+
+    pub fn add_direction(&mut self, direction: char) {
+        match direction {
+            '<' => self.x -= 1,
+            '>' => self.x += 1,
+            '^' => self.y += 1,
+            'v' => self.y -= 1,
+            _ => panic!("Invalid direction! {}", direction),
+        }
+    }
+
+    pub fn create_location_key(&self) -> String {
+        format!("{}{}", self.x, self.y)
+    }
+}
+
+#[derive(Debug)]
 pub struct SantaLocation {
     x: i32,
     y: i32,
