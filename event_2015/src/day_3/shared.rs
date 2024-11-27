@@ -35,7 +35,7 @@ impl SantaLocation {
             '>' => self.x += 1,
             '^' => self.y -= 1,
             'v' => self.y += 1,
-            _ => panic!("Invalid direction! {}", direction)
+            _ => panic!("Invalid direction! {}", direction),
         }
         self.all_houses_visited += 1;
         self.has_visited();
@@ -69,7 +69,7 @@ mod tests {
     #[case::no_panic('<', [-1, 0])]
     #[case::no_panic('^', [0, -1])]
     #[case::no_panic('v', [0, 1])]
-    #[should_panic(expected="Invalid direction! q")]
+    #[should_panic(expected = "Invalid direction! q")]
     #[case::panic_with_message("q", [0, 0])]
     fn move_house(#[case] direction: char, #[case] location: [i32; 2]) {
         let mut santa = SantaLocation::new();
@@ -81,11 +81,14 @@ mod tests {
     #[case(">", 2, 2)]
     #[case("^>v<", 4, 3)]
     #[case("^v^v^v^v^v", 10, 2)]
-    fn part_a_examples(#[case] directions: &str, #[case] houses_visited: usize, #[case] unique_houses_visited: usize) {
+    fn part_a_examples(
+        #[case] directions: &str,
+        #[case] houses_visited: usize,
+        #[case] unique_houses_visited: usize,
+    ) {
         let mut santa = SantaLocation::new();
         santa.apply_directions(directions);
         assert_eq!(santa.all_houses_visited, houses_visited);
         assert_eq!(santa.unique_houses_visited(), unique_houses_visited);
     }
-
 }
