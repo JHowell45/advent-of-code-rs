@@ -6,6 +6,14 @@ pub struct Present {
 }
 
 impl Present {
+    pub fn new(length: i32, width: i32, height: i32) -> Self {
+        Self {
+            length,
+            width,
+            height,
+        }
+    }
+
     pub fn from_strings(length: &str, width: &str, height: &str) -> Self {
         Self {
             length: length.parse::<i32>().unwrap(),
