@@ -27,12 +27,15 @@ impl Location {
     pub fn create_location_key(&self) -> String {
         format!("{}{}", self.x, self.y)
     }
+
+    pub fn location(&self) -> [i32; 2] {
+        [self.x, self.y]
+    }
 }
 
 #[derive(Debug)]
 pub struct SantaLocation {
-    x: i32,
-    y: i32,
+    location: Location,
     visited: HashMap<String, usize>,
 }
 
@@ -41,8 +44,7 @@ impl SantaLocation {
         let mut visited: HashMap<String, usize> = HashMap::new();
         visited.insert(String::from("00"), 1);
         Self {
-            x: 0,
-            y: 0,
+            location: Location::new(),
             visited: visited,
         }
     }
@@ -58,31 +60,16 @@ impl SantaLocation {
     }
 
     pub fn move_house(&mut self, direction: char) {
-        match direction {
-            '<' => self.x -= 1,
-            '>' => self.x += 1,
-            '^' => self.y += 1,
-            'v' => self.y -= 1,
-            _ => panic!("Invalid direction! {}", direction),
-        }
-        self.has_visited();
+        self.location.add_direction(direction);
+        self.has_visited(self.location.create_location_key());
     }
 
-    pub fn location(&self) -> [i32; 2] {
-        [self.x, self.y]
-    }
-
-    fn has_visited(&mut self) {
-        let key = self.create_location_key();
+    fn has_visited(&mut self, key: String) {
         if self.visited.contains_key(&key) {
             *self.visited.get_mut(&key).unwrap() += 1;
         } else {
             self.visited.insert(key.clone(), 1);
         }
-    }
-
-    fn create_location_key(&self) -> String {
-        return format!("{}{}", self.x, self.y);
     }
 }
 
@@ -98,9 +85,9 @@ mod tests {
     #[case::no_panic('v', [0, -1])]
     #[should_panic(expected = "Invalid direction! q")]
     #[case::panic_with_message("q", [0, 0])]
-    fn move_house(#[case] direction: char, #[case] location: [i32; 2]) {
-        let mut santa = SantaLocation::new();
-        santa.move_house(direction);
-        assert_eq!(santa.location(), location);
+    fn move_house(#[case] direction: char, #[case] expected_location: [i32; 2]) {
+        let mut location = Location::new();
+        location.add_direction(direction);
+        assert_eq!(location.location(), expected_location);
     }
 }
