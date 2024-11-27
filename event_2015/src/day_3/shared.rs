@@ -27,6 +27,12 @@ impl SantaLocation {
         return count;
     }
 
+    pub fn apply_directions(&mut self, directions: &str) {
+        for direction in directions.chars().into_iter() {
+            self.move_house(direction);
+        }
+    }
+
     pub fn move_house(&mut self, direction: char) {
         match direction {
             '<' => self.x -= 1,
@@ -69,9 +75,15 @@ mod tests {
     #[case::no_panic('v', [0, 1])]
     #[should_panic(expected="Invalid direction! q")]
     #[case::panic_with_message("q", [0, 0])]
-    fn test_move_house(#[case] direction: char, #[case] location: [i32; 2]) {
+    fn move_house(#[case] direction: char, #[case] location: [i32; 2]) {
         let mut santa = SantaLocation::new();
         santa.move_house(direction);
         assert_eq!(santa.location(), location);
     }
+
+    #[rstest]
+    fn part_a_examples() {
+
+    }
+
 }
