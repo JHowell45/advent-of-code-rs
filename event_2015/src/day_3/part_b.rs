@@ -1,12 +1,8 @@
 pub fn part_b() {}
 
-struct RoboSantaAndSantaLocations {
+struct RoboSantaAndSantaLocations {}
 
-}
-
-impl RoboSantaAndSantaLocations {
-
-}
+impl RoboSantaAndSantaLocations {}
 
 #[cfg(test)]
 mod tests {
