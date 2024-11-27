@@ -1,9 +1,9 @@
 use std::collections::HashMap;
 
+#[derive(Debug)]
 pub struct SantaLocation {
     x: i32,
     y: i32,
-    pub all_houses_visited: usize,
     visited: HashMap<String, usize>,
 }
 
@@ -14,7 +14,6 @@ impl SantaLocation {
         Self {
             x: 0,
             y: 0,
-            all_houses_visited: 1,
             visited: visited,
         }
     }
@@ -37,7 +36,6 @@ impl SantaLocation {
             'v' => self.y += 1,
             _ => panic!("Invalid direction! {}", direction),
         }
-        self.all_houses_visited += 1;
         self.has_visited();
     }
 
@@ -78,17 +76,16 @@ mod tests {
     }
 
     #[rstest]
-    #[case(">", 2, 2)]
-    #[case("^>v<", 4, 3)]
-    #[case("^v^v^v^v^v", 10, 2)]
+    #[case(">", 2)]
+    #[case("^>v<", 4)]
+    #[case("^v^v^v^v^v", 2)]
     fn part_a_examples(
         #[case] directions: &str,
         #[case] houses_visited: usize,
-        #[case] unique_houses_visited: usize,
     ) {
         let mut santa = SantaLocation::new();
         santa.apply_directions(directions);
-        assert_eq!(santa.all_houses_visited, houses_visited);
-        assert_eq!(santa.unique_houses_visited(), unique_houses_visited);
+        println!("{:#?}", santa);
+        assert_eq!(santa.unique_houses_visited(), houses_visited);
     }
 }
