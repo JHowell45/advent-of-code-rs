@@ -25,7 +25,8 @@ impl Present {
     pub fn surface_area(&self) -> i32 {
         (2 * self.length_width_area())
             + (2 * self.width_height_area())
-            + (2 * self.height_length_area()) + self.slack()
+            + (2 * self.height_length_area())
+            + self.slack()
     }
 
     pub fn total_ribbon(&self) -> i32 {
@@ -41,7 +42,8 @@ impl Present {
             self.height_length_area(),
         ]
         .iter()
-        .min().unwrap()
+        .min()
+        .unwrap()
     }
 
     fn length_width_area(&self) -> i32 {
