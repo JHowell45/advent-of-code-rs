@@ -1,6 +1,6 @@
 use core::{enums::Part, file_reader::get_file_contents};
 
-use crate::day_3::shared::SantaLocation;
+use super::shared::{Location, VisitedHouses};
 
 pub fn part_a() {
     let directions = get_file_contents(2015, 3, Part::A);
@@ -9,11 +9,41 @@ pub fn part_a() {
     println!("Total Houses: {}", santa.unique_houses_visited());
 }
 
+
+#[derive(Debug)]
+pub struct SantaLocation {
+    location: Location,
+    visited: VisitedHouses,
+}
+
+impl SantaLocation {
+    pub fn new() -> Self {
+        Self {
+            location: Location::new(),
+            visited: VisitedHouses::new(),
+        }
+    }
+
+    pub fn unique_houses_visited(&self) -> usize {
+        self.visited.houses_visited()
+    }
+
+    pub fn apply_directions(&mut self, directions: &str) {
+        for direction in directions.chars().into_iter() {
+            self.move_house(direction);
+        }
+    }
+
+    pub fn move_house(&mut self, direction: char) {
+        self.location.add_direction(direction);
+        self.visited.has_visited(self.location.create_location_key());
+    }
+}
+
 #[cfg(test)]
 mod tests {
+    use super::*;
     use rstest::rstest;
-
-    use crate::day_3::shared::SantaLocation;
 
     #[rstest]
     #[case(">", 2)]
