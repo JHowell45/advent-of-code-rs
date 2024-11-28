@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 rstest = "0.23.0"
 core = { path = "../core" }
+md5 = "0.7.0"
