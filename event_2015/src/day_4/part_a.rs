@@ -2,12 +2,14 @@ pub fn part_a() {}
 
 fn lowest_hex(secret: &str) -> usize {
     let mut index: usize = 0;
-
+    while hex_starts_with_n_zeros(&generate_hex(format!("{}{}", secret, index).as_str()), 5) {
+        index += 1;
+    }
     return index;
 }
 
 fn hex_starts_with_n_zeros(hex: &str, n: usize) -> bool {
-
+    return true;
 }
 
 fn generate_hex(secret: &str) -> String {
