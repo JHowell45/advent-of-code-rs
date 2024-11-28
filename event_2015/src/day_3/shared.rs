@@ -32,16 +32,14 @@ impl Location {
 
 #[derive(Debug)]
 pub struct VisitedHouses {
-    visited: HashMap<String, usize>
+    visited: HashMap<String, usize>,
 }
 
 impl VisitedHouses {
     pub fn new() -> Self {
         let mut visited: HashMap<String, usize> = HashMap::new();
         visited.insert(String::from("00"), 1);
-        Self {
-            visited: visited
-        }
+        Self { visited: visited }
     }
 
     pub fn houses_visited(&self) -> usize {

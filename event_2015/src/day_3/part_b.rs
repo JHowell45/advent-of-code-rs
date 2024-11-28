@@ -39,7 +39,8 @@ impl RoboSantaAndSantaLocations {
                 }
                 true => {
                     self.robo_santa.add_direction(direction);
-                    self.visited.has_visited(self.robo_santa.create_location_key());
+                    self.visited
+                        .has_visited(self.robo_santa.create_location_key());
                 }
             }
             self.swap_santa = !self.swap_santa;

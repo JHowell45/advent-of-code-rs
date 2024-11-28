@@ -9,7 +9,6 @@ pub fn part_a() {
     println!("Total Houses: {}", santa.unique_houses_visited());
 }
 
-
 #[derive(Debug)]
 pub struct SantaLocation {
     location: Location,
@@ -36,7 +35,8 @@ impl SantaLocation {
 
     pub fn move_house(&mut self, direction: char) {
         self.location.add_direction(direction);
-        self.visited.has_visited(self.location.create_location_key());
+        self.visited
+            .has_visited(self.location.create_location_key());
     }
 }
 

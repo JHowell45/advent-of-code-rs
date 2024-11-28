@@ -1,14 +1,12 @@
 pub fn lowest_hex(secret: &str, n: usize) -> usize {
     let mut index: usize = 1;
-    while !hex_starts_with_n_zeros(&generate_hex(format!("{}{}", secret, index).as_str()), n) {
+    let comp: String = vec!["0"; n].into_iter().collect();
+    let mut hex = generate_hex(format!("{}{}", secret, index).as_str());
+    while &hex[..n] != comp {
         index += 1;
+        hex = generate_hex(format!("{}{}", secret, index).as_str());
     }
     return index;
-}
-
-fn hex_starts_with_n_zeros(hex: &str, n: usize) -> bool {
-    let s: String = vec!["0"; n].into_iter().collect();
-    return &hex[..n] == s.as_str();
 }
 
 fn generate_hex(secret: &str) -> String {
