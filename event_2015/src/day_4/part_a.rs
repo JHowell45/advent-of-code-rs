@@ -1,15 +1,18 @@
-pub fn part_a() {}
+pub fn part_a() {
+    println!("The lowest digit is: {}", lowest_hex("bgvyzdsv", 5));
+}
 
-fn lowest_hex(secret: &str) -> usize {
-    let mut index: usize = 0;
-    while hex_starts_with_n_zeros(&generate_hex(format!("{}{}", secret, index).as_str()), 5) {
+fn lowest_hex(secret: &str, n: usize) -> usize {
+    let mut index: usize = 1;
+    while !hex_starts_with_n_zeros(&generate_hex(format!("{}{}", secret, index).as_str()), n) {
         index += 1;
     }
     return index;
 }
 
 fn hex_starts_with_n_zeros(hex: &str, n: usize) -> bool {
-    return true;
+    let s: String = vec!["0"; n].into_iter().collect();
+    return &hex[..n] == s.as_str();
 }
 
 fn generate_hex(secret: &str) -> String {
@@ -25,6 +28,6 @@ mod tests {
     #[case("abcdef", 609043)]
     #[case("pqrstuv", 1048970)]
     fn examples(#[case] secret: &str, #[case] answer: usize) {
-        assert_eq!(lowest_hex(secret), answer);
+        assert_eq!(lowest_hex(secret, 5), answer);
     }
 }
