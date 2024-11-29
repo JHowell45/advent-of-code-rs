@@ -19,7 +19,7 @@ fn is_nice_string(string: &str) -> bool {
 
 #[derive(Debug)]
 struct LetterRepeat {
-    characters: [Option<char>; 3],
+    pub characters: [Option<char>; 3],
 }
 
 impl LetterRepeat {
@@ -96,7 +96,7 @@ impl NiceString {
                 letter_repeat.add(letter);
                 spaced_letter_repeat = letter_repeat.check();
             }
-            
+
             prior = Some(letter);
         }
 
@@ -125,5 +125,60 @@ mod tests {
     #[case("ieodomkazucvgmuy", false)]
     fn examples(#[case] string: &str, #[case] is_nice: bool) {
         assert_eq!(is_nice_string(string), is_nice);
+    }
+
+    #[rstest]
+    fn letter_repeat_add_char() {
+        let mut repeat = LetterRepeat::new();
+        repeat.add('a');
+        assert_eq!(repeat.check(), false);
+        assert_eq!(repeat.characters[0], Some('a'));
+        assert_eq!(repeat.characters[1], None);
+        assert_eq!(repeat.characters[2], None);
+    }
+
+    #[rstest]
+    fn letter_repeat_add_two_chars() {
+        let mut repeat = LetterRepeat::new();
+        repeat.add('a');
+        repeat.add('b');
+        assert_eq!(repeat.check(), false);
+        assert_eq!(repeat.characters[0], Some('a'));
+        assert_eq!(repeat.characters[1], Some('b'));
+        assert_eq!(repeat.characters[2], None);
+    }
+
+    #[rstest]
+    fn letter_repeat_add_three_chars() {
+        let mut repeat = LetterRepeat::new();
+        repeat.add('a');
+        repeat.add('b');
+        repeat.add('c');
+        assert_eq!(repeat.check(), false);
+        assert_eq!(repeat.characters[0], Some('a'));
+        assert_eq!(repeat.characters[1], Some('b'));
+        assert_eq!(repeat.characters[2], Some('c'));
+    }
+
+    #[rstest]
+    fn letter_repeat_add_four_chars() {
+        let mut repeat = LetterRepeat::new();
+        repeat.add('a');
+        repeat.add('b');
+        repeat.add('c');
+        repeat.add('d');
+        assert_eq!(repeat.check(), false);
+        assert_eq!(repeat.characters[0], Some('b'));
+        assert_eq!(repeat.characters[1], Some('c'));
+        assert_eq!(repeat.characters[2], Some('d'));
+    }
+
+    #[rstest]
+    fn letter_repeat_passes_check() {
+        let mut repeat = LetterRepeat::new();
+        repeat.add('a');
+        repeat.add('b');
+        repeat.add('a');
+        assert_eq!(repeat.check(), true);
     }
 }
