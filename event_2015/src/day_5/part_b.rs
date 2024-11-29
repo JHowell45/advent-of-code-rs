@@ -73,14 +73,12 @@ impl LetterRepeat {
 #[derive(Debug)]
 struct NiceString {
     string: String,
-    overlapping_pairs: bool,
     pair_check: bool,
     spaced_letter_repeat: bool,
 }
 
 impl NiceString {
     pub fn parse(string: &str) -> Self {
-        let mut overlapping_pairs = false;
         let mut pair_check: bool = false;
         let mut spaced_letter_repeat: bool = false;
 
@@ -111,14 +109,13 @@ impl NiceString {
 
         Self {
             string: String::from(string),
-            overlapping_pairs,
             pair_check,
             spaced_letter_repeat,
         }
     }
 
     pub fn results(&self) -> bool {
-        !self.overlapping_pairs && self.spaced_letter_repeat && self.pair_check
+        self.spaced_letter_repeat && self.pair_check
     }
 }
 
@@ -133,6 +130,7 @@ mod tests {
     #[case("uurcxstgmygtbstg", false)]
     #[case("ieodomkazucvgmuy", false)]
     #[case("aaaa", true)]
+    #[case("aaabcb", false)]
     fn examples(#[case] string: &str, #[case] is_nice: bool) {
         assert_eq!(is_nice_string(string), is_nice);
     }
