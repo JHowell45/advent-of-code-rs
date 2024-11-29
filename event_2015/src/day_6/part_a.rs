@@ -98,7 +98,7 @@ mod tests {
     #[case("toggle 0,0 through 999,0", 1000)]
     fn example_instruction(#[case] instruction: &str, #[case] lights_on: usize) {
         let mut formation = LightFormation::new();
-        instruction_parser(&formation, instruction);
+        instruction_parser(&mut formation, instruction);
         assert_eq!(formation.number_of_lights_on(), lights_on);
     }
 
