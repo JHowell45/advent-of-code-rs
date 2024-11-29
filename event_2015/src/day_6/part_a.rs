@@ -13,9 +13,9 @@ impl LightFormation {
         }
     }
 
-    // pub fn number_of_lights_on(&self) -> usize {
-    //     self.lights.iter().filter(|l| l == true).count()
-    // }
+    pub fn number_of_lights_on(&self) -> usize {
+        self.lights.iter().filter(|l| l == true).count()
+    }
 
     // pub fn toggle(&mut self, start_index: usize, finish_index: usize) {
     //     self.lights[start_index..finish_index].iter_mut().map(|l| l = !l);
