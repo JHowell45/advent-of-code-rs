@@ -89,13 +89,14 @@ impl NiceString {
                     }
                 }
 
-                if !spaced_letter_repeat {
-                    letter_repeat.add(letter);
-                    spaced_letter_repeat = letter_repeat.check();
-                }
-
                 prior_pair = pair;
             }
+
+            if !spaced_letter_repeat {
+                letter_repeat.add(letter);
+                spaced_letter_repeat = letter_repeat.check();
+            }
+            
             prior = Some(letter);
         }
 
