@@ -69,10 +69,6 @@ impl LetterRepeat {
                 ));
             }
         } else {
-            // let search = self.characters[0];
-            // if !self.characters.iter().all(|c| *c == self.characters[0]) {
-            //     return Some(format!("{}{}", self.characters[1].unwrap(), self.characters[2].unwrap()));
-            // }
             return Some(format!(
                 "{}{}",
                 self.characters[1].unwrap(),
@@ -111,7 +107,6 @@ impl NiceString {
                         Some(prior) => {
                             if prior != pair {
                                 if pairs_lookup.contains(&pair) {
-                                    println!("{:?}", pair);
                                     pair_check = true
                                 } else {
                                     pairs_lookup.insert(pair.clone());
@@ -123,7 +118,6 @@ impl NiceString {
                         }
                         None => {
                             if pairs_lookup.contains(&pair) {
-                                println!("{:?}", pair);
                                 pair_check = true
                             } else {
                                 pairs_lookup.insert(pair.clone());
