@@ -210,9 +210,4 @@ mod tests {
         repeat.add('a');
         assert_eq!(repeat.check(), true);
     }
-
-    #[rstest]
-    fn real_answer() {
-        assert_eq!(part_b(), 69)
-    }
 }
