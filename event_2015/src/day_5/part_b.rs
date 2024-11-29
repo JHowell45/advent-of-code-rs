@@ -59,12 +59,25 @@ impl LetterRepeat {
     }
 
     pub fn valid_pair(&self) -> Option<String> {
+        println!("{:?}", self.characters);
         if self.characters[self.len - 1].is_none() {
             if self.characters[0].is_some() && self.characters[1].is_some() {
-                return Some(format!("{}{}", self.characters[0].unwrap(), self.characters[1].unwrap()));
+                return Some(format!(
+                    "{}{}",
+                    self.characters[0].unwrap(),
+                    self.characters[1].unwrap()
+                ));
             }
         } else {
-            return Some(format!("{}{}", self.characters[1].unwrap(), self.characters[2].unwrap()));
+            // let search = self.characters[0];
+            // if !self.characters.iter().all(|c| *c == self.characters[0]) {
+            //     return Some(format!("{}{}", self.characters[1].unwrap(), self.characters[2].unwrap()));
+            // }
+            return Some(format!(
+                "{}{}",
+                self.characters[1].unwrap(),
+                self.characters[2].unwrap()
+            ));
         }
         return None;
     }
@@ -85,6 +98,8 @@ impl NiceString {
         let mut pairs_lookup: HashSet<String> = HashSet::new();
         let mut letter_repeat: LetterRepeat = LetterRepeat::new();
 
+        let mut prior_pair: Option<String> = None;
+
         for letter in string.chars().into_iter() {
             letter_repeat.add(letter);
             if !spaced_letter_repeat {
@@ -93,16 +108,30 @@ impl NiceString {
 
             if !pair_check {
                 if let Some(pair) = letter_repeat.valid_pair() {
-                    match pairs_lookup.contains(&pair) {
-                        true => {
-                            println!("{:?}", pair);
-                            pair_check = true
+                    match prior_pair {
+                        Some(prior) => {
+                            if prior != pair {
+                                if pairs_lookup.contains(&pair) {
+                                    println!("{:?}", pair);
+                                    pair_check = true
+                                } else {
+                                    pairs_lookup.insert(pair.clone());
+                                }
+                                prior_pair = Some(pair.clone());
+                            } else {
+                                prior_pair = None;
+                            }
                         }
-                        false => {
-                            pairs_lookup.insert(pair.clone());
+                        None => {
+                            if pairs_lookup.contains(&pair) {
+                                println!("{:?}", pair);
+                                pair_check = true
+                            } else {
+                                pairs_lookup.insert(pair.clone());
+                            }
+                            prior_pair = Some(pair.clone());
                         }
                     }
-                    println!("{:?}", pairs_lookup);
                 }
             }
         }
@@ -188,5 +217,10 @@ mod tests {
         repeat.add('b');
         repeat.add('a');
         assert_eq!(repeat.check(), true);
+    }
+
+    #[rstest]
+    fn real_answer() {
+        assert_eq!(part_b(), 69)
     }
 }
