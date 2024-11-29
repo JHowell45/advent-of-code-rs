@@ -1,5 +1,5 @@
 use core::{enums::Part, file_reader::get_file_contents};
-use std::collections::HashMap;
+use std::collections::{HashSet};
 
 pub fn part_b() {
     let mut nice_strings: usize = 0;
@@ -20,29 +20,48 @@ fn is_nice_string(string: &str) -> bool {
 #[derive(Debug)]
 struct NiceString {
     overlapping_pairs: bool,
-    pairs_count: HashMap<String, usize>,
-    spaced_letter_repeat: bool
+    pair_check: bool,
+    spaced_letter_repeat: bool,
 }
 
 impl NiceString {
     pub fn parse(string: &str) -> Self {
         let mut overlapping_pairs = false;
-        let mut pairs_count: HashMap<String, usize> = HashMap::new();
+        let mut pair_check: bool = false;
         let mut spaced_letter_repeat: bool = false;
 
+        let mut pairs_lookup: HashSet<String> = HashSet::new();
+
         let mut prior: Option<char> = None;
+        let mut prior_pair: String = String::from("");
 
         for letter in string.chars().into_iter() {
+            if let Some(prior_letter) = prior {
+                let pair = format!("{}{}", prior_letter, letter);
+                if prior_pair == pair {
+                    overlapping_pairs = true;
+                    break;
+                }
+                if !pair_check {
+                    match pairs_lookup.contains(&pair) {
+                        true => pair_check = true,
+                        false => {pairs_lookup.insert(pair.clone());},
+                    }
+                }
+                prior_pair = pair;
+            }
             prior = Some(letter);
         }
 
         Self {
-            overlapping_pairs, pairs_count, spaced_letter_repeat
+            overlapping_pairs,
+            pair_check,
+            spaced_letter_repeat,
         }
     }
 
     pub fn results(&self) -> bool {
-        !self.overlapping_pairs && self.spaced_letter_repeat
+        !self.overlapping_pairs && self.spaced_letter_repeat && self.pair_check
     }
 }
 

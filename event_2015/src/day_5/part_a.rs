@@ -65,7 +65,6 @@ impl NiceString {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
