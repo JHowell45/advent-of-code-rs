@@ -13,13 +13,19 @@ pub struct NiceString {
 impl NiceString {
     pub fn parse(string: &str) -> Self {
         let vowel_lookup: HashSet<char> = HashSet::from(VOWELS);
+        let invalid_lookup: HashSet<&str> = HashSet::from(INVALID_STRINGS);
+
         let mut vowels: i32 = 0;
         let mut double_letter: bool = false;
         let mut invalid_str: bool = false;
         let mut prior: Option<char> = None;
-        
+
         for letter in string.chars().into_iter() {
             if let Some(prior_letter) = prior {
+                if invalid_lookup.contains(String::from(format!("{}{}", prior_letter, letter)).as_str()) {
+                    invalid_str = true;
+                    break;
+                }
                 if prior_letter == letter {
                     double_letter = true;
                 }
