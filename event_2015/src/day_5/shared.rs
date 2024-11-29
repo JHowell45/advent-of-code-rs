@@ -22,7 +22,9 @@ impl NiceString {
 
         for letter in string.chars().into_iter() {
             if let Some(prior_letter) = prior {
-                if invalid_lookup.contains(String::from(format!("{}{}", prior_letter, letter)).as_str()) {
+                if invalid_lookup
+                    .contains(String::from(format!("{}{}", prior_letter, letter)).as_str())
+                {
                     invalid_str = true;
                     break;
                 }
