@@ -133,6 +133,7 @@ mod tests {
     #[rstest]
     #[case("turn on 0,0 through 999,999", 1000000)]
     #[case("toggle 0,0 through 999,0", 1000)]
+    #[case("turn on 499,499 through 500,500", 4)]
     fn example_instruction(#[case] instruction: &str, #[case] lights_on: usize) {
         let mut formation = LightFormation::new();
         instruction_parser(&mut formation, instruction);
