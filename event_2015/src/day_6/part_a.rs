@@ -22,11 +22,11 @@ impl LightFormation {
     // }
 
     pub fn turn_on(&mut self, start_index: usize, finish_index: usize) {
-        self.lights[start_index..finish_index].iter_mut().map(|l| *l = true);
+        let _ = self.lights[start_index..finish_index].iter_mut().map(|l| *l = true);
     }
 
     pub fn turn_off(&mut self, start_index: usize, finish_index: usize) {
-        self.lights[start_index..finish_index].iter_mut().map(|l| *l = false);
+        let _ = self.lights[start_index..finish_index].iter_mut().map(|l| *l = false);
     }
 }
 
