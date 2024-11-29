@@ -22,17 +22,19 @@ fn is_nice_string(string: &str) -> bool {
 #[derive(Debug)]
 struct LetterRepeat {
     pub characters: [Option<char>; 3],
+    pub len: usize,
 }
 
 impl LetterRepeat {
     pub fn new() -> Self {
         Self {
             characters: [None, None, None],
+            len: 3,
         }
     }
 
     pub fn add(&mut self, letter: char) {
-        for i in 0..self.characters.len() {
+        for i in 0..self.len {
             let v: Option<char> = self.characters[i];
             if v.is_none() {
                 self.characters[i] = Some(letter);
@@ -43,26 +45,28 @@ impl LetterRepeat {
     }
 
     fn rotate_and_add(&mut self, letter: char) {
-        for i in 1..self.characters.len() {
+        for i in 1..self.len {
             self.characters[i - 1] = self.characters[i];
         }
-        self.characters[self.characters.len() - 1] = Some(letter);
+        self.characters[self.len - 1] = Some(letter);
     }
 
     pub fn check(&self) -> bool {
-        if self.characters[0] == self.characters[self.characters.len() - 1] {
+        if self.characters[0] == self.characters[self.len - 1] {
             return true;
         }
         return false;
     }
 
-    pub fn overlapping(&self) -> bool {
-        for i in 1..self.characters.len() {
-            if self.characters[0] != self.characters[i] {
-                return false;
+    pub fn valid_pair(&self) -> Option<String> {
+        if self.characters[self.len - 1].is_none() {
+            if self.characters[0].is_some() && self.characters[1].is_some() {
+                return Some(format!("{}{}", self.characters[0].unwrap(), self.characters[1].unwrap()));
             }
+        } else {
+            return Some(format!("{}{}", self.characters[1].unwrap(), self.characters[2].unwrap()));
         }
-        return true;
+        return None;
     }
 }
 
@@ -83,21 +87,14 @@ impl NiceString {
         let mut pairs_lookup: HashSet<String> = HashSet::new();
         let mut letter_repeat: LetterRepeat = LetterRepeat::new();
 
-        let mut prior: Option<char> = None;
-
         for letter in string.chars().into_iter() {
             letter_repeat.add(letter);
-            if letter_repeat.overlapping() {
-                overlapping_pairs = true;
-                break;
-            }
             if !spaced_letter_repeat {
                 spaced_letter_repeat = letter_repeat.check();
             }
 
-            if let Some(prior_letter) = prior {
-                let pair = format!("{}{}", prior_letter, letter);
-                if !pair_check {
+            if !pair_check {
+                if let Some(pair) = letter_repeat.valid_pair() {
                     match pairs_lookup.contains(&pair) {
                         true => {
                             println!("{:?}", pair);
@@ -110,8 +107,6 @@ impl NiceString {
                     println!("{:?}", pairs_lookup);
                 }
             }
-
-            prior = Some(letter);
         }
 
         Self {
