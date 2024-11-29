@@ -1,6 +1,12 @@
+use super::shared::NiceString;
+
 pub fn part_a() {}
 
-fn is_nice_string(string: &str) -> bool {true}
+fn is_nice_string(string: &str) -> bool {
+    let nice = NiceString::parse(string);
+    println!("{:#?}", &nice);
+    nice.result()
+}
 
 #[cfg(test)]
 mod tests {
