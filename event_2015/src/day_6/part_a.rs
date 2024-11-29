@@ -12,6 +12,12 @@ impl LightFormation {
             lights: [false; 1000000]
         }
     }
+
+    pub fn toggle(&mut self) {}
+
+    pub fn turn_on(&mut self) {}
+
+    pub fn turn_off(&mut self) {}
 }
 
 #[cfg(test)]
