@@ -29,6 +29,13 @@ impl NiceString {
         let mut overlapping_pairs = false;
         let mut pairs_count: HashMap<String, usize> = HashMap::new();
         let mut spaced_letter_repeat: bool = false;
+
+        let mut prior: Option<char> = None;
+
+        for letter in string.chars().into_iter() {
+            prior = Some(letter);
+        }
+
         Self {
             overlapping_pairs, pairs_count, spaced_letter_repeat
         }
