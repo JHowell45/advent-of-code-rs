@@ -41,7 +41,7 @@ impl LetterRepeat {
     }
 
     fn rotate_and_add(&mut self, letter: char) {
-        for i in (self.characters.len() - 1)..0 {
+        for i in 1..self.characters.len() {
             self.characters[i - 1] = self.characters[i];
         }
         self.characters[2] = Some(letter);
