@@ -13,13 +13,21 @@ impl LightFormation {
         }
     }
 
-    pub fn number_of_lights_on(&self) -> usize {}
+    pub fn number_of_lights_on(&self) -> usize {
+        self.lights.iter().filter(|l| l == true).count()
+    }
 
-    pub fn toggle(&mut self) {}
+    pub fn toggle(&mut self, start_index: usize, finish_index: usize) {
+        self.lights[start_index..finish_index].iter().map(|*l| l = !l);
+    }
 
-    pub fn turn_on(&mut self) {}
+    pub fn turn_on(&mut self, start_index: usize, finish_index: usize) {
+        self.lights[start_index..finish_index].iter().map(|*l| l = true);
+    }
 
-    pub fn turn_off(&mut self) {}
+    pub fn turn_off(&mut self, start_index: usize, finish_index: usize) {
+        self.lights[start_index..finish_index].iter().map(|*l| l = false);
+    }
 }
 
 #[cfg(test)]
