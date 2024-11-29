@@ -25,15 +25,22 @@ pub fn instruction_parser(formation: &LightFormation, instruction: &str) {
     println!("{:?}", split);
 }
 
+#[derive(Debug)]
 struct Coords {
-
+    x: usize,
+    y: usize,
 }
 impl Coords {
     pub fn parse(coords: &str) -> Self {
-        Self {}
+        let split: Vec<&str> = coords.split(",").collect();
+        Self {
+            x: split[0].parse::<usize>().unwrap(),
+            y: split[1].parse::<usize>().unwrap(),
+        }
     }
 }
 
+#[derive(Debug)]
 struct LightFormation {
     lights: [bool; 1000000]
 }
