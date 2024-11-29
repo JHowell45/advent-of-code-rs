@@ -14,8 +14,6 @@ fn instruction_parser(formation: &mut LightFormation, instruction: &str) {
         "turn" => {
             let start = Coords::parse(split[2]);
             let finish = Coords::parse(split[4]);
-            println!("{:#?}", start);
-            println!("{:#?}", finish);
             match split[1].to_lowercase().as_str() {
                 "on" => {
                     let mut y = start.y;
@@ -72,7 +70,6 @@ fn instruction_parser(formation: &mut LightFormation, instruction: &str) {
         }
         _ => panic!("Unhandled starting sentence! '{instruction}'"),
     }
-    println!("{:?}", split);
 }
 
 #[derive(Debug)]
