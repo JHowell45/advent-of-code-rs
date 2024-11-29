@@ -1,6 +1,36 @@
 pub fn part_a() {}
 
-pub fn instruction_parser(formation: &LightFormation, instruction: &str) {}
+pub fn instruction_parser(formation: &LightFormation, instruction: &str) {
+    let split: Vec<&str> = instruction.split(" ").collect();
+    match split[0].to_lowercase().as_str() {
+        "turn" => {
+            match split[1].to_lowercase().as_str() {
+                "on" => {
+
+                },
+                "off" => {
+
+                },
+                _ => panic!("Unhandled starting sentence! '{instruction}'")
+            }
+        },
+        "toggle" => {
+            let start = Coords::parse(split[1]);
+            let finish = Coords::parse(split[3]);
+        }
+        _ => panic!("Unhandled starting sentence! '{instruction}'")
+    }
+    println!("{:?}", split);
+}
+
+struct Coords {
+
+}
+impl Coords {
+    pub fn parse(coords: &str) -> Self {
+        Self {}
+    }
+}
 
 struct LightFormation {
     lights: [bool; 1000000]
