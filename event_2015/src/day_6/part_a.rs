@@ -1,6 +1,6 @@
 pub fn part_a() {}
 
-pub fn instruction_parser(formation: &LightFormation, instruction: &str) {
+pub fn instruction_parser(formation: &mut LightFormation, instruction: &str) {
     let split: Vec<&str> = instruction.split(" ").collect();
     match split[0].to_lowercase().as_str() {
         "turn" => {
@@ -8,19 +8,32 @@ pub fn instruction_parser(formation: &LightFormation, instruction: &str) {
             let finish = Coords::parse(split[4]);
             match split[1].to_lowercase().as_str() {
                 "on" => {
-
-                },
+                    for y in start.y..finish.y {
+                        let start_index = start.x + (y * 1000);
+                        let finish_index = finish.x + (y * 1000);
+                        formation.turn_on(start_index, finish_index);
+                    }
+                }
                 "off" => {
-
-                },
-                _ => panic!("Unhandled starting sentence! '{instruction}'")
+                    for y in start.y..finish.y {
+                        let start_index = start.x + (y * 1000);
+                        let finish_index = finish.x + (y * 1000);
+                        formation.turn_off(start_index, finish_index);
+                    }
+                }
+                _ => panic!("Unhandled starting sentence! '{instruction}'"),
             }
-        },
+        }
         "toggle" => {
             let start = Coords::parse(split[1]);
             let finish = Coords::parse(split[3]);
+            for y in start.y..finish.y {
+                let start_index = start.x + (y * 1000);
+                let finish_index = finish.x + (y * 1000);
+                formation.toggle(start_index, finish_index);
+            }
         }
-        _ => panic!("Unhandled starting sentence! '{instruction}'")
+        _ => panic!("Unhandled starting sentence! '{instruction}'"),
     }
     println!("{:?}", split);
 }
@@ -42,13 +55,13 @@ impl Coords {
 
 #[derive(Debug)]
 struct LightFormation {
-    lights: [bool; 1000000]
+    lights: [bool; 1000000],
 }
 
 impl LightFormation {
     pub fn new() -> Self {
         Self {
-            lights: [false; 1000000]
+            lights: [false; 1000000],
         }
     }
 
@@ -57,15 +70,21 @@ impl LightFormation {
     }
 
     pub fn toggle(&mut self, start_index: usize, finish_index: usize) {
-        let _ = self.lights[start_index..finish_index].iter_mut().map(|l| *l = !(*l));
+        let _ = self.lights[start_index..finish_index]
+            .iter_mut()
+            .map(|l| *l = !(*l));
     }
 
     pub fn turn_on(&mut self, start_index: usize, finish_index: usize) {
-        let _ = self.lights[start_index..finish_index].iter_mut().map(|l| *l = true);
+        let _ = self.lights[start_index..finish_index]
+            .iter_mut()
+            .map(|l| *l = true);
     }
 
     pub fn turn_off(&mut self, start_index: usize, finish_index: usize) {
-        let _ = self.lights[start_index..finish_index].iter_mut().map(|l| *l = false);
+        let _ = self.lights[start_index..finish_index]
+            .iter_mut()
+            .map(|l| *l = false);
     }
 }
 
