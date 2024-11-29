@@ -85,7 +85,6 @@ impl LetterRepeat {
 
 #[derive(Debug)]
 struct NiceString {
-    string: String,
     pair_check: bool,
     spaced_letter_repeat: bool,
 }
@@ -137,7 +136,6 @@ impl NiceString {
         }
 
         Self {
-            string: String::from(string),
             pair_check,
             spaced_letter_repeat,
         }
