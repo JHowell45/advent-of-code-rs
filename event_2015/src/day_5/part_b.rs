@@ -4,6 +4,21 @@ fn is_nice_string(string: &str) -> bool {
     true
 }
 
+#[derive(Debug)]
+struct NiceString {
+
+}
+
+impl NiceString {
+    pub fn parse(string: &str) -> Self {
+
+    }
+
+    pub fn results(&self) -> bool {
+        
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

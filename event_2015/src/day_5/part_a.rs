@@ -20,7 +20,7 @@ pub static VOWELS: [char; 5] = ['a', 'e', 'i', 'o', 'u'];
 pub static INVALID_STRINGS: [&str; 4] = ["ab", "cd", "pq", "xy"];
 
 #[derive(Debug)]
-pub struct NiceString {
+struct NiceString {
     vowels: i32,
     contains_double_letter: bool,
     contains_invalid_str: bool,
