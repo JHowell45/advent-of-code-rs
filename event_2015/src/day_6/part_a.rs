@@ -18,7 +18,7 @@ impl LightFormation {
     }
 
     pub fn toggle(&mut self, start_index: usize, finish_index: usize) {
-        self.lights[start_index..finish_index].iter_mut().map(|l| l = !l);
+        let _ = self.lights[start_index..finish_index].iter_mut().map(|l| *l = !(*l));
     }
 
     pub fn turn_on(&mut self, start_index: usize, finish_index: usize) {
