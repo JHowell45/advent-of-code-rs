@@ -46,23 +46,23 @@ impl LetterRepeat {
         for i in 1..self.characters.len() {
             self.characters[i - 1] = self.characters[i];
         }
-        self.characters[2] = Some(letter);
+        self.characters[self.characters.len() - 1] = Some(letter);
     }
 
     pub fn check(&self) -> bool {
-        if self.characters[0] == self.characters[2] {
-            println!("{:?}", self.characters);
+        if self.characters[0] == self.characters[self.characters.len() - 1] {
             return true;
         }
         return false;
     }
 
     pub fn overlapping(&self) -> bool {
-        if self.characters[0] == self.characters[1] && self.characters[0] == self.characters[2] {
-            println!("{:?}", self.characters);
-            return true;
+        for i in 1..self.characters.len() {
+            if self.characters[0] != self.characters[i] {
+                return false;
+            }
         }
-        return false;
+        return true;
     }
 }
 
@@ -102,7 +102,7 @@ impl NiceString {
                         true => {
                             println!("{:?}", pair);
                             pair_check = true
-                        },
+                        }
                         false => {
                             pairs_lookup.insert(pair.clone());
                         }
