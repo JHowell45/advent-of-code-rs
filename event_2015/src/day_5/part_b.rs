@@ -48,7 +48,19 @@ impl LetterRepeat {
     }
 
     pub fn check(&self) -> bool {
-        self.characters[0] == self.characters[2]
+        if self.characters[0] == self.characters[2] {
+            println!("{:?}", self.characters);
+            return true;
+        }
+        return false;
+    }
+
+    pub fn overlapping(&self) -> bool {
+        if self.characters[0] == self.characters[1] && self.characters[0] == self.characters[2] {
+            println!("{:?}", self.characters);
+            return true;
+        }
+        return false;
     }
 }
 
@@ -70,31 +82,31 @@ impl NiceString {
         let mut letter_repeat: LetterRepeat = LetterRepeat::new();
 
         let mut prior: Option<char> = None;
-        let mut prior_pair: String = String::from("");
 
         for letter in string.chars().into_iter() {
+            letter_repeat.add(letter);
+            if letter_repeat.overlapping() {
+                overlapping_pairs = true;
+                break;
+            }
+            if !spaced_letter_repeat {
+                spaced_letter_repeat = letter_repeat.check();
+            }
+
             if let Some(prior_letter) = prior {
                 let pair = format!("{}{}", prior_letter, letter);
-                if prior_pair == pair {
-                    overlapping_pairs = true;
-                    break;
-                }
-
                 if !pair_check {
+                    println!("{:?}", pairs_lookup);
                     match pairs_lookup.contains(&pair) {
-                        true => pair_check = true,
+                        true => {
+                            println!("{:?}", pair);
+                            pair_check = true
+                        },
                         false => {
                             pairs_lookup.insert(pair.clone());
                         }
                     }
                 }
-
-                prior_pair = pair;
-            }
-
-            if !spaced_letter_repeat {
-                letter_repeat.add(letter);
-                spaced_letter_repeat = letter_repeat.check();
             }
 
             prior = Some(letter);
