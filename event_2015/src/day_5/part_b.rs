@@ -14,7 +14,9 @@ pub fn part_b() {
 fn is_nice_string(string: &str) -> bool {
     let nice = NiceString::parse(string);
     println!("{:#?}", nice);
-    nice.results()
+    let res = nice.results();
+    println!("Result: {:#?}", res);
+    res
 }
 
 #[derive(Debug)]
@@ -96,7 +98,6 @@ impl NiceString {
             if let Some(prior_letter) = prior {
                 let pair = format!("{}{}", prior_letter, letter);
                 if !pair_check {
-                    println!("{:?}", pairs_lookup);
                     match pairs_lookup.contains(&pair) {
                         true => {
                             println!("{:?}", pair);
@@ -106,6 +107,7 @@ impl NiceString {
                             pairs_lookup.insert(pair.clone());
                         }
                     }
+                    println!("{:?}", pairs_lookup);
                 }
             }
 
@@ -135,6 +137,7 @@ mod tests {
     #[case("xxyxx", true)]
     #[case("uurcxstgmygtbstg", false)]
     #[case("ieodomkazucvgmuy", false)]
+    #[case("aaaa", true)]
     fn examples(#[case] string: &str, #[case] is_nice: bool) {
         assert_eq!(is_nice_string(string), is_nice);
     }
