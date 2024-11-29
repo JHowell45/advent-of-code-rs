@@ -1,21 +1,41 @@
-pub fn part_b() {}
+use core::{enums::Part, file_reader::get_file_contents};
+use std::collections::HashMap;
+
+pub fn part_b() {
+    let mut nice_strings: usize = 0;
+    for string in get_file_contents(2015, 5, Part::A).lines().into_iter() {
+        if is_nice_string(string) {
+            nice_strings += 1;
+        }
+    }
+    println!("The number of nice strings: {}", nice_strings);
+}
 
 fn is_nice_string(string: &str) -> bool {
-    true
+    let nice = NiceString::parse(string);
+    println!("{:#?}", nice);
+    nice.results()
 }
 
 #[derive(Debug)]
 struct NiceString {
-
+    overlapping_pairs: bool,
+    pairs_count: HashMap<String, usize>,
+    spaced_letter_repeat: bool
 }
 
 impl NiceString {
     pub fn parse(string: &str) -> Self {
-
+        let mut overlapping_pairs = false;
+        let mut pairs_count: HashMap<String, usize> = HashMap::new();
+        let mut spaced_letter_repeat: bool = false;
+        Self {
+            overlapping_pairs, pairs_count, spaced_letter_repeat
+        }
     }
 
     pub fn results(&self) -> bool {
-        
+        !self.overlapping_pairs && self.spaced_letter_repeat
     }
 }
 
