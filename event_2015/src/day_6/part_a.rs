@@ -4,6 +4,8 @@ pub fn instruction_parser(formation: &LightFormation, instruction: &str) {
     let split: Vec<&str> = instruction.split(" ").collect();
     match split[0].to_lowercase().as_str() {
         "turn" => {
+            let start = Coords::parse(split[2]);
+            let finish = Coords::parse(split[4]);
             match split[1].to_lowercase().as_str() {
                 "on" => {
 
