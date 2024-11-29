@@ -1,4 +1,12 @@
-pub fn part_a() {}
+use core::{enums::Part, file_reader::get_file_contents};
+
+pub fn part_a() {
+    let mut formation = LightFormation::new();
+    for instruction in get_file_contents(2015, 6, Part::A).lines().into_iter() {
+        instruction_parser(&mut formation, instruction);
+    }
+    println!("Number of lights lit: {}", formation.number_of_lights_on());
+}
 
 fn instruction_parser(formation: &mut LightFormation, instruction: &str) {
     let split: Vec<&str> = instruction.split(" ").collect();
