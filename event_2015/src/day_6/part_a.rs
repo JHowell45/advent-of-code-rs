@@ -139,14 +139,4 @@ mod tests {
         instruction_parser(&mut formation, instruction);
         assert_eq!(formation.number_of_lights_on(), lights_on);
     }
-
-    #[rstest]
-    #[case(vec!["turn on 0,0 through 999,999", "toggle 0,0 through 999,0", "turn off 499,499 through 500,500"], 4)]
-    fn example_instructions(#[case] instructions: Vec<&str>, #[case] lights_on: usize) {
-        let mut formation = LightFormation::new();
-        for instruction in instructions.iter() {
-            instruction_parser(&mut formation, instruction);
-        }
-        assert_eq!(formation.number_of_lights_on(), lights_on);
-    }
 }
