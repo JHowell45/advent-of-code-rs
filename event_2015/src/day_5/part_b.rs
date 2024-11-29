@@ -54,6 +54,7 @@ impl LetterRepeat {
 
 #[derive(Debug)]
 struct NiceString {
+    string: String,
     overlapping_pairs: bool,
     pair_check: bool,
     spaced_letter_repeat: bool,
@@ -99,6 +100,7 @@ impl NiceString {
         }
 
         Self {
+            string: String::from(string),
             overlapping_pairs,
             pair_check,
             spaced_letter_repeat,
