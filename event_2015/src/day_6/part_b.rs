@@ -39,3 +39,9 @@ impl FormationTrait for LightFormation {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rstest::rstest;
+}
