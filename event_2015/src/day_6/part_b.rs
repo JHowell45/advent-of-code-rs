@@ -89,7 +89,7 @@ impl LightFormation {
 
 impl FormationTrait for LightFormation {
     fn number_of_lights_on(&self) -> usize {
-        self.lights.iter().sum()
+        usize::try_from(self.lights.iter().sum::<i32>()).unwrap()
     }
 
     fn toggle(&mut self, start_index: usize, finish_index: usize) {
