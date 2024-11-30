@@ -1,5 +1,5 @@
 use core::{enums::Part, file_reader::get_file_contents};
-
+use crate::day_6::shared::FormationTrait;
 pub fn part_a() {
     let mut formation = LightFormation::new();
     for instruction in get_file_contents(2015, 6, Part::A).lines().into_iter() {
@@ -98,24 +98,26 @@ impl LightFormation {
             lights: [false; 1000000],
         }
     }
+}
 
-    pub fn number_of_lights_on(&self) -> usize {
+impl FormationTrait for LightFormation {
+    fn number_of_lights_on(&self) -> usize {
         self.lights.iter().filter(|&&l| l == true).count()
     }
 
-    pub fn toggle(&mut self, start_index: usize, finish_index: usize) {
+    fn toggle(&mut self, start_index: usize, finish_index: usize) {
         for i in start_index..=finish_index {
             self.lights[i] = !self.lights[i];
         }
     }
 
-    pub fn turn_on(&mut self, start_index: usize, finish_index: usize) {
+    fn turn_on(&mut self, start_index: usize, finish_index: usize) {
         for i in start_index..=finish_index {
             self.lights[i] = true;
         }
     }
 
-    pub fn turn_off(&mut self, start_index: usize, finish_index: usize) {
+    fn turn_off(&mut self, start_index: usize, finish_index: usize) {
         for i in start_index..=finish_index {
             self.lights[i] = false;
         }
