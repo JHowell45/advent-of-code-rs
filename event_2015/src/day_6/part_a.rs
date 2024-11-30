@@ -1,5 +1,7 @@
 use core::{enums::Part, file_reader::get_file_contents};
 use crate::day_6::shared::FormationTrait;
+
+use super::shared::Coords;
 pub fn part_a() {
     let mut formation = LightFormation::new();
     for instruction in get_file_contents(2015, 6, Part::A).lines().into_iter() {
@@ -69,21 +71,6 @@ fn instruction_parser(formation: &mut LightFormation, instruction: &str) {
             }
         }
         _ => panic!("Unhandled starting sentence! '{instruction}'"),
-    }
-}
-
-#[derive(Debug)]
-struct Coords {
-    x: usize,
-    y: usize,
-}
-impl Coords {
-    pub fn parse(coords: &str) -> Self {
-        let split: Vec<&str> = coords.split(",").collect();
-        Self {
-            x: split[0].parse::<usize>().unwrap(),
-            y: split[1].parse::<usize>().unwrap(),
-        }
     }
 }
 
