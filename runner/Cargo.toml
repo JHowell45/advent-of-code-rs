@@ -6,4 +6,5 @@ edition = "2021"
 [dependencies]
 core = { path = "../core" }
 event_2015 = { path = "../event_2015" }
+event_2024 = { path = "../event_2024" }
 clap = { version = "4.0", features = ["derive"] }
