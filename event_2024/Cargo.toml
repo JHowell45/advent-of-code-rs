@@ -6,3 +6,7 @@ edition = "2021"
 [dependencies]
 rstest = "0.23.0"
 core = { path = "../core" }
+
+[[bin]]
+name="2024-1-a"
+path="src/day_1/part_a.rs"
