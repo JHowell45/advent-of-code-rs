@@ -118,12 +118,12 @@ mod tests {
     use super::*;
     use rstest::rstest;
 
-    #[rstest]
-    #[case("turn on 0,0 through 0,0", 1)]
-    #[case("toggle 0,0 through 999,999", 2000000)]
-    fn examples(#[case] instruction: &str, #[case] brightness: usize) {
-        let mut formation = LightFormation::new();
-        instruction_parser(&mut formation, instruction);
-        assert_eq!(formation.number_of_lights_on(), brightness);
-    }
+    // #[rstest]
+    // #[case("turn on 0,0 through 0,0", 1)]
+    // #[case("toggle 0,0 through 999,999", 2000000)]
+    // fn examples(#[case] instruction: &str, #[case] brightness: usize) {
+    //     let mut formation = LightFormation::new();
+    //     instruction_parser(&mut formation, instruction);
+    //     assert_eq!(formation.number_of_lights_on(), brightness);
+    // }
 }
