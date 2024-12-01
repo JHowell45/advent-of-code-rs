@@ -15,12 +15,7 @@ mod tests {
     #[rstest]
     #[case("3   4\n4   3\n2   5\n1   3\n3   9\n3   3", 11)]
     fn example(#[case] locations: &str, #[case] distance: usize) {
-        let mut search = LocationIds::new();
-        for (index, line) in locations.lines().into_iter().enumerate() {
-            let (left, right) = parse_line(line);
-            search.add_left(index, left);
-            search.add_right(index, right);
-        }
+        let mut search = LocationIds::parse_input(locations);
         assert_eq!(search.total_distances(), distance);
     }
 }
