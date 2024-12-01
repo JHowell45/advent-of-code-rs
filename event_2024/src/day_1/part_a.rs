@@ -1,6 +1,6 @@
 use core::{enums::Part, file_reader::get_file_contents};
 
-use crate::day_1::shared::LocationSearch;
+use super::shared::LocationSearch;
 
 pub fn part_a() {
     let mut locations = LocationSearch::parse_input(get_file_contents(2024, 1, Part::A).as_str());
