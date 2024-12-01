@@ -7,13 +7,6 @@ pub fn part_a() {
     println!("The total distance is: {}", locations.total_distances());
 }
 
-fn parse_line(line: &str) -> (i32, i32) {
-    let inputs: Vec<&str> = line.split(" ").filter(|v| *v != "").collect();
-    (
-        inputs[0].trim().parse::<i32>().unwrap(),
-        inputs[1].trim().parse::<i32>().unwrap(),
-    )
-}
 #[cfg(test)]
 mod tests {
     use super::*;
