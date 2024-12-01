@@ -41,7 +41,7 @@ impl Cli {
             2024 => match self.day {
                 1 => match self.part {
                     Part::A => event_2024::day_1::part_a::part_a(),
-                    Part::B => event_2015::day_1::part_b::part_b(),
+                    Part::B => event_2024::day_1::part_b::part_b(),
                 },
                 // 2 => match self.part {
                 //     Part::A => event_2015::day_2::part_a::part_a(),

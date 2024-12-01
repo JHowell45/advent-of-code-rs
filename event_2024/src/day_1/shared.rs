@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 pub struct LocationSearch {
     left_locations: [i32; 1000],
     right_locations: [i32; 1000],
@@ -37,5 +39,24 @@ impl LocationSearch {
             distance += (left - right).abs();
         }
         return distance as usize;
+    }
+
+    pub fn similarity_score(&self) -> usize {
+        let mut similarity_score: i32 = 0;
+        let mut lookup: HashMap<i32, i32> = HashMap::new();
+        for number in self.right_locations.iter() {
+            match lookup.get_mut(number) {
+                Some(count) => *count += 1,
+                None => {
+                    lookup.insert(*number, 1);
+                }
+            }
+        }
+        for number in self.left_locations.iter() {
+            if let Some(count) = lookup.get(number) {
+                similarity_score += number * count;
+            }
+        }
+        return similarity_score as usize;
     }
 }
