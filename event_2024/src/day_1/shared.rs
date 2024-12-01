@@ -1,9 +1,9 @@
-pub struct LocationIds {
+pub struct LocationSearch {
     left_locations: [i32; 1000],
     right_locations: [i32; 1000],
 }
 
-impl LocationIds {
+impl LocationSearch {
     pub fn new() -> Self {
         Self {
             left_locations: [0; 1000],
