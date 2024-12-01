@@ -7,7 +7,10 @@ pub fn part_b() {
     for instruction in get_file_contents(2015, 6, Part::A).lines().into_iter() {
         instruction_parser(&mut formation, instruction);
     }
-    println!("Total light brightness: {}", formation.number_of_lights_on());
+    println!(
+        "Total light brightness: {}",
+        formation.number_of_lights_on()
+    );
 }
 
 fn instruction_parser(formation: &mut LightFormation, instruction: &str) {
@@ -24,7 +27,7 @@ fn instruction_parser(formation: &mut LightFormation, instruction: &str) {
                     formation.turn_on(start_index, finish_index);
 
                     y += 1;
-                    
+
                     while y <= finish.y {
                         start_index = start.x + (y * 1000);
                         finish_index = finish.x + (y * 1000);
@@ -40,7 +43,7 @@ fn instruction_parser(formation: &mut LightFormation, instruction: &str) {
                     formation.turn_off(start_index, finish_index);
 
                     y += 1;
-                    
+
                     while y <= finish.y {
                         start_index = start.x + (y * 1000);
                         finish_index = finish.x + (y * 1000);
@@ -61,7 +64,7 @@ fn instruction_parser(formation: &mut LightFormation, instruction: &str) {
             formation.toggle(start_index, finish_index);
 
             y += 1;
-            
+
             while y <= finish.y {
                 start_index = start.x + (y * 1000);
                 finish_index = finish.x + (y * 1000);
@@ -74,15 +77,14 @@ fn instruction_parser(formation: &mut LightFormation, instruction: &str) {
     }
 }
 
-
 pub struct LightFormation {
-    lights: [i32; 1000000]
+    lights: [i32; 1000000],
 }
 
 impl LightFormation {
     pub fn new() -> Self {
         Self {
-            lights: [0; 1000000]
+            lights: [0; 1000000],
         }
     }
 }

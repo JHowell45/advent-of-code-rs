@@ -1,5 +1,5 @@
-use core::{enums::Part, file_reader::get_file_contents};
 use crate::day_6::shared::FormationTrait;
+use core::{enums::Part, file_reader::get_file_contents};
 
 use super::shared::Coords;
 pub fn part_a() {
@@ -24,7 +24,7 @@ fn instruction_parser(formation: &mut LightFormation, instruction: &str) {
                     formation.turn_on(start_index, finish_index);
 
                     y += 1;
-                    
+
                     while y <= finish.y {
                         start_index = start.x + (y * 1000);
                         finish_index = finish.x + (y * 1000);
@@ -40,7 +40,7 @@ fn instruction_parser(formation: &mut LightFormation, instruction: &str) {
                     formation.turn_off(start_index, finish_index);
 
                     y += 1;
-                    
+
                     while y <= finish.y {
                         start_index = start.x + (y * 1000);
                         finish_index = finish.x + (y * 1000);
@@ -61,7 +61,7 @@ fn instruction_parser(formation: &mut LightFormation, instruction: &str) {
             formation.toggle(start_index, finish_index);
 
             y += 1;
-            
+
             while y <= finish.y {
                 start_index = start.x + (y * 1000);
                 finish_index = finish.x + (y * 1000);
