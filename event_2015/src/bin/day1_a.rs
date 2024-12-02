@@ -1,5 +1,10 @@
 use core::{enums::Part, file_reader::get_file_contents};
 
+pub fn main() {
+    let contents = get_file_contents(2015, 1, Part::A);
+    println!("Floor: {}", calculate_floor(&contents));
+}
+
 fn calculate_floor(directions: &str) -> i32 {
     let mut floor = 0;
     for instruction in directions.chars().into_iter() {
@@ -10,11 +15,6 @@ fn calculate_floor(directions: &str) -> i32 {
         }
     }
     return floor;
-}
-
-pub fn part_a() {
-    let contents = get_file_contents(2015, 1, Part::A);
-    println!("Floor: {}", calculate_floor(&contents));
 }
 
 #[cfg(test)]

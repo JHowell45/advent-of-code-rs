@@ -1,5 +1,10 @@
 use core::{enums::Part, file_reader::get_file_contents};
 
+pub fn main() {
+    let contents = get_file_contents(2015, 1, Part::A);
+    println!("Floor: {}", first_floor_in_basement(&contents));
+}
+
 fn first_floor_in_basement(directions: &str) -> i32 {
     let mut floor: i32 = 0;
     for (index, instruction) in directions.chars().enumerate() {
@@ -13,11 +18,6 @@ fn first_floor_in_basement(directions: &str) -> i32 {
         }
     }
     return -1;
-}
-
-pub fn part_b() {
-    let contents = get_file_contents(2015, 1, Part::A);
-    println!("Floor: {}", first_floor_in_basement(&contents));
 }
 
 #[cfg(test)]
