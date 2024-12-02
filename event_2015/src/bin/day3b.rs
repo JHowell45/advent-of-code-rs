@@ -2,7 +2,6 @@ use core::{enums::Part, file_reader::get_file_contents};
 
 use event_2015::shared::day3::{Location, VisitedHouses};
 
-
 pub fn main() {
     let directions = get_file_contents(2015, 3, Part::A);
     let mut santa = RoboSantaAndSantaLocations::new();
