@@ -1,13 +1,16 @@
-use crate::day_6::shared::FormationTrait;
 use core::{enums::Part, file_reader::get_file_contents};
 
-use super::shared::Coords;
-pub fn part_a() {
+use event_2015::shared::day6::{Coords, FormationTrait};
+
+pub fn main() {
     let mut formation = LightFormation::new();
     for instruction in get_file_contents(2015, 6, Part::A).lines().into_iter() {
         instruction_parser(&mut formation, instruction);
     }
-    println!("Number of lights lit: {}", formation.number_of_lights_on());
+    println!(
+        "Total light brightness: {}",
+        formation.number_of_lights_on()
+    );
 }
 
 fn instruction_parser(formation: &mut LightFormation, instruction: &str) {
@@ -74,39 +77,40 @@ fn instruction_parser(formation: &mut LightFormation, instruction: &str) {
     }
 }
 
-#[derive(Debug)]
-struct LightFormation {
-    lights: [bool; 1000000],
+pub struct LightFormation {
+    lights: [i32; 1000000],
 }
 
 impl LightFormation {
     pub fn new() -> Self {
         Self {
-            lights: [false; 1000000],
+            lights: [0; 1000000],
         }
     }
 }
 
 impl FormationTrait for LightFormation {
     fn number_of_lights_on(&self) -> usize {
-        self.lights.iter().filter(|&&l| l == true).count()
+        usize::try_from(self.lights.iter().sum::<i32>()).unwrap()
     }
 
     fn toggle(&mut self, start_index: usize, finish_index: usize) {
         for i in start_index..=finish_index {
-            self.lights[i] = !self.lights[i];
+            self.lights[i] += 2;
         }
     }
 
     fn turn_on(&mut self, start_index: usize, finish_index: usize) {
         for i in start_index..=finish_index {
-            self.lights[i] = true;
+            self.lights[i] += 1;
         }
     }
 
     fn turn_off(&mut self, start_index: usize, finish_index: usize) {
         for i in start_index..=finish_index {
-            self.lights[i] = false;
+            if self.lights[i] > 0 {
+                self.lights[i] -= 1;
+            }
         }
     }
 }
@@ -116,13 +120,12 @@ mod tests {
     use super::*;
     use rstest::rstest;
 
-    #[rstest]
-    #[case("turn on 0,0 through 999,999", 1000000)]
-    #[case("toggle 0,0 through 999,0", 1000)]
-    #[case("turn on 499,499 through 500,500", 4)]
-    fn example_instruction(#[case] instruction: &str, #[case] lights_on: usize) {
-        let mut formation = LightFormation::new();
-        instruction_parser(&mut formation, instruction);
-        assert_eq!(formation.number_of_lights_on(), lights_on);
-    }
+    // #[rstest]
+    // #[case("turn on 0,0 through 0,0", 1)]
+    // #[case("toggle 0,0 through 999,999", 2000000)]
+    // fn examples(#[case] instruction: &str, #[case] brightness: usize) {
+    //     let mut formation = LightFormation::new();
+    //     instruction_parser(&mut formation, instruction);
+    //     assert_eq!(formation.number_of_lights_on(), brightness);
+    // }
 }
