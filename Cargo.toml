@@ -1,6 +1,6 @@
 [workspace]
 resolver = "1"
 
-members = [ "core",
-    "event_2015", "event_2024", "runner",
+members = [
+    "core", "event_2015", "event_2024",
 ]
