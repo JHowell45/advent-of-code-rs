@@ -1,8 +1,9 @@
 use core::{enums::Part, file_reader::get_file_contents};
 
-use super::shared::{Location, VisitedHouses};
+use event_2015::shared::day3::{Location, VisitedHouses};
 
-pub fn part_b() {
+
+pub fn main() {
     let directions = get_file_contents(2015, 3, Part::A);
     let mut santa = RoboSantaAndSantaLocations::new();
     santa.apply_directions(directions.as_str());
