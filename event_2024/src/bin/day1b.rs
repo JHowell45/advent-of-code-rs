@@ -1,10 +1,10 @@
-use core::{enums::Part, file_reader::get_file_contents};
+use core::{file_reader::get_file_contents};
 
 use event_2024::shared::day1::LocationSearch;
 
 
 pub fn main() {
-    let search = LocationSearch::parse_input(get_file_contents(2024, 1, Part::A).as_str());
+    let search = LocationSearch::parse_input(get_file_contents(2024, 1).as_str());
     println!("The similarity score is: {}", search.similarity_score());
 }
 

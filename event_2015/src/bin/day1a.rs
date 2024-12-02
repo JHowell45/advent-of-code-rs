@@ -1,7 +1,7 @@
-use core::{enums::Part, file_reader::get_file_contents};
+use core::{file_reader::get_file_contents};
 
 pub fn main() {
-    let contents = get_file_contents(2015, 1, Part::A);
+    let contents = get_file_contents(2015, 1);
     println!("Floor: {}", calculate_floor(&contents));
 }
 

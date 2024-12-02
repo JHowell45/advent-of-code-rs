@@ -1,12 +1,7 @@
-use crate::enums::Part;
 use std::fs;
 use std::path::PathBuf;
 
-pub fn get_file_contents(year: i32, day: i32, part: Part) -> String {
-    let part = match part {
-        Part::A => 'a',
-        Part::B => 'b',
-    };
+pub fn get_file_contents(year: i32, day: i32) -> String {
     let local_path: String = format!("./event_{year}/puzzle_inputs/day{day}.txt");
     println!("{}", local_path);
     println!("{:?}", fs::canonicalize(".").unwrap());

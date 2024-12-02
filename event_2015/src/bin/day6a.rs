@@ -1,10 +1,10 @@
-use core::{enums::Part, file_reader::get_file_contents};
+use core::{file_reader::get_file_contents};
 
 use event_2015::shared::day6::{Coords, FormationTrait};
 
 pub fn main() {
     let mut formation = LightFormation::new();
-    for instruction in get_file_contents(2015, 6, Part::A).lines().into_iter() {
+    for instruction in get_file_contents(2015, 6).lines().into_iter() {
         instruction_parser(&mut formation, instruction);
     }
     println!("Number of lights lit: {}", formation.number_of_lights_on());

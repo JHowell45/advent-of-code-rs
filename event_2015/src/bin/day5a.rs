@@ -1,9 +1,9 @@
-use core::{enums::Part, file_reader::get_file_contents};
+use core::{file_reader::get_file_contents};
 use std::collections::HashSet;
 
 pub fn main() {
     let mut nice_strings: usize = 0;
-    for string in get_file_contents(2015, 5, Part::A).lines().into_iter() {
+    for string in get_file_contents(2015, 5).lines().into_iter() {
         if is_nice_string(string) {
             nice_strings += 1;
         }
