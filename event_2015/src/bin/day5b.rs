@@ -1,7 +1,7 @@
 use core::{enums::Part, file_reader::get_file_contents};
 use std::collections::HashSet;
 
-pub fn part_b() {
+pub fn main() {
     let mut nice_strings: usize = 0;
     for string in get_file_contents(2015, 5, Part::A).lines().into_iter() {
         if is_nice_string(string) {
@@ -12,11 +12,7 @@ pub fn part_b() {
 }
 
 fn is_nice_string(string: &str) -> bool {
-    let nice = NiceString::parse(string);
-    println!("{:#?}", nice);
-    let res = nice.results();
-    println!("Result: {:#?}", res);
-    res
+    NiceString::parse(string).results()
 }
 
 #[derive(Debug)]
@@ -59,7 +55,6 @@ impl LetterRepeat {
     }
 
     pub fn valid_pair(&self) -> Option<String> {
-        println!("{:?}", self.characters);
         if self.characters[self.len - 1].is_none() {
             if self.characters[0].is_some() && self.characters[1].is_some() {
                 return Some(format!(
