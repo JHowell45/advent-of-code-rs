@@ -8,3 +8,15 @@ pub fn mul_sum(puzzle_data: &str) -> i32 {
         a * b
     }).sum()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rstest::rstest;
+
+    #[rstest]
+    #[case("xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))", 161)]
+    fn example(#[case] text: &str, #[case] sum: i32) {
+        assert_eq!(mul_sum(text), sum);
+    }
+}
