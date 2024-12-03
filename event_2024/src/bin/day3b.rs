@@ -18,5 +18,5 @@ fn main() {
         let b = caps.name("b").unwrap().as_str().parse::<i32>().unwrap();
         a * b
     }).sum();
-    println!("Sum of multiplications: {total:}");
+    println!("Sum of enabled multiplications: {total:}");
 }
