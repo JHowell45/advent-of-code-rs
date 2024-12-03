@@ -25,7 +25,7 @@ fn enabled_sum(text: &str) -> i32 {
             false => {
                 if enabled.as_str() == "don't()" {
                     flag = !flag;
-                    total += mul_sum(&text[start..enabled.end()]);
+                    total += mul_sum(&text[start..enabled.start()]);
                 }
             }
         }
