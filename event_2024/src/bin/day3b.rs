@@ -1,4 +1,5 @@
 use core::file_reader::get_file_contents;
+use event_2024::shared::day3::mul_sum;
 use regex::Regex;
 
 
@@ -8,7 +9,33 @@ fn main() {
 }
 
 fn enabled_sum(text: &str) -> i32 {
-    0
+    let mut total: i32 = 0;
+    let mut flag: bool = false;
+    let mut start: usize = 0;
+    let mut end: usize = 0;
+    let pattern = Regex::new("(do\\(\\))|(don't\\(\\))").unwrap();
+
+    for enabled in pattern.find_iter(&text) {
+        match flag {
+            true => {
+                if enabled.as_str() == "do()" {
+                    flag = !flag;
+                    start = enabled.end();
+                }
+            },
+            false => {
+                if enabled.as_str() == "don't()" {
+                    flag = !flag;
+                    end = enabled.end();
+                    total += mul_sum(&text[start..end]);
+                }
+            }
+        }
+    }
+    if !flag {
+        total += mul_sum(&text[start..]);
+    }
+    return total;
 }
 
 #[cfg(test)]
