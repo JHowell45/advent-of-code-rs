@@ -12,7 +12,6 @@ fn enabled_sum(text: &str) -> i32 {
     let mut total: i32 = 0;
     let mut flag: bool = false;
     let mut start: usize = 0;
-    let mut end: usize = 0;
     let pattern = Regex::new("(do\\(\\))|(don't\\(\\))").unwrap();
 
     for enabled in pattern.find_iter(&text) {
@@ -26,8 +25,7 @@ fn enabled_sum(text: &str) -> i32 {
             false => {
                 if enabled.as_str() == "don't()" {
                     flag = !flag;
-                    end = enabled.end();
-                    total += mul_sum(&text[start..end]);
+                    total += mul_sum(&text[start..enabled.end()]);
                 }
             }
         }
