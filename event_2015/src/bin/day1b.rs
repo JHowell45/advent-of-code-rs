@@ -1,4 +1,4 @@
-use core::{file_reader::get_file_contents};
+use core::file_reader::get_file_contents;
 
 pub fn main() {
     let contents = get_file_contents(2015, 1);

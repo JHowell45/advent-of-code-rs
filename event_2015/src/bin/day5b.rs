@@ -1,4 +1,4 @@
-use core::{file_reader::get_file_contents};
+use core::file_reader::get_file_contents;
 use std::collections::HashSet;
 
 pub fn main() {

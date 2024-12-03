@@ -1,8 +1,6 @@
-use core::{file_reader::get_file_contents};
+use core::file_reader::get_file_contents;
 
 use event_2024::shared::day2::{is_safe, parse_report};
-
-
 
 fn main() {
     let mut safe_reports: usize = 0;
@@ -27,7 +25,7 @@ fn safe_dampener(report: &str) -> bool {
                 }
             }
         }
-        None => return true
+        None => return true,
     }
     return false;
 }
