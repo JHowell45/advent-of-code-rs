@@ -46,10 +46,34 @@ impl WordSearch {
             }
 
             // Top:
-            if (index as i32) - column_check as i32 > 0 {
+            if (index as i32) - (column_check as i32) + 1 > 0 {
                 let mut chars: Vec<char> = Vec::with_capacity(len);
                 for i in 0..len {
                     chars.insert(i, self.letters[index - (self.columns * i)]);
+                }
+                let local_word: String = chars.iter().collect();
+                if word == local_word.as_str() {
+                    count += 1;
+                }
+            }
+
+            // Diag Top Left:
+            if (index as i32) - (column_check as i32) - (len as i32) - 2 > 0 {
+                let mut chars: Vec<char> = Vec::with_capacity(len);
+                for i in 0..len {
+                    chars.insert(i, self.letters[index - (self.columns * i) - i]);
+                }
+                let local_word: String = chars.iter().collect();
+                if word == local_word.as_str() {
+                    count += 1;
+                }
+            }
+
+            // Diag Top Right:
+            if (index as i32) - (column_check as i32) + (len as i32) > 0 {
+                let mut chars: Vec<char> = Vec::with_capacity(len);
+                for i in 0..len {
+                    chars.insert(i, self.letters[index - (self.columns * i) + i]);
                 }
                 let local_word: String = chars.iter().collect();
                 println!("{local_word:}");
@@ -57,30 +81,6 @@ impl WordSearch {
                     count += 1;
                 }
             }
-
-            // // Diag Top Left:
-            // if (index as i32) - column_check as i32 - len as i32 + 1 > 0 {
-            //     let mut chars: Vec<char> = Vec::with_capacity(len);
-            //     for i in 0..len {
-            //         chars.insert(i, self.letters[index - (self.columns * i) - i]);
-            //     }
-            //     let local_word: String = chars.iter().collect();
-            //     if word == local_word.as_str() {
-            //         count += 1;
-            //     }
-            // }
-
-            // // Diag Top Right:
-            // if (index as i32) - column_check as i32 + len as i32 > 0 {
-            //     let mut chars: Vec<char> = Vec::with_capacity(len);
-            //     for i in 0..len {
-            //         chars.insert(i, self.letters[index - (self.columns * i) + i]);
-            //     }
-            //     let local_word: String = chars.iter().collect();
-            //     if word == local_word.as_str() {
-            //         count += 1;
-            //     }
-            // }
 
             // // Bottom:
             // if index + column_check < self.letters.len() {
