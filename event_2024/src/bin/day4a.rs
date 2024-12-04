@@ -81,7 +81,7 @@ impl WordSearch {
         return None;
     }
 
-    pub fn right(&self, index: usize, word_length: usize) -> Option<String> {
+    fn right(&self, index: usize, word_length: usize) -> Option<String> {
         if index % self.columns < self.columns - word_length + 1 {
             let local_word: String = self.letters[index..index + word_length].iter().collect();
             return Some(local_word);
