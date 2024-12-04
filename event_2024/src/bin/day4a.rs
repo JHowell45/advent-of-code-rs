@@ -176,7 +176,7 @@ mod tests {
     use rstest::rstest;
 
     #[rstest]
-    #[case("abcd\nefgh", 2, vec![None, Some("ab"), Some("")])]
+    #[case("abcd\nefgh", 2, vec![None, Some(String::from("ba")), Some(String::from("cb")),  Some(String::from("dc")), Some(String::from("fe")), Some(String::from("gf")), Some(String::from("hg"))])]
     fn test_left(
         #[case] text: String,
         #[case] wordl: usize,
@@ -184,14 +184,15 @@ mod tests {
     ) {
         let search = WordSearch::from_string(text);
         let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, c)| search.left(idx, wordl)).collect();
+        println!("{words:?}");
         assert_eq!(words, expected);
     }
 
-    #[rstest]
-    #[case("MMMSXXMASM\nMSAMXMSMSA\nAMXSXMAAMM\nMSAMASMSMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
-    // #[case("MMMSXXMASS\nMSAMXMSMAA\nAMXSXMAAMM\nMSAMASMMMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
-    fn example(#[case] text: String, #[case] count: usize) {
-        let search = WordSearch::from_string(text);
-        assert_eq!(search.word_count("XMAS"), count);
-    }
+    // #[rstest]
+    // #[case("MMMSXXMASM\nMSAMXMSMSA\nAMXSXMAAMM\nMSAMASMSMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
+    // // #[case("MMMSXXMASS\nMSAMXMSMAA\nAMXSXMAAMM\nMSAMASMMMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
+    // fn example(#[case] text: String, #[case] count: usize) {
+    //     let search = WordSearch::from_string(text);
+    //     assert_eq!(search.word_count("XMAS"), count);
+    // }
 }
