@@ -36,7 +36,7 @@ impl WordSearch {
                     count += 1;
                 }
             }
-            
+
             // Right:
             if index % self.columns < self.columns - len + 1 {
                 let local_word: String = self.letters[index..index + len].iter().collect();
@@ -52,6 +52,7 @@ impl WordSearch {
                     chars.insert(i, self.letters[index - (self.columns * i)]);
                 }
                 let local_word: String = chars.iter().collect();
+                println!("{local_word:}");
                 if word == local_word.as_str() {
                     count += 1;
                 }
