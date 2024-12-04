@@ -27,16 +27,42 @@ impl WordSearch {
         let column_check = self.columns * (len - 1);
 
         for (index, _c) in self.letters.iter().enumerate() {
-            // Left:
             if let Some(local_word) = self.left(index, word) {
                 if word == local_word.as_str() {
                     count += 1;
                 }
             }
-
-            // Right:
-            if index % self.columns < self.columns - len + 1 {
-                let local_word: String = self.letters[index..index + len].iter().collect();
+            if let Some(local_word) = self.right(index, word) {
+                if word == local_word.as_str() {
+                    count += 1;
+                }
+            }
+            if let Some(local_word) = self.top(index, word) {
+                if word == local_word.as_str() {
+                    count += 1;
+                }
+            }
+            if let Some(local_word) = self.diagonal_top_left(index, word) {
+                if word == local_word.as_str() {
+                    count += 1;
+                }
+            }
+            if let Some(local_word) = self.diagonal_bottom_right(index, word) {
+                if word == local_word.as_str() {
+                    count += 1;
+                }
+            }
+            if let Some(local_word) = self.bottom(index, word) {
+                if word == local_word.as_str() {
+                    count += 1;
+                }
+            }
+            if let Some(local_word) = self.diagonal_bottom_left(index, word) {
+                if word == local_word.as_str() {
+                    count += 1;
+                }
+            }
+            if let Some(local_word) = self.diagonal_bottom_right(index, word) {
                 if word == local_word.as_str() {
                     count += 1;
                 }
@@ -132,9 +158,15 @@ impl WordSearch {
         return None;
     }
 
-    pub fn right(&self, index: usize, word: &str) -> Option<String> {}
-    pub fn up(&self, index: usize, word: &str) -> Option<String> {}
-    pub fn down(&self, index: usize, word: &str) -> Option<String> {}
+    pub fn right(&self, index: usize, word: &str) -> Option<String> {
+        if index % self.columns < self.columns - word.len() + 1 {
+            let local_word: String = self.letters[index..index + word.len()].iter().collect();
+            return Some(local_word);
+        }
+        return None;
+    }
+    pub fn top(&self, index: usize, word: &str) -> Option<String> {}
+    pub fn bottom(&self, index: usize, word: &str) -> Option<String> {}
     pub fn diagonal_top_left(&self, index: usize, word: &str) -> Option<String> {}
     pub fn diagonal_top_right(&self, index: usize, word: &str) -> Option<String> {}
     pub fn diagonal_bottom_left(&self, index: usize, word: &str) -> Option<String> {}
