@@ -1,5 +1,4 @@
 use core::file_reader::get_file_contents;
-use std::ops::Index;
 
 fn main() {
     let search = WordSearch::from_string(get_file_contents(2024, 4));
