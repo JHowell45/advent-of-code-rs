@@ -126,13 +126,11 @@ impl WordSearch {
     }
 
     fn diagonal_top_right(&self, index: usize, word_length: usize) -> Option<String> {
-        if index > self.columns - 1 && index % self.columns < self.columns {
-            println!("{index:} | {}", index % self.columns);
-            let mut chars: Vec<char> = Vec::with_capacity(word_length);
-            for i in 0..word_length {
-                let idx = index - (self.columns * i) + i - 1;
-                chars.insert(i, self.letters[idx]);
-            }
+        if index > self.columns - 1 && index % self.columns < self.columns - 1 {
+            let chars: Vec<char> = (0..word_length)
+                .into_iter()
+                .map(|i| self.letters[index - (self.columns * i) + i])
+                .collect();
             let local_word: String = chars.iter().collect();
             return Some(local_word);
         }
@@ -178,7 +176,12 @@ mod tests {
         #[case] expected: Vec<Option<String>>,
     ) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, _c)| search.left(idx, wordl)).collect();
+        let words: Vec<Option<String>> = search
+            .letters
+            .iter()
+            .enumerate()
+            .map(|(idx, _c)| search.left(idx, wordl))
+            .collect();
         assert_eq!(words, expected);
     }
 
@@ -190,20 +193,26 @@ mod tests {
         #[case] expected: Vec<Option<String>>,
     ) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, _c)| search.right(idx, wordl)).collect();
+        let words: Vec<Option<String>> = search
+            .letters
+            .iter()
+            .enumerate()
+            .map(|(idx, _c)| search.right(idx, wordl))
+            .collect();
         println!("{words:?}");
         assert_eq!(words, expected);
     }
 
     #[rstest]
     #[case("abcd\nefgh", 2, vec![None, None, None, None, Some(String::from("ea")), Some(String::from("fb")), Some(String::from("gc")), Some(String::from("hd"))])]
-    fn test_top(
-        #[case] text: String,
-        #[case] wordl: usize,
-        #[case] expected: Vec<Option<String>>,
-    ) {
+    fn test_top(#[case] text: String, #[case] wordl: usize, #[case] expected: Vec<Option<String>>) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, _c)| search.top(idx, wordl)).collect();
+        let words: Vec<Option<String>> = search
+            .letters
+            .iter()
+            .enumerate()
+            .map(|(idx, _c)| search.top(idx, wordl))
+            .collect();
         println!("{words:?}");
         assert_eq!(words, expected);
     }
@@ -216,14 +225,19 @@ mod tests {
         #[case] expected: Vec<Option<String>>,
     ) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, _c)| search.bottom(idx, wordl)).collect();
+        let words: Vec<Option<String>> = search
+            .letters
+            .iter()
+            .enumerate()
+            .map(|(idx, _c)| search.bottom(idx, wordl))
+            .collect();
         println!("{words:?}");
         assert_eq!(words, expected);
     }
 
     #[rstest]
     #[case("abcd\nefgh\nijkl\nmnop", 2, vec![
-        None, None, None, None, 
+        None, None, None, None,
         None, Some(String::from("fa")), Some(String::from("gb")), Some(String::from("hc")), 
         None, Some(String::from("je")), Some(String::from("kf")), Some(String::from("lg")),
         None, Some(String::from("ni")), Some(String::from("oj")), Some(String::from("pk"))
@@ -234,14 +248,19 @@ mod tests {
         #[case] expected: Vec<Option<String>>,
     ) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, _c)| search.diagonal_top_left(idx, wordl)).collect();
+        let words: Vec<Option<String>> = search
+            .letters
+            .iter()
+            .enumerate()
+            .map(|(idx, _c)| search.diagonal_top_left(idx, wordl))
+            .collect();
         println!("{words:?}");
         assert_eq!(words, expected);
     }
 
     #[rstest]
     #[case("abcd\nefgh\nijkl\nmnop", 2, vec![
-        None, None, None, None, 
+        None, None, None, None,
         Some(String::from("eb")), Some(String::from("fc")), Some(String::from("gd")), None,
         Some(String::from("if")), Some(String::from("jg")), Some(String::from("kh")), None,
         Some(String::from("mj")), Some(String::from("nk")), Some(String::from("ol")), None,
@@ -252,7 +271,12 @@ mod tests {
         #[case] expected: Vec<Option<String>>,
     ) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, _c)| search.diagonal_top_right(idx, wordl)).collect();
+        let words: Vec<Option<String>> = search
+            .letters
+            .iter()
+            .enumerate()
+            .map(|(idx, _c)| search.diagonal_top_right(idx, wordl))
+            .collect();
         println!("{words:?}");
         assert_eq!(words, expected);
     }
