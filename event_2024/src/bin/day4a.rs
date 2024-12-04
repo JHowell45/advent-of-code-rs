@@ -200,6 +200,32 @@ mod tests {
         assert_eq!(words, expected);
     }
 
+    #[rstest]
+    #[case("abcd\nefgh", 2, vec![None, None, None, None, Some(String::from("ea")), Some(String::from("fb")), Some(String::from("gc")), Some(String::from("hd"))])]
+    fn test_top(
+        #[case] text: String,
+        #[case] wordl: usize,
+        #[case] expected: Vec<Option<String>>,
+    ) {
+        let search = WordSearch::from_string(text);
+        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, _c)| search.top(idx, wordl)).collect();
+        println!("{words:?}");
+        assert_eq!(words, expected);
+    }
+
+    #[rstest]
+    #[case("abcd\nefgh", 2, vec![Some(String::from("ae")), Some(String::from("bf")), Some(String::from("cg")), Some(String::from("dh")), None, None, None, None])]
+    fn test_bottom(
+        #[case] text: String,
+        #[case] wordl: usize,
+        #[case] expected: Vec<Option<String>>,
+    ) {
+        let search = WordSearch::from_string(text);
+        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, _c)| search.bottom(idx, wordl)).collect();
+        println!("{words:?}");
+        assert_eq!(words, expected);
+    }
+
     // #[rstest]
     // #[case("MMMSXXMASM\nMSAMXMSMSA\nAMXSXMAAMM\nMSAMASMSMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
     // // #[case("MMMSXXMASS\nMSAMXMSMAA\nAMXSXMAAMM\nMSAMASMMMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
