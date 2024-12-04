@@ -27,12 +27,14 @@ impl WordSearch {
                 let local_word: String = self.letters[index - len..index].iter().rev().collect();
                 if word == local_word.as_str() {
                     println!("{local_word:}");
+                    count += 1;
                 }
             }
             if index % self.columns < self.columns - len {
                 let local_word: String = self.letters[index..index + len].iter().collect();
                 if word == local_word.as_str() {
                     println!("{local_word:}");
+                    count += 1;
                 }
             }
         }
