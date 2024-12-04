@@ -281,11 +281,7 @@ mod tests {
     }
 
     #[rstest]
-    #[case("
-    abcd
-    efgh
-    ijkl
-    mnop", 2, vec![
+    #[case("abcd\nefgh\nijkl\nmnop", 2, vec![
         Some(String::from("af")), Some(String::from("bg")), Some(String::from("ch")), None,
         Some(String::from("ej")), Some(String::from("fk")), Some(String::from("gl")), None,
         Some(String::from("mj")), Some(String::from("nk")), Some(String::from("ol")), None,
