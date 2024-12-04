@@ -183,7 +183,7 @@ mod tests {
         #[case] expected: Vec<Option<String>>,
     ) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, c)| search.left(idx, wordl)).collect();
+        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, _c)| search.left(idx, wordl)).collect();
         assert_eq!(words, expected);
     }
 
@@ -195,7 +195,7 @@ mod tests {
         #[case] expected: Vec<Option<String>>,
     ) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, c)| search.right(idx, wordl)).collect();
+        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, _c)| search.right(idx, wordl)).collect();
         println!("{words:?}");
         assert_eq!(words, expected);
     }
