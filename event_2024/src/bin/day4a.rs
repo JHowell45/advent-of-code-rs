@@ -226,6 +226,24 @@ mod tests {
         assert_eq!(words, expected);
     }
 
+    #[rstest]
+    #[case("abcd\nefgh\nijkl\nmnop", 2, vec![
+        None, None, None, None, 
+        None, Some(String::from("fa")), Some(String::from("gb")), Some(String::from("hc")), 
+        None, Some(String::from("je")), Some(String::from("kf")), Some(String::from("lh")),
+        None, Some(String::from("ni")), Some(String::from("oj")), Some(String::from("pk"))
+    ])]
+    fn test_diagonal_top_left(
+        #[case] text: String,
+        #[case] wordl: usize,
+        #[case] expected: Vec<Option<String>>,
+    ) {
+        let search = WordSearch::from_string(text);
+        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, _c)| search.diagonal_top_left(idx, wordl)).collect();
+        println!("{words:?}");
+        assert_eq!(words, expected);
+    }
+
     // #[rstest]
     // #[case("MMMSXXMASM\nMSAMXMSMSA\nAMXSXMAAMM\nMSAMASMSMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
     // // #[case("MMMSXXMASS\nMSAMXMSMAA\nAMXSXMAAMM\nMSAMASMMMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
