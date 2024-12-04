@@ -188,7 +188,7 @@ mod tests {
     }
 
     #[rstest]
-    #[case("abcd\nefgh", 2, vec![None, Some(String::from("ab")), Some(String::from("bc")),  Some(String::from("cd")), Some(String::from("ef")), Some(String::from("fg")), Some(String::from("gh"))])]
+    #[case("abcd\nefgh", 2, vec![Some(String::from("ab")), Some(String::from("bc")), Some(String::from("cd")), None, Some(String::from("ef")), Some(String::from("fg")), Some(String::from("gh")), None])]
     fn test_right(
         #[case] text: String,
         #[case] wordl: usize,
