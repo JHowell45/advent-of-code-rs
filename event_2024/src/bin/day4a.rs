@@ -188,6 +188,19 @@ mod tests {
         assert_eq!(words, expected);
     }
 
+    #[rstest]
+    #[case("abcd\nefgh", 2, vec![None, Some(String::from("ab")), Some(String::from("bc")),  Some(String::from("cd")), Some(String::from("ef")), Some(String::from("fg")), Some(String::from("gh"))])]
+    fn test_right(
+        #[case] text: String,
+        #[case] wordl: usize,
+        #[case] expected: Vec<Option<String>>,
+    ) {
+        let search = WordSearch::from_string(text);
+        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, c)| search.right(idx, wordl)).collect();
+        println!("{words:?}");
+        assert_eq!(words, expected);
+    }
+
     // #[rstest]
     // #[case("MMMSXXMASM\nMSAMXMSMSA\nAMXSXMAAMM\nMSAMASMSMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
     // // #[case("MMMSXXMASS\nMSAMXMSMAA\nAMXSXMAAMM\nMSAMASMMMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
