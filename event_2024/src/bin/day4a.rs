@@ -73,7 +73,7 @@ impl WordSearch {
     }
 
     fn left(&self, index: usize, word_length: usize) -> Option<String> {
-        if index >= word_length - 1 {
+        if index % self.columns >= word_length - 1 {
             let idx = index - (word_length - 1);
             let local_word: String = self.letters[idx..=index].iter().rev().collect();
             return Some(local_word);
