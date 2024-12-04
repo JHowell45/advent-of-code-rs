@@ -1,5 +1,4 @@
 use core::file_reader::get_file_contents;
-use std::process::exit;
 
 fn main() {
     let search = WordSearch::from_string(get_file_contents(2024, 4));
@@ -29,9 +28,7 @@ impl WordSearch {
 
         for (index, _c) in self.letters.iter().enumerate() {
             // Left:
-            if index >= len - 1 {
-                let idx = index - (len - 1);
-                let local_word: String = self.letters[idx..=index].iter().rev().collect();
+            if let Some(local_word) = self.left(index, word) {
                 if word == local_word.as_str() {
                     count += 1;
                 }
@@ -70,13 +67,16 @@ impl WordSearch {
             }
 
             // Diag Top Right:
-            if (index as i32) - (column_check as i32) + (len as i32) > 0 {
+            if (index as i32) - ((self.columns * (len - 1)) as i32) > 0 {
                 let mut chars: Vec<char> = Vec::with_capacity(len);
                 for i in 0..len {
-                    chars.insert(i, self.letters[index - (self.columns * i) + i]);
+                    let idx = index - (self.columns * i) + i - 1;
+                    let letter = self.letters[idx];
+                    println!("{i:}||{idx:}||{}:{}||{letter:}", idx % self.columns, (idx / self.columns));
+                    chars.insert(i, letter);
                 }
                 let local_word: String = chars.iter().collect();
-                println!("{local_word:}");
+                println!("{index:} || {local_word:}");
                 if word == local_word.as_str() {
                     count += 1;
                 }
@@ -122,6 +122,15 @@ impl WordSearch {
         println!("{:?}", self);
         return count;
     }
+
+    pub fn left(&self, index: usize, word: &str) -> Option<String> {
+        if index >= word.len() - 1 {
+            let idx = index - (word.len() - 1);
+            let local_word: String = self.letters[idx..=index].iter().rev().collect();
+            return Some(local_word);
+        }
+        return None;
+    }
 }
 
 #[cfg(test)]
@@ -131,6 +140,7 @@ mod tests {
 
     #[rstest]
     #[case("MMMSXXMASM\nMSAMXMSMSA\nAMXSXMAAMM\nMSAMASMSMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
+    // #[case("MMMSXXMASS\nMSAMXMSMAA\nAMXSXMAAMM\nMSAMASMMMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
     fn example(#[case] text: String, #[case] count: usize) {
         let search = WordSearch::from_string(text);
         assert_eq!(search.word_count("XMAS"), count);
