@@ -184,7 +184,6 @@ mod tests {
     ) {
         let search = WordSearch::from_string(text);
         let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, c)| search.left(idx, wordl)).collect();
-        println!("{words:?}");
         assert_eq!(words, expected);
     }
 
