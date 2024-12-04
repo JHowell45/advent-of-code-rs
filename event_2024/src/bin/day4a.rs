@@ -131,6 +131,14 @@ impl WordSearch {
         }
         return None;
     }
+
+    pub fn right(&self, index: usize, word: &str) -> Option<String> {}
+    pub fn up(&self, index: usize, word: &str) -> Option<String> {}
+    pub fn down(&self, index: usize, word: &str) -> Option<String> {}
+    pub fn diagonal_top_left(&self, index: usize, word: &str) -> Option<String> {}
+    pub fn diagonal_top_right(&self, index: usize, word: &str) -> Option<String> {}
+    pub fn diagonal_bottom_left(&self, index: usize, word: &str) -> Option<String> {}
+    pub fn diagonal_bottom_right(&self, index: usize, word: &str) -> Option<String> {}
 }
 
 #[cfg(test)]
