@@ -262,6 +262,46 @@ mod tests {
         assert_eq!(words, expected);
     }
 
+    #[rstest]
+    #[case("abcd\nefgh\nijkl\nmnop", 2, vec![
+        None, Some(String::from("be")), Some(String::from("cf")), Some(String::from("dg")),
+        None, Some(String::from("fi")), Some(String::from("gj")), Some(String::from("hk")),
+        None, Some(String::from("jm")), Some(String::from("kn")), Some(String::from("lo")),
+        None, None, None, None
+    ])]
+    fn test_diagonal_bottom_left(
+        #[case] text: String,
+        #[case] wordl: usize,
+        #[case] expected: Vec<Option<String>>,
+    ) {
+        let search = WordSearch::from_string(text);
+        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, _c)| search.diagonal_bottom_left(idx, wordl)).collect();
+        println!("{words:?}");
+        assert_eq!(words, expected);
+    }
+
+    #[rstest]
+    #[case("
+    abcd
+    efgh
+    ijkl
+    mnop", 2, vec![
+        Some(String::from("af")), Some(String::from("bg")), Some(String::from("ch")), None,
+        Some(String::from("ej")), Some(String::from("fk")), Some(String::from("gl")), None,
+        Some(String::from("mj")), Some(String::from("nk")), Some(String::from("ol")), None,
+        None, None, None, None
+    ])]
+    fn test_diagonal_bottom_right(
+        #[case] text: String,
+        #[case] wordl: usize,
+        #[case] expected: Vec<Option<String>>,
+    ) {
+        let search = WordSearch::from_string(text);
+        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, _c)| search.diagonal_bottom_right(idx, wordl)).collect();
+        println!("{words:?}");
+        assert_eq!(words, expected);
+    }
+
     // #[rstest]
     // #[case("MMMSXXMASM\nMSAMXMSMSA\nAMXSXMAAMM\nMSAMASMSMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
     // // #[case("MMMSXXMASS\nMSAMXMSMAA\nAMXSXMAAMM\nMSAMASMMMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
