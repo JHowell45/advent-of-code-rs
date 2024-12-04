@@ -2,7 +2,7 @@ use core::file_reader::get_file_contents;
 
 fn main() {
     let search = WordSearch::from_string(get_file_contents(2024, 4));
-    println!("{:?}", search);
+    println!("How many times does 'XMAS' appear: {}", search.word_count("XMAS"));
 }
 
 #[derive(Debug)]
@@ -122,7 +122,6 @@ mod tests {
     #[case("MMMSXXMASM\nMSAMXMSMSA\nAMXSXMAAMM\nMSAMASMSMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
     fn example(#[case] text: String, #[case] count: usize) {
         let search = WordSearch::from_string(text);
-        println!("{:?}", search);
         assert_eq!(search.word_count("XMAS"), count);
     }
 }
