@@ -158,9 +158,9 @@ impl WordSearch {
     }
 
     pub fn diagonal_bottom_right(&self, index: usize, word_length: usize) -> Option<String> {
-        if index + self.columns * (word.len() - 1) + word.len() < self.letters.len() {
-            let mut chars: Vec<char> = Vec::with_capacity(word.len());
-            for i in 0..word.len() {
+        if index + self.columns * (word_length - 1) + word_length < self.letters.len() {
+            let mut chars: Vec<char> = Vec::with_capacity(word_length);
+            for i in 0..word_length {
                 chars.insert(i, self.letters[index + (self.columns * i) + i]);
             }
             let local_word: String = chars.iter().collect();
