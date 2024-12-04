@@ -10,8 +10,8 @@ fn main() {
 
 #[derive(Debug)]
 struct WordSearch {
-    letters: Vec<char>,
-    columns: usize,
+    pub letters: Vec<char>,
+    pub columns: usize,
 }
 
 impl WordSearch {
@@ -27,7 +27,7 @@ impl WordSearch {
         let _first_char: char = word.chars().next().unwrap();
 
         for (index, _c) in self.letters.iter().enumerate() {
-            if let Some(local_word) = self.left(index, word) {
+            if let Some(local_word) = self.left(index, word.len()) {
                 if word == local_word.as_str() {
                     count += 1;
                 }
@@ -66,15 +66,15 @@ impl WordSearch {
                 if word == local_word.as_str() {
                     count += 1;
                 }
-            }            
+            }
         }
         println!("{:?}", self);
         return count;
     }
 
-    pub fn left(&self, index: usize, word: &str) -> Option<String> {
-        if index >= word.len() - 1 {
-            let idx = index - (word.len() - 1);
+    pub fn left(&self, index: usize, word_length: usize) -> Option<String> {
+        if index >= word_length - 1 {
+            let idx = index - (word_length - 1);
             let local_word: String = self.letters[idx..=index].iter().rev().collect();
             return Some(local_word);
         }
@@ -88,6 +88,7 @@ impl WordSearch {
         }
         return None;
     }
+
     pub fn top(&self, index: usize, word: &str) -> Option<String> {
         if (index as i32) - (self.columns * (word.len() - 1)) as i32 + 1 > 0 {
             let mut chars: Vec<char> = Vec::with_capacity(word.len());
@@ -99,6 +100,7 @@ impl WordSearch {
         }
         return None;
     }
+
     pub fn bottom(&self, index: usize, word: &str) -> Option<String> {
         if index + self.columns * (word.len() - 1) < self.letters.len() {
             let mut chars: Vec<char> = Vec::with_capacity(word.len());
@@ -166,13 +168,24 @@ impl WordSearch {
         }
         return None;
     }
-
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use rstest::rstest;
+
+    #[rstest]
+    #[case("abcd\nefgh", 2, vec![None, Some("ab"), Some("")])]
+    fn test_left(
+        #[case] text: String,
+        #[case] wordl: usize,
+        #[case] expected: Vec<Option<String>>,
+    ) {
+        let search = WordSearch::from_string(text);
+        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, c)| search.left(idx, wordl)).collect();
+        assert_eq!(words, expected);
+    }
 
     #[rstest]
     #[case("MMMSXXMASM\nMSAMXMSMSA\nAMXSXMAAMM\nMSAMASMSMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
