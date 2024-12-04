@@ -20,7 +20,17 @@ impl WordSearch {
     }
 
     pub fn word_count(&self, word: &str) -> usize {
-        return 0;
+        let mut count: usize = 0;
+        let len = word.len();
+        for (index, c) in self.letters.iter().enumerate() {
+            if index > len {
+                let local_word: String = self.letters[index - len..index].iter().rev().collect();
+                if word == local_word.as_str() {
+                    println!("{local_word:}");
+                }
+            }
+        }
+        return count;
     }
 }
 
