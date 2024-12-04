@@ -176,7 +176,7 @@ mod tests {
     use rstest::rstest;
 
     #[rstest]
-    #[case("abcd\nefgh", 2, vec![None, Some(String::from("ba")), Some(String::from("cb")),  Some(String::from("dc")), Some(String::from("fe")), Some(String::from("gf")), Some(String::from("hg"))])]
+    #[case("abcd\nefgh", 2, vec![None, Some(String::from("ba")), Some(String::from("cb")),  Some(String::from("dc")), None, Some(String::from("fe")), Some(String::from("gf")), Some(String::from("hg"))])]
     fn test_left(
         #[case] text: String,
         #[case] wordl: usize,
