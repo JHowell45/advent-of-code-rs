@@ -72,7 +72,7 @@ impl WordSearch {
         return count;
     }
 
-    pub fn left(&self, index: usize, word_length: usize) -> Option<String> {
+    fn left(&self, index: usize, word_length: usize) -> Option<String> {
         if index >= word_length - 1 {
             let idx = index - (word_length - 1);
             let local_word: String = self.letters[idx..=index].iter().rev().collect();
@@ -89,7 +89,7 @@ impl WordSearch {
         return None;
     }
 
-    pub fn top(&self, index: usize, word_length: usize) -> Option<String> {
+    fn top(&self, index: usize, word_length: usize) -> Option<String> {
         if (index as i32) - (self.columns * (word_length - 1)) as i32 + 1 > 0 {
             let mut chars: Vec<char> = Vec::with_capacity(word_length);
             for i in 0..word_length {
@@ -101,7 +101,7 @@ impl WordSearch {
         return None;
     }
 
-    pub fn bottom(&self, index: usize, word_length: usize) -> Option<String> {
+    fn bottom(&self, index: usize, word_length: usize) -> Option<String> {
         if index + self.columns * (word_length - 1) < self.letters.len() {
             let mut chars: Vec<char> = Vec::with_capacity(word_length);
             for i in 0..word_length {
@@ -113,7 +113,7 @@ impl WordSearch {
         return None;
     }
 
-    pub fn diagonal_top_left(&self, index: usize, word_length: usize) -> Option<String> {
+    fn diagonal_top_left(&self, index: usize, word_length: usize) -> Option<String> {
         if (index as i32) - (self.columns * (word_length - 1)) as i32 - (word_length as i32) - 2 > 0 {
             let mut chars: Vec<char> = Vec::with_capacity(word_length);
             for i in 0..word_length {
@@ -125,7 +125,7 @@ impl WordSearch {
         return None;
     }
 
-    pub fn diagonal_top_right(&self, index: usize, word_length: usize) -> Option<String> {
+    fn diagonal_top_right(&self, index: usize, word_length: usize) -> Option<String> {
         if (index as i32) - ((self.columns * (word_length - 1)) as i32) > 0 {
             let mut chars: Vec<char> = Vec::with_capacity(word_length);
             for i in 0..word_length {
@@ -144,7 +144,7 @@ impl WordSearch {
         return None;
     }
 
-    pub fn diagonal_bottom_left(&self, index: usize, word_length: usize) -> Option<String> {
+    fn diagonal_bottom_left(&self, index: usize, word_length: usize) -> Option<String> {
         if index + self.columns * (word_length - 1) - word_length < self.letters.len() {
             let mut chars: Vec<char> = Vec::with_capacity(word_length);
             for i in 0..word_length {
@@ -157,7 +157,7 @@ impl WordSearch {
         return None;
     }
 
-    pub fn diagonal_bottom_right(&self, index: usize, word_length: usize) -> Option<String> {
+    fn diagonal_bottom_right(&self, index: usize, word_length: usize) -> Option<String> {
         if index + self.columns * (word_length - 1) + word_length < self.letters.len() {
             let mut chars: Vec<char> = Vec::with_capacity(word_length);
             for i in 0..word_length {
