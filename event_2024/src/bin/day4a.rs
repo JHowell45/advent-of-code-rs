@@ -22,23 +22,27 @@ impl WordSearch {
     pub fn word_count(&self, word: &str) -> usize {
         let mut count: usize = 0;
         let len = word.len();
-        for (index, c) in self.letters.iter().enumerate() {
+        let _first_char: char = word.chars().next().unwrap();
+
+        let column_check = self.columns * (len - 1);
+
+        for (index, _c) in self.letters.iter().enumerate() {
             // Left:
-            if index > len {
+            if index > len - 1 {
                 let local_word: String = self.letters[index - len..index].iter().rev().collect();
                 if word == local_word.as_str() {
                     count += 1;
                 }
             }
             // Right:
-            if index % self.columns < self.columns - len {
+            if index % self.columns < self.columns - len + 1 {
                 let local_word: String = self.letters[index..index + len].iter().collect();
                 if word == local_word.as_str() {
                     count += 1;
                 }
             }
             // Top:
-            if (index as i32) - (self.columns * len) as i32 > 0 {
+            if (index as i32) - column_check as i32 > 0 {
                 let mut chars: Vec<char> = Vec::with_capacity(len);
                 for i in 0..len {
                     chars.insert(i, self.letters[index - (self.columns * i)]);
@@ -50,7 +54,7 @@ impl WordSearch {
             }
 
             // Diag Top Left:
-            if (index as i32) - (self.columns * len) as i32 - len as i32 > 0 {
+            if (index as i32) - column_check as i32 - len as i32 + 1 > 0 {
                 let mut chars: Vec<char> = Vec::with_capacity(len);
                 for i in 0..len {
                     chars.insert(i, self.letters[index - (self.columns * i) - i]);
@@ -62,7 +66,7 @@ impl WordSearch {
             }
 
             // Diag Top Right:
-            if (index as i32) - (self.columns * len) as i32 + len as i32 > 0 {
+            if (index as i32) - column_check as i32 + len as i32 > 0 {
                 let mut chars: Vec<char> = Vec::with_capacity(len);
                 for i in 0..len {
                     chars.insert(i, self.letters[index - (self.columns * i) + i]);
@@ -74,7 +78,7 @@ impl WordSearch {
             }
 
             // Bottom:
-            if index + (self.columns * len) < self.letters.len() {
+            if index + column_check < self.letters.len() {
                 let mut chars: Vec<char> = Vec::with_capacity(len);
                 for i in 0..len {
                     chars.insert(i, self.letters[index + (self.columns * i)]);
@@ -86,10 +90,12 @@ impl WordSearch {
             }
 
             // Diag Bottom left:
-            if index + (self.columns * len) - len < self.letters.len() {
+            if index + column_check - len < self.letters.len() - 1 {
                 let mut chars: Vec<char> = Vec::with_capacity(len);
                 for i in 0..len {
-                    chars.insert(i, self.letters[index + (self.columns * i) - i]);
+                    let idx = index + (self.columns * i) - i;
+                    // println!("{idx:}");
+                    chars.insert(i, self.letters[idx]);
                 }
                 let local_word: String = chars.iter().collect();
                 if word == local_word.as_str() {
@@ -98,7 +104,7 @@ impl WordSearch {
             }
 
             // Diag Bottom Right:
-            if index + (self.columns * len) + len < self.letters.len() {
+            if index + column_check + len < self.letters.len() - 1 {
                 let mut chars: Vec<char> = Vec::with_capacity(len);
                 for i in 0..len {
                     chars.insert(i, self.letters[index + (self.columns * i) + i]);
