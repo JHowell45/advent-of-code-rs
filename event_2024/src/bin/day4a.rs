@@ -91,10 +91,10 @@ impl WordSearch {
 
     fn top(&self, index: usize, word_length: usize) -> Option<String> {
         if (index as i32) - (self.columns * (word_length - 1)) as i32 + 1 > 0 {
-            let mut chars: Vec<char> = Vec::with_capacity(word_length);
-            for i in 0..word_length {
-                chars.insert(i, self.letters[index - (self.columns * i)]);
-            }
+            let chars: Vec<char> = (0..word_length)
+                .into_iter()
+                .map(|i| self.letters[index - (self.columns * i)])
+                .collect();
             let local_word: String = chars.iter().collect();
             return Some(local_word);
         }
@@ -103,10 +103,10 @@ impl WordSearch {
 
     fn bottom(&self, index: usize, word_length: usize) -> Option<String> {
         if index + self.columns * (word_length - 1) < self.letters.len() {
-            let mut chars: Vec<char> = Vec::with_capacity(word_length);
-            for i in 0..word_length {
-                chars.insert(i, self.letters[index + (self.columns * i)]);
-            }
+            let chars: Vec<char> = (0..word_length)
+                .into_iter()
+                .map(|i| self.letters[index + (self.columns * i)])
+                .collect();
             let local_word: String = chars.iter().collect();
             return Some(local_word);
         }
@@ -115,10 +115,10 @@ impl WordSearch {
 
     fn diagonal_top_left(&self, index: usize, word_length: usize) -> Option<String> {
         if index > self.columns && index % self.columns > 0 {
-            let mut chars: Vec<char> = Vec::with_capacity(word_length);
-            for i in 0..word_length {
-                chars.insert(i, self.letters[index - (self.columns * i) - i]);
-            }
+            let chars: Vec<char> = (0..word_length)
+                .into_iter()
+                .map(|i| self.letters[index - (self.columns * i) - i])
+                .collect();
             let local_word: String = chars.iter().collect();
             return Some(local_word);
         }
