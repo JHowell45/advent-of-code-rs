@@ -32,7 +32,7 @@ impl WordSearch {
                     count += 1;
                 }
             }
-            if let Some(local_word) = self.right(index, word) {
+            if let Some(local_word) = self.right(index, word.len()) {
                 if word == local_word.as_str() {
                     count += 1;
                 }
