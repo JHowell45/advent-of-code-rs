@@ -130,13 +130,7 @@ impl WordSearch {
             let mut chars: Vec<char> = Vec::with_capacity(word_length);
             for i in 0..word_length {
                 let idx = index - (self.columns * i) + i - 1;
-                let letter = self.letters[idx];
-                println!(
-                    "{i:}||{idx:}||{}:{}||{letter:}",
-                    idx % self.columns,
-                    (idx / self.columns)
-                );
-                chars.insert(i, letter);
+                chars.insert(i, self.letters[idx]);
             }
             let local_word: String = chars.iter().collect();
             return Some(local_word);
