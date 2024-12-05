@@ -245,10 +245,10 @@ mod tests {
         Some(String::from("ea")), Some(String::from("fb")), Some(String::from("gc")), Some(String::from("hd"))
     ])]
     #[case("abcdefgh\nijklmnop\n12345678\nabcdefgh", 4, vec![
+        None, None, None, None, None, None, None, None,
+        None, None, None, None, None, None, None, None,
+        None, None, None, None, None, None, None, None,
         Some(String::from("a1ia")), Some(String::from("b2jb")), Some(String::from("c3kc")), Some(String::from("d4ld")), Some(String::from("e5me")), Some(String::from("f6nf")), Some(String::from("g7og")), Some(String::from("h8ph")),
-        None, None, None, None, None, None, None, None,
-        None, None, None, None, None, None, None, None,
-        None, None, None, None, None, None, None, None
     ])]
     fn test_top(#[case] text: String, #[case] wordl: usize, #[case] expected: Vec<Option<String>>) {
         let search = WordSearch::from_string(text);
