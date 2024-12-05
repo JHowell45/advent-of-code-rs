@@ -2,9 +2,10 @@ use std::collections::{HashMap, HashSet};
 
 fn main() {}
 
+#[derive(Debug)]
 struct LaunchSafetyManual {
     rules: PageOrderingRules,
-    page_numbers: Vec<i32>,
+    pages: Vec<Vec<i32>>,
 }
 
 impl LaunchSafetyManual {
@@ -13,9 +14,11 @@ impl LaunchSafetyManual {
         let [page_ordering_rules, page_numbers] = [split[0], split[1]];
         Self {
             rules: PageOrderingRules::from_string(page_ordering_rules),
-            page_numbers: page_numbers
-                .split(',')
-                .map(|n| n.parse::<i32>().unwrap())
+            pages: page_numbers
+                .split('\n')
+                .map(
+                    |page| page.split(",").map(|n| n.parse::<i32>().unwrap()).collect()
+                )
                 .collect(),
         }
     }
@@ -34,6 +37,7 @@ impl LaunchSafetyManual {
     }
 }
 
+#[derive(Debug)]
 struct PageOrderingRules {
     values_after: HashMap<i32, HashSet<i32>>,
 }
@@ -111,6 +115,7 @@ mod tests {
 97,13,75,29,47", 143)]
     fn example(#[case] input: &str, #[case] expected: i32) {
         let manual = LaunchSafetyManual::from_string(&input);
+        println!("{manual:?}");
         assert_eq!(manual.sum_middle_values(), expected);
     }
 }
