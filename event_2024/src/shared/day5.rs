@@ -24,8 +24,9 @@ impl LaunchSafetyManual {
         for page in self.pages.iter() {
             // println!("{page:?}");
             if self.validate_pages(&page) {
-                let v = &page[page.len() / 2];
-                // println!("v: {v:}");
+                let fixed_page = self.fix_page(&page);
+                let v = &fixed_page[fixed_page.len() / 2];
+                println!("v: {v:}");
                 result += v;
             }
             // println!("Current count: {result:}");
@@ -47,9 +48,9 @@ impl LaunchSafetyManual {
         result
     }
 
-    fn validate_pages(&self, page_numbers: &Vec<i32>) -> bool {
+    fn validate_pages(&self, page: &Vec<i32>) -> bool {
         let mut existing: HashSet<i32> = HashSet::new();
-        for values in page_numbers.windows(2).into_iter() {
+        for values in page.windows(2).into_iter() {
             let (current, next) = (values[0], values[1]);
             existing.insert(current);
             let valid = self.rules.validate_next(&existing, next);
@@ -59,6 +60,10 @@ impl LaunchSafetyManual {
             }
         }
         return true;
+    }
+
+    fn fix_page(&self, page: &Vec<i32>) -> Vec<i32> {
+        Vec::new()
     }
 }
 
