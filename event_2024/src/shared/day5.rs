@@ -64,7 +64,7 @@ impl LaunchSafetyManual {
 
 #[derive(Debug)]
 struct PageOrderingRules {
-    not_valid_before: HashMap<i32, HashSet<i32>>
+    not_valid_before: HashMap<i32, HashSet<i32>>,
 }
 
 impl PageOrderingRules {
@@ -100,7 +100,11 @@ impl PageOrderingRules {
 
     pub fn validate_next(&self, existing: &HashSet<i32>, next: i32) -> bool {
         if self.not_valid_before.contains_key(&next) {
-            let intersection = self.not_valid_before.get(&next).unwrap().intersection(&existing);
+            let intersection = self
+                .not_valid_before
+                .get(&next)
+                .unwrap()
+                .intersection(&existing);
             // println!("Intersection: {intersection:?}");
             return intersection.count() == 0;
         }
