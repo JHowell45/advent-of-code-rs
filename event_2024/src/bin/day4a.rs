@@ -126,7 +126,8 @@ impl WordSearch {
     }
 
     fn diagonal_top_right(&self, index: usize, word_length: usize) -> Option<String> {
-        if index > (self.columns * (word_length - 1)) - 1 && index % self.columns < self.columns - word_length + 1
+        if index > (self.columns * (word_length - 1)) - 1
+            && index % self.columns < self.columns - word_length + 1
         {
             let chars: Vec<char> = (0..word_length)
                 .into_iter()

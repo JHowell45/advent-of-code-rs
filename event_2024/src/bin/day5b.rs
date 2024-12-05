@@ -6,7 +6,5 @@ mod tests {
     use rstest::rstest;
 
     #[rstest]
-    fn example() {
-        
-    }
+    fn example() {}
 }
