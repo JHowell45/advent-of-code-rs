@@ -24,10 +24,16 @@ impl LaunchSafetyManual {
     }
 
     pub fn sum_middle_values(&self) -> i32 {
-        0
+        let mut result = 0;
+        for page in self.pages.iter() {
+            if self.validate_pages(&page) {
+                result += &page[page.len() / 2 + 1];
+            }
+        }
+        result
     }
 
-    fn validate_pages(&self, page_numbers: Vec<i32>) -> bool {
+    fn validate_pages(&self, page_numbers: &Vec<i32>) -> bool {
         for values in page_numbers.windows(2).into_iter() {
             let (current, next) = (values[0], values[1]);
             println!("{current:}");
