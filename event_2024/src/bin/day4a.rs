@@ -118,11 +118,12 @@ impl WordSearch {
             let chars: Vec<char> = (0..word_length)
                 .into_iter()
                 .map(|i| {
+                    let idx = index - (self.columns * i) - i;
                     println!(
                         "{} | {index:} | {idx} | {}",
                         self.columns, self.letters[idx]
                     );
-                    self.letters[index - (self.columns * i) - i]
+                    self.letters[idx]
                 })
                 .collect();
             let local_word: String = chars.iter().collect();
