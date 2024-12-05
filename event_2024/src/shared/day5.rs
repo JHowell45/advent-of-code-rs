@@ -35,6 +35,15 @@ impl LaunchSafetyManual {
 
     pub fn fix_and_sum_middle(&self) -> i32 {
         let mut result = 0;
+        for page in self.pages.iter() {
+            // println!("{page:?}");
+            if !self.validate_pages(&page) {
+                // let v = &page[page.len() / 2];
+                // println!("v: {v:}");
+                // result += v;
+            }
+            // println!("Current count: {result:}");
+        }
         result
     }
 
