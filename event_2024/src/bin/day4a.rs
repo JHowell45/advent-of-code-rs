@@ -352,10 +352,10 @@ mod tests {
         None, None, None, None
     ])]
     #[case("abcdefgh\nijklmnop\n12345678\nabcdefgh", 4, vec![
-        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe")),
-        None, None, None, Some(String::from("lkji")), Some(String::from("mlkj")), Some(String::from("nmlk")), Some(String::from("onml")), Some(String::from("ponm")),
-        None, None, None, Some(String::from("4321")), Some(String::from("5432")), Some(String::from("6543")), Some(String::from("7654")), Some(String::from("8765")),
-        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe"))
+        None, None, None, Some(String::from("dk2a")), Some(String::from("el3b")), Some(String::from("fm4c")), Some(String::from("gn5d")), Some(String::from("ho6e")),
+        None, None, None, None, None, None, None, None,
+        None, None, None, None, None, None, None, None,
+        None, None, None, None, None, None, None, None
     ])]
     fn test_diagonal_bottom_left(
         #[case] text: String,
