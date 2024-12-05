@@ -16,9 +16,7 @@ impl LaunchSafetyManual {
             rules: PageOrderingRules::from_string(page_ordering_rules),
             pages: page_numbers
                 .split('\n')
-                .map(
-                    |page| page.split(",").map(|n| n.parse::<i32>().unwrap()).collect()
-                )
+                .map(|page| page.split(",").map(|n| n.parse::<i32>().unwrap()).collect())
                 .collect(),
         }
     }
@@ -36,9 +34,13 @@ impl LaunchSafetyManual {
     }
 
     fn validate_pages(&self, page_numbers: &Vec<i32>) -> bool {
+        let mut existing: HashSet<i32> = HashSet::new();
         for values in page_numbers.windows(2).into_iter() {
             let (current, next) = (values[0], values[1]);
-            if !self.rules.validate_next(current, next) {
+            existing.insert(current);
+            let valid = self.rules.validate_next(&existing, next);
+            println!("{current:} -> {next:} : {valid:}");
+            if !valid {
                 return false;
             }
         }
@@ -48,13 +50,13 @@ impl LaunchSafetyManual {
 
 #[derive(Debug)]
 struct PageOrderingRules {
-    values_after: HashMap<i32, HashSet<i32>>,
+    not_valid_before: HashMap<i32, HashSet<i32>>
 }
 
 impl PageOrderingRules {
     pub fn new() -> Self {
         Self {
-            values_after: HashMap::new(),
+            not_valid_before: HashMap::new(),
         }
     }
 
@@ -72,19 +74,23 @@ impl PageOrderingRules {
     }
 
     pub fn add_rule(&mut self, key: i32, value: i32) {
-        match self.values_after.get_mut(&key) {
+        match self.not_valid_before.get_mut(&key) {
             Some(valid) => {
                 valid.insert(value);
             }
             None => {
-                self.values_after.insert(key, HashSet::from([value]));
+                self.not_valid_before.insert(key, HashSet::from([value]));
             }
         }
     }
 
-    pub fn validate_next(&self, current: i32, next: i32) -> bool {
-        !self.values_after.contains_key(&current)
-            || self.values_after.get(&current).unwrap().contains(&next)
+    pub fn validate_next(&self, existing: &HashSet<i32>, next: i32) -> bool {
+        if self.not_valid_before.contains_key(&next) {
+            let intersection = self.not_valid_before.get(&next).unwrap().intersection(&existing);
+            println!("{intersection:?}");
+        }
+        return true;
+        // !(self.not_valid_before.contains_key(&next) && self.not_valid_before.get(&next).unwrap().intersection(&existing).)
     }
 }
 
@@ -94,7 +100,28 @@ mod tests {
     use rstest::rstest;
 
     #[rstest]
-    #[case("47|53
+    #[case(HashSet::from([75]), 47, true)]
+    #[case(HashSet::from([75, 47]), 61, true)]
+    #[case(HashSet::from([75, 47, 61]), 53, true)]
+    #[case(HashSet::from([75, 47, 61, 53]), 29, true)]
+    #[case(HashSet::from([97]), 61, true)]
+    #[case(HashSet::from([97, 61]), 53, true)]
+    #[case(HashSet::from([97, 61, 53]), 29, true)]
+    #[case(HashSet::from([97, 61, 53, 29]), 13, true)]
+    #[case(HashSet::from([75]), 29, true)]
+    #[case(HashSet::from([75, 29]), 13, true)]
+    #[case(HashSet::from([75]), 97, false)]
+    #[case(HashSet::from([61]), 13, true)]
+    #[case(HashSet::from([61, 13]), 29, false)]
+    fn test_rules(#[case] existing: HashSet<i32>, #[case] next: i32, #[case] valid: bool) {
+        let rules = PageOrderingRules::from_string("47|53\n97|13\n97|61\n97|47\n75|29\n61|13\n75|53\n29|13\n97|29\n53|29\n61|53\n97|53\n61|29\n47|13\n75|47\n97|75\n47|61\n75|61\n47|29\n75|13\n53|13");
+        println!("{rules:?}");
+        assert_eq!(rules.validate_next(&existing, next), valid);
+    }
+
+    #[rstest]
+    #[case(
+        "47|53
 97|13
 97|61
 97|47
@@ -121,7 +148,9 @@ mod tests {
 75,29,13
 75,97,47,61,53
 61,13,29
-97,13,75,29,47", 143)]
+97,13,75,29,47",
+        143
+    )]
     fn example(#[case] input: &str, #[case] expected: i32) {
         let manual = LaunchSafetyManual::from_string(&input);
         println!("{manual:?}");
