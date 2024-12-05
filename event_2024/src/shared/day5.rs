@@ -33,6 +33,11 @@ impl LaunchSafetyManual {
         result
     }
 
+    pub fn fix_and_sum_middle(&self) -> i32 {
+        let mut result = 0;
+        result
+    }
+
     fn validate_pages(&self, page_numbers: &Vec<i32>) -> bool {
         let mut existing: HashSet<i32> = HashSet::new();
         for values in page_numbers.windows(2).into_iter() {
