@@ -114,17 +114,10 @@ impl WordSearch {
     }
 
     fn diagonal_top_left(&self, index: usize, word_length: usize) -> Option<String> {
-        if index > (self.columns * (word_length - 1)) && index % self.columns > 0 {
+        if index > (self.columns * (word_length - 1)) && index % self.columns > word_length - 2 {
             let chars: Vec<char> = (0..word_length)
                 .into_iter()
-                .map(|i| {
-                    let idx = index - (self.columns * i) - i;
-                    println!(
-                        "{} | {index:} | {idx} | {}",
-                        self.columns, self.letters[idx]
-                    );
-                    self.letters[idx]
-                })
+                .map(|i| self.letters[index - (self.columns * i) - i])
                 .collect();
             let local_word: String = chars.iter().collect();
             return Some(local_word);
