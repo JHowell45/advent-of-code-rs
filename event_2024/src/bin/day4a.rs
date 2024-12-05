@@ -187,8 +187,16 @@ mod tests {
     use rstest::rstest;
 
     #[rstest]
-    #[case("abcd\nefgh", 2, vec![None, Some(String::from("ba")), Some(String::from("cb")),  Some(String::from("dc")), None, Some(String::from("fe")), Some(String::from("gf")), Some(String::from("hg"))])]
-    #[case("abcdefgh\nijklmnop\n12345678\nabcdefgh", 4, vec![None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe")), None, None, None, Some(String::from("lkji")), Some(String::from("mlkj")), Some(String::from("nmlk")), Some(String::from("onml")), Some(String::from("ponm")), None, None, None, Some(String::from("4321")), Some(String::from("5432")), Some(String::from("6543")), Some(String::from("7654")), Some(String::from("8765")), None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe"))])]
+    #[case("abcd\nefgh", 2, vec![
+        None, Some(String::from("ba")), Some(String::from("cb")),  Some(String::from("dc")),
+        None, Some(String::from("fe")), Some(String::from("gf")), Some(String::from("hg"))
+    ])]
+    #[case("abcdefgh\nijklmnop\n12345678\nabcdefgh", 4, vec![
+        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe")),
+        None, None, None, Some(String::from("lkji")), Some(String::from("mlkj")), Some(String::from("nmlk")), Some(String::from("onml")), Some(String::from("ponm")),
+        None, None, None, Some(String::from("4321")), Some(String::from("5432")), Some(String::from("6543")), Some(String::from("7654")), Some(String::from("8765")),
+        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe"))
+    ])]
     fn test_left(
         #[case] text: String,
         #[case] wordl: usize,
@@ -205,7 +213,16 @@ mod tests {
     }
 
     #[rstest]
-    #[case("abcd\nefgh", 2, vec![Some(String::from("ab")), Some(String::from("bc")), Some(String::from("cd")), None, Some(String::from("ef")), Some(String::from("fg")), Some(String::from("gh")), None])]
+    #[case("abcd\nefgh", 2, vec![
+        Some(String::from("ab")), Some(String::from("bc")), Some(String::from("cd")), None,
+        Some(String::from("ef")), Some(String::from("fg")), Some(String::from("gh")), None
+    ])]
+    #[case("abcdefgh\nijklmnop\n12345678\nabcdefgh", 4, vec![
+        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe")),
+        None, None, None, Some(String::from("lkji")), Some(String::from("mlkj")), Some(String::from("nmlk")), Some(String::from("onml")), Some(String::from("ponm")),
+        None, None, None, Some(String::from("4321")), Some(String::from("5432")), Some(String::from("6543")), Some(String::from("7654")), Some(String::from("8765")),
+        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe"))
+    ])]
     fn test_right(
         #[case] text: String,
         #[case] wordl: usize,
@@ -223,7 +240,16 @@ mod tests {
     }
 
     #[rstest]
-    #[case("abcd\nefgh", 2, vec![None, None, None, None, Some(String::from("ea")), Some(String::from("fb")), Some(String::from("gc")), Some(String::from("hd"))])]
+    #[case("abcd\nefgh", 2, vec![
+        None, None, None, None,
+        Some(String::from("ea")), Some(String::from("fb")), Some(String::from("gc")), Some(String::from("hd"))
+    ])]
+    #[case("abcdefgh\nijklmnop\n12345678\nabcdefgh", 4, vec![
+        Some(String::from("a1ia")), Some(String::from("b2jb")), Some(String::from("c3kc")), Some(String::from("d4ld")), Some(String::from("e5me")), Some(String::from("f6nf")), Some(String::from("g7og")), Some(String::from("h8ph")),
+        None, None, None, None, None, None, None, None,
+        None, None, None, None, None, None, None, None,
+        None, None, None, None, None, None, None, None
+    ])]
     fn test_top(#[case] text: String, #[case] wordl: usize, #[case] expected: Vec<Option<String>>) {
         let search = WordSearch::from_string(text);
         let words: Vec<Option<String>> = search
@@ -238,6 +264,12 @@ mod tests {
 
     #[rstest]
     #[case("abcd\nefgh", 2, vec![Some(String::from("ae")), Some(String::from("bf")), Some(String::from("cg")), Some(String::from("dh")), None, None, None, None])]
+    #[case("abcdefgh\nijklmnop\n12345678\nabcdefgh", 4, vec![
+        Some(String::from("ai1a")), Some(String::from("bj2b")), Some(String::from("ck3c")), Some(String::from("dl4d")), Some(String::from("em5e")), Some(String::from("fn6f")), Some(String::from("go7g")), Some(String::from("hp8h")),
+        None, None, None, None, None, None, None, None,
+        None, None, None, None, None, None, None, None,
+        None, None, None, None, None, None, None, None
+    ])]
     fn test_bottom(
         #[case] text: String,
         #[case] wordl: usize,
@@ -260,6 +292,12 @@ mod tests {
         None, Some(String::from("fa")), Some(String::from("gb")), Some(String::from("hc")), 
         None, Some(String::from("je")), Some(String::from("kf")), Some(String::from("lg")),
         None, Some(String::from("ni")), Some(String::from("oj")), Some(String::from("pk"))
+    ])]
+    #[case("abcdefgh\nijklmnop\n12345678\nabcdefgh", 4, vec![
+        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe")),
+        None, None, None, Some(String::from("lkji")), Some(String::from("mlkj")), Some(String::from("nmlk")), Some(String::from("onml")), Some(String::from("ponm")),
+        None, None, None, Some(String::from("4321")), Some(String::from("5432")), Some(String::from("6543")), Some(String::from("7654")), Some(String::from("8765")),
+        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe"))
     ])]
     fn test_diagonal_top_left(
         #[case] text: String,
@@ -284,6 +322,12 @@ mod tests {
         Some(String::from("if")), Some(String::from("jg")), Some(String::from("kh")), None,
         Some(String::from("mj")), Some(String::from("nk")), Some(String::from("ol")), None,
     ])]
+    #[case("abcdefgh\nijklmnop\n12345678\nabcdefgh", 4, vec![
+        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe")),
+        None, None, None, Some(String::from("lkji")), Some(String::from("mlkj")), Some(String::from("nmlk")), Some(String::from("onml")), Some(String::from("ponm")),
+        None, None, None, Some(String::from("4321")), Some(String::from("5432")), Some(String::from("6543")), Some(String::from("7654")), Some(String::from("8765")),
+        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe"))
+    ])]
     fn test_diagonal_top_right(
         #[case] text: String,
         #[case] wordl: usize,
@@ -307,6 +351,12 @@ mod tests {
         None, Some(String::from("jm")), Some(String::from("kn")), Some(String::from("lo")),
         None, None, None, None
     ])]
+    #[case("abcdefgh\nijklmnop\n12345678\nabcdefgh", 4, vec![
+        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe")),
+        None, None, None, Some(String::from("lkji")), Some(String::from("mlkj")), Some(String::from("nmlk")), Some(String::from("onml")), Some(String::from("ponm")),
+        None, None, None, Some(String::from("4321")), Some(String::from("5432")), Some(String::from("6543")), Some(String::from("7654")), Some(String::from("8765")),
+        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe"))
+    ])]
     fn test_diagonal_bottom_left(
         #[case] text: String,
         #[case] wordl: usize,
@@ -329,6 +379,12 @@ mod tests {
         Some(String::from("ej")), Some(String::from("fk")), Some(String::from("gl")), None,
         Some(String::from("in")), Some(String::from("jo")), Some(String::from("kp")), None,
         None, None, None, None
+    ])]
+    #[case("abcdefgh\nijklmnop\n12345678\nabcdefgh", 4, vec![
+        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe")),
+        None, None, None, Some(String::from("lkji")), Some(String::from("mlkj")), Some(String::from("nmlk")), Some(String::from("onml")), Some(String::from("ponm")),
+        None, None, None, Some(String::from("4321")), Some(String::from("5432")), Some(String::from("6543")), Some(String::from("7654")), Some(String::from("8765")),
+        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe"))
     ])]
     fn test_diagonal_bottom_right(
         #[case] text: String,
