@@ -218,10 +218,10 @@ mod tests {
         Some(String::from("ef")), Some(String::from("fg")), Some(String::from("gh")), None
     ])]
     #[case("abcdefgh\nijklmnop\n12345678\nabcdefgh", 4, vec![
-        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe")),
-        None, None, None, Some(String::from("lkji")), Some(String::from("mlkj")), Some(String::from("nmlk")), Some(String::from("onml")), Some(String::from("ponm")),
-        None, None, None, Some(String::from("4321")), Some(String::from("5432")), Some(String::from("6543")), Some(String::from("7654")), Some(String::from("8765")),
-        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe"))
+        Some(String::from("abcd")), Some(String::from("bcde")), Some(String::from("cdef")), Some(String::from("defg")), Some(String::from("efgh")), None, None, None,
+        Some(String::from("ijkl")), Some(String::from("jklm")), Some(String::from("klmn")), Some(String::from("lmno")), Some(String::from("mnop")), None, None, None,
+        Some(String::from("1234")), Some(String::from("2345")), Some(String::from("3456")), Some(String::from("4567")), Some(String::from("5678")), None, None, None,
+        Some(String::from("abcd")), Some(String::from("bcde")), Some(String::from("cdef")), Some(String::from("defg")), Some(String::from("efgh")), None, None, None
     ])]
     fn test_right(
         #[case] text: String,
