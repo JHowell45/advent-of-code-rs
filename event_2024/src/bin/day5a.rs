@@ -24,11 +24,13 @@ impl LaunchSafetyManual {
     pub fn sum_middle_values(&self) -> i32 {
         let mut result = 0;
         for page in self.pages.iter() {
-            println!("{page:?}");
+            // println!("{page:?}");
             if self.validate_pages(&page) {
-                println!("Valid");
-                result += &page[page.len() / 2 + 1];
+                let v = &page[page.len() / 2];
+                // println!("v: {v:}");
+                result += v;
             }
+            // println!("Current count: {result:}");
         }
         result
     }
@@ -39,7 +41,7 @@ impl LaunchSafetyManual {
             let (current, next) = (values[0], values[1]);
             existing.insert(current);
             let valid = self.rules.validate_next(&existing, next);
-            println!("{current:} -> {next:} : {valid:}");
+            // println!("{current:} -> {next:} : {valid:}");
             if !valid {
                 return false;
             }
@@ -87,7 +89,8 @@ impl PageOrderingRules {
     pub fn validate_next(&self, existing: &HashSet<i32>, next: i32) -> bool {
         if self.not_valid_before.contains_key(&next) {
             let intersection = self.not_valid_before.get(&next).unwrap().intersection(&existing);
-            println!("{intersection:?}");
+            // println!("Intersection: {intersection:?}");
+            return intersection.count() == 0;
         }
         return true;
         // !(self.not_valid_before.contains_key(&next) && self.not_valid_before.get(&next).unwrap().intersection(&existing).)
