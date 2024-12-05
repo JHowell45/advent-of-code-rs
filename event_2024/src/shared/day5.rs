@@ -24,9 +24,7 @@ impl LaunchSafetyManual {
         for page in self.pages.iter() {
             // println!("{page:?}");
             if self.validate_pages(&page) {
-                let fixed_page = self.fix_page(&page);
-                let v = &fixed_page[fixed_page.len() / 2];
-                println!("v: {v:}");
+                let v = &page[page.len() / 2];
                 result += v;
             }
             // println!("Current count: {result:}");
@@ -37,13 +35,14 @@ impl LaunchSafetyManual {
     pub fn fix_and_sum_middle(&self) -> i32 {
         let mut result = 0;
         for page in self.pages.iter() {
-            // println!("{page:?}");
+            println!("{page:?}");
             if !self.validate_pages(&page) {
-                // let v = &page[page.len() / 2];
-                // println!("v: {v:}");
-                // result += v;
+                let fixed_page = self.fix_page(&page);
+                let v = &fixed_page[fixed_page.len() / 2];
+                println!("v: {v:}");
+                result += v;
             }
-            // println!("Current count: {result:}");
+            println!("Current count: {result:}");
         }
         result
     }
@@ -53,9 +52,7 @@ impl LaunchSafetyManual {
         for values in page.windows(2).into_iter() {
             let (current, next) = (values[0], values[1]);
             existing.insert(current);
-            let valid = self.rules.validate_next(&existing, next);
-            // println!("{current:} -> {next:} : {valid:}");
-            if !valid {
+            if !self.rules.validate_next(&existing, next) {
                 return false;
             }
         }
@@ -63,7 +60,22 @@ impl LaunchSafetyManual {
     }
 
     fn fix_page(&self, page: &Vec<i32>) -> Vec<i32> {
-        Vec::new()
+        let mut fixed_page = page.clone();
+        let mut fixed = false;
+        while !fixed {
+            fixed = true;
+            for idx in 0..fixed_page.len() - 1 {
+                let curr = page[idx];
+                let next = page[idx + 1];
+                if !self.rules.validate_next(&HashSet::from([curr]), next) {
+                    fixed = false;
+                    fixed_page[idx] = next;
+                    fixed_page[idx + 1] = curr;
+                }
+            }
+            print!("{fixed_page:?}");
+        }
+        fixed_page
     }
 }
 
