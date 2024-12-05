@@ -316,11 +316,11 @@ mod tests {
         assert_eq!(words, expected);
     }
 
-    // #[rstest]
-    // #[case("MMMSXXMASM\nMSAMXMSMSA\nAMXSXMAAMM\nMSAMASMSMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
-    // // #[case("MMMSXXMASS\nMSAMXMSMAA\nAMXSXMAAMM\nMSAMASMMMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
-    // fn example(#[case] text: String, #[case] count: usize) {
-    //     let search = WordSearch::from_string(text);
-    //     assert_eq!(search.word_count("XMAS"), count);
-    // }
+    #[rstest]
+    #[case("MMMSXXMASM\nMSAMXMSMSA\nAMXSXMAAMM\nMSAMASMSMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
+    // #[case("MMMSXXMASS\nMSAMXMSMAA\nAMXSXMAAMM\nMSAMASMMMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
+    fn example(#[case] text: String, #[case] count: usize) {
+        let search = WordSearch::from_string(text);
+        assert_eq!(search.word_count("XMAS"), count);
+    }
 }
