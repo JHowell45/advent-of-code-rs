@@ -114,10 +114,16 @@ impl WordSearch {
     }
 
     fn diagonal_top_left(&self, index: usize, word_length: usize) -> Option<String> {
-        if index > self.columns && index % self.columns > 0 {
+        if index > (self.columns * (word_length - 1)) && index % self.columns > 0 {
             let chars: Vec<char> = (0..word_length)
                 .into_iter()
-                .map(|i| self.letters[index - (self.columns * i) - i])
+                .map(|i| {
+                    println!(
+                        "{} | {index:} | {idx} | {}",
+                        self.columns, self.letters[idx]
+                    );
+                    self.letters[index - (self.columns * i) - i]
+                })
                 .collect();
             let local_word: String = chars.iter().collect();
             return Some(local_word);
@@ -126,7 +132,8 @@ impl WordSearch {
     }
 
     fn diagonal_top_right(&self, index: usize, word_length: usize) -> Option<String> {
-        if index > self.columns - 1 && index % self.columns < self.columns - 1 {
+        if index > (self.columns * (word_length - 1)) - 1 && index % self.columns < self.columns - 1
+        {
             let chars: Vec<char> = (0..word_length)
                 .into_iter()
                 .map(|i| self.letters[index - (self.columns * i) + i])
@@ -293,7 +300,12 @@ mod tests {
         #[case] expected: Vec<Option<String>>,
     ) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, _c)| search.diagonal_bottom_left(idx, wordl)).collect();
+        let words: Vec<Option<String>> = search
+            .letters
+            .iter()
+            .enumerate()
+            .map(|(idx, _c)| search.diagonal_bottom_left(idx, wordl))
+            .collect();
         println!("{words:?}");
         assert_eq!(words, expected);
     }
@@ -311,7 +323,12 @@ mod tests {
         #[case] expected: Vec<Option<String>>,
     ) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, _c)| search.diagonal_bottom_right(idx, wordl)).collect();
+        let words: Vec<Option<String>> = search
+            .letters
+            .iter()
+            .enumerate()
+            .map(|(idx, _c)| search.diagonal_bottom_right(idx, wordl))
+            .collect();
         println!("{words:?}");
         assert_eq!(words, expected);
     }
