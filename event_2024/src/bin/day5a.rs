@@ -1,6 +1,12 @@
+use core::file_reader::get_file_contents;
 use std::collections::{HashMap, HashSet};
 
-fn main() {}
+fn main() {
+    let content = get_file_contents(2024, 5);
+    let manual = LaunchSafetyManual::from_string(&content);
+    println!("{manual:?}");
+    println!("Sum of middle pages: {}", manual.sum_middle_values());
+}
 
 #[derive(Debug)]
 struct LaunchSafetyManual {
