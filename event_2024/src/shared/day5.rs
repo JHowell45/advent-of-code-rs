@@ -22,12 +22,10 @@ impl LaunchSafetyManual {
     pub fn sum_middle_values(&self) -> i32 {
         let mut result = 0;
         for page in self.pages.iter() {
-            // println!("{page:?}");
             if self.validate_pages(&page) {
                 let v = &page[page.len() / 2];
                 result += v;
             }
-            // println!("Current count: {result:}");
         }
         result
     }
@@ -35,14 +33,11 @@ impl LaunchSafetyManual {
     pub fn fix_and_sum_middle(&self) -> i32 {
         let mut result = 0;
         for page in self.pages.iter() {
-            // println!("{page:?}");
             if !self.validate_pages(&page) {
                 let fixed_page = self.fix_page(&page);
                 let v = &fixed_page[fixed_page.len() / 2];
-                // println!("v: {v:}");
                 result += v;
             }
-            // println!("Current count: {result:}");
         }
         result
     }
@@ -68,13 +63,11 @@ impl LaunchSafetyManual {
                 let curr = fixed_page[idx];
                 let next = fixed_page[idx + 1];
                 if !self.rules.validate_next(&HashSet::from([curr]), next) {
-                    // println!("Invalid: {curr} -> {next}");
                     fixed = false;
                     fixed_page[idx] = next;
                     fixed_page[idx + 1] = curr;
                 }
             }
-            // println!("{fixed_page:?}");
         }
         fixed_page
     }
@@ -123,11 +116,9 @@ impl PageOrderingRules {
                 .get(&next)
                 .unwrap()
                 .intersection(&existing);
-            // println!("Intersection: {intersection:?}");
             return intersection.count() == 0;
         }
         return true;
-        // !(self.not_valid_before.contains_key(&next) && self.not_valid_before.get(&next).unwrap().intersection(&existing).)
     }
 }
 
@@ -152,7 +143,6 @@ mod tests {
     #[case(HashSet::from([61, 13]), 29, false)]
     fn test_rules(#[case] existing: HashSet<i32>, #[case] next: i32, #[case] valid: bool) {
         let rules = PageOrderingRules::from_string("47|53\n97|13\n97|61\n97|47\n75|29\n61|13\n75|53\n29|13\n97|29\n53|29\n61|53\n97|53\n61|29\n47|13\n75|47\n97|75\n47|61\n75|61\n47|29\n75|13\n53|13");
-        // println!("{rules:?}");
         assert_eq!(rules.validate_next(&existing, next), valid);
     }
 }

@@ -47,7 +47,6 @@ mod tests {
     )]
     fn example(#[case] input: &str, #[case] expected: i32) {
         let manual = LaunchSafetyManual::from_string(&input);
-        // println!("{manual:?}");
         assert_eq!(manual.fix_and_sum_middle(), expected);
     }
 }
