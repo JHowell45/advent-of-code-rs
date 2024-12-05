@@ -150,7 +150,7 @@ impl WordSearch {
     }
 
     fn diagonal_bottom_right(&self, index: usize, word_length: usize) -> Option<String> {
-        if index + self.columns * (word_length - 1) + word_length < self.letters.len() {
+        if index < self.letters.len() - self.columns && index % self.columns < self.columns - 1 {
             let chars: Vec<char> = (0..word_length)
                 .into_iter()
                 .map(|i| self.letters[index + (self.columns * i) + i])
@@ -298,23 +298,23 @@ mod tests {
         assert_eq!(words, expected);
     }
 
-    // #[rstest]
-    // #[case("abcd\nefgh\nijkl\nmnop", 2, vec![
-    //     Some(String::from("af")), Some(String::from("bg")), Some(String::from("ch")), None,
-    //     Some(String::from("ej")), Some(String::from("fk")), Some(String::from("gl")), None,
-    //     Some(String::from("mj")), Some(String::from("nk")), Some(String::from("ol")), None,
-    //     None, None, None, None
-    // ])]
-    // fn test_diagonal_bottom_right(
-    //     #[case] text: String,
-    //     #[case] wordl: usize,
-    //     #[case] expected: Vec<Option<String>>,
-    // ) {
-    //     let search = WordSearch::from_string(text);
-    //     let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, _c)| search.diagonal_bottom_right(idx, wordl)).collect();
-    //     println!("{words:?}");
-    //     assert_eq!(words, expected);
-    // }
+    #[rstest]
+    #[case("abcd\nefgh\nijkl\nmnop", 2, vec![
+        Some(String::from("af")), Some(String::from("bg")), Some(String::from("ch")), None,
+        Some(String::from("ej")), Some(String::from("fk")), Some(String::from("gl")), None,
+        Some(String::from("in")), Some(String::from("jo")), Some(String::from("kp")), None,
+        None, None, None, None
+    ])]
+    fn test_diagonal_bottom_right(
+        #[case] text: String,
+        #[case] wordl: usize,
+        #[case] expected: Vec<Option<String>>,
+    ) {
+        let search = WordSearch::from_string(text);
+        let words: Vec<Option<String>> = search.letters.iter().enumerate().map(|(idx, _c)| search.diagonal_bottom_right(idx, wordl)).collect();
+        println!("{words:?}");
+        assert_eq!(words, expected);
+    }
 
     // #[rstest]
     // #[case("MMMSXXMASM\nMSAMXMSMSA\nAMXSXMAAMM\nMSAMASMSMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX", 18)]
