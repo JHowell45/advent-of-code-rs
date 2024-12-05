@@ -126,11 +126,18 @@ impl WordSearch {
     }
 
     fn diagonal_top_right(&self, index: usize, word_length: usize) -> Option<String> {
-        if index > (self.columns * (word_length - 1)) - 1 && index % self.columns < self.columns - 1
+        if index > (self.columns * (word_length - 1)) - 1 && index % self.columns < self.columns - word_length + 1
         {
             let chars: Vec<char> = (0..word_length)
                 .into_iter()
-                .map(|i| self.letters[index - (self.columns * i) + i])
+                .map(|i| {
+                    let idx = index - (self.columns * i) + i;
+                    // println!(
+                    //     "{} | {index:} | {idx} | {} | {}",
+                    //     self.columns, index % self.columns, self.letters[idx]
+                    // );
+                    self.letters[idx]
+                })
                 .collect();
             let local_word: String = chars.iter().collect();
             return Some(local_word);
