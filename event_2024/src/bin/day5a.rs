@@ -26,7 +26,9 @@ impl LaunchSafetyManual {
     pub fn sum_middle_values(&self) -> i32 {
         let mut result = 0;
         for page in self.pages.iter() {
+            println!("{page:?}");
             if self.validate_pages(&page) {
+                println!("Valid");
                 result += &page[page.len() / 2 + 1];
             }
         }
@@ -36,10 +38,11 @@ impl LaunchSafetyManual {
     fn validate_pages(&self, page_numbers: &Vec<i32>) -> bool {
         for values in page_numbers.windows(2).into_iter() {
             let (current, next) = (values[0], values[1]);
-            println!("{current:}");
-            println!("{next:}");
+            if !self.rules.validate_next(current, next) {
+                return false;
+            }
         }
-        return false;
+        return true;
     }
 }
 
@@ -61,7 +64,7 @@ impl PageOrderingRules {
             let split: Vec<&str> = rule.split("|").collect();
             let (a, b) = (
                 split[0].parse::<i32>().unwrap(),
-                split[0].parse::<i32>().unwrap(),
+                split[1].parse::<i32>().unwrap(),
             );
             instance.add_rule(a, b);
         }
@@ -80,7 +83,7 @@ impl PageOrderingRules {
     }
 
     pub fn validate_next(&self, current: i32, next: i32) -> bool {
-        self.values_after.contains_key(&current)
+        !self.values_after.contains_key(&current)
             || self.values_after.get(&current).unwrap().contains(&next)
     }
 }
