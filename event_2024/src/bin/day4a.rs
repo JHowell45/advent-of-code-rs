@@ -167,10 +167,10 @@ impl WordSearch {
                 .into_iter()
                 .map(|i| {
                     let idx = index + (self.columns * i) + i;
-                    println!(
-                        "{} | {index:} | {idx} | {}",
-                        self.columns, self.letters[idx]
-                    );
+                    // println!(
+                    //     "{} | {index:} | {idx} | {}",
+                    //     self.columns, self.letters[idx]
+                    // );
                     self.letters[idx]
                 })
                 .collect();
