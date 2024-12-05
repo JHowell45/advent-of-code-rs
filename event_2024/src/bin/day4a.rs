@@ -323,10 +323,10 @@ mod tests {
         Some(String::from("mj")), Some(String::from("nk")), Some(String::from("ol")), None,
     ])]
     #[case("abcdefgh\nijklmnop\n12345678\nabcdefgh", 4, vec![
-        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe")),
-        None, None, None, Some(String::from("lkji")), Some(String::from("mlkj")), Some(String::from("nmlk")), Some(String::from("onml")), Some(String::from("ponm")),
-        None, None, None, Some(String::from("4321")), Some(String::from("5432")), Some(String::from("6543")), Some(String::from("7654")), Some(String::from("8765")),
-        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe"))
+        None, None, None, None, None, None, None, None,
+        None, None, None, None, None, None, None, None,
+        None, None, None, None, None, None, None, None,
+        Some(String::from("a2kd")), Some(String::from("b3le")), Some(String::from("c4mf")), Some(String::from("d5ng")), Some(String::from("e6oh")), None, None, None
     ])]
     fn test_diagonal_top_right(
         #[case] text: String,
@@ -381,10 +381,10 @@ mod tests {
         None, None, None, None
     ])]
     #[case("abcdefgh\nijklmnop\n12345678\nabcdefgh", 4, vec![
-        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe")),
-        None, None, None, Some(String::from("lkji")), Some(String::from("mlkj")), Some(String::from("nmlk")), Some(String::from("onml")), Some(String::from("ponm")),
-        None, None, None, Some(String::from("4321")), Some(String::from("5432")), Some(String::from("6543")), Some(String::from("7654")), Some(String::from("8765")),
-        None, None, None, Some(String::from("dcba")), Some(String::from("edcb")), Some(String::from("fedc")), Some(String::from("gfed")), Some(String::from("hgfe"))
+        Some(String::from("aj3d")), Some(String::from("bk4e")), Some(String::from("cl5f")), Some(String::from("dm6g")), Some(String::from("en7h")), None, None, None,
+        None, None, None, None, None, None, None, None,
+        None, None, None, None, None, None, None, None,
+        None, None, None, None, None, None, None, None
     ])]
     fn test_diagonal_bottom_right(
         #[case] text: String,
