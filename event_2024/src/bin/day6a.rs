@@ -3,7 +3,7 @@ use std::{collections::HashSet, thread::sleep, time::Duration};
 
 fn main() {
     let mut map: PatrolMap = PatrolMap::from_string(&get_file_contents(2024, 6));
-    println!("The gaurd distinct positions are: {}", map.get_guard_unique_positions());
+    println!("The guard distinct positions are: {}", map.get_guard_unique_positions());
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
