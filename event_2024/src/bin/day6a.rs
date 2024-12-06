@@ -76,7 +76,7 @@ impl PatrolMap {
                     MapState::GuardRoute => print!("X"),
                 }
             }
-            println!("\n");
+            println!();
         }
     }
 
