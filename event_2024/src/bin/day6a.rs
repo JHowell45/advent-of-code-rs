@@ -6,7 +6,7 @@ fn main() {
     println!("The gaurd distinct positions are: {}", map.get_guard_unique_positions());
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 enum MapState {
     Empty,
     Obstruction,
@@ -113,7 +113,7 @@ impl PatrolMap {
         let mut count = 0;
         for row in self.map.iter() {
             for p in row.iter() {
-                if p == MapState::GuardRoute {
+                if *p == MapState::GuardRoute {
                     count += 1;
                 }
             }
