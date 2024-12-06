@@ -110,7 +110,7 @@ impl PatrolMap {
         let start_pos = self.current_guard_pos.clone();
         let start_direction = self.current_guard_direction;
 
-        for (idx, (x, y)) in self.find_path_points().iter().enumerate() {
+        for (x, y) in self.find_path_points().iter() {
             self.map = map_copy.clone();
             if self.get_point(*x, *y) == MapState::Empty {
                 self.current_guard_pos = start_pos.clone();
@@ -127,7 +127,7 @@ impl PatrolMap {
                     match paths.get_mut(&self.current_guard_pos) {
                         Some(count) => {
                             *count += 1;
-                            if *count > 5 {
+                            if *count > 4 {
                                 state = IterateState::Loop
                             }
                         }
