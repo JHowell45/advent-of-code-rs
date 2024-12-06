@@ -10,6 +10,12 @@ pub enum MapState {
     CustomObstruction,
 }
 
+pub enum IterateState {
+    Continue,
+    Loop,
+    Exit,
+}
+
 #[derive(Debug)]
 pub enum GuardDirection {
     North,
@@ -74,20 +80,6 @@ impl PatrolMap {
         self.all_guard_points()
     }
 
-    pub fn display_map(&self) {
-        for row in self.map.iter() {
-            for point in row.iter() {
-                match point {
-                    MapState::Empty => print!("."),
-                    MapState::Obstruction => print!("#"),
-                    MapState::GuardRoute => print!("X"),
-                }
-            }
-            println!();
-        }
-        println!();
-    }
-
     fn interate(&mut self) -> bool {
         let (next_x, next_y) = self.get_next_point();
         if self.guard_outside_boundaries((next_x, next_y)) {
@@ -103,6 +95,54 @@ impl PatrolMap {
             _ => {}
         }
         return true;
+    }
+
+    pub fn viable_obstruction_positions(&mut self) -> usize {
+        let viable_pos: usize = 0;
+        for y in 0..self.max_y {
+            for x in 0..self.max_x {
+                if self.get_point(x, y) == MapState::Empty {
+                    while let state = self.viable_obstructions_iterate() {
+                        // print!("{}[2J", 27 as char);
+                        // self.display_map();
+                        // sleep(Duration::from_millis(150));
+                    }   
+                }
+            }
+        }
+        return viable_pos;
+    }
+
+    fn viable_obstructions_iterate(&mut self) -> IterateState {
+        let (next_x, next_y) = self.get_next_point();
+        if self.guard_outside_boundaries((next_x, next_y)) {
+            return IterateState::Exit;
+        }
+        match self.get_point(next_x, next_y) {
+            MapState::Empty => {
+                self.set_point(next_x, next_y, MapState::GuardRoute);
+                self.current_guard_pos = (next_x, next_y);
+            }
+            MapState::Obstruction => self.rotate_guard(),
+            MapState::GuardRoute => self.current_guard_pos = (next_x, next_y),
+            _ => {}
+        }
+        return IterateState::Continue;
+    }
+
+    pub fn display_map(&self) {
+        for row in self.map.iter() {
+            for point in row.iter() {
+                match point {
+                    MapState::Empty => print!("."),
+                    MapState::Obstruction => print!("#"),
+                    MapState::GuardRoute => print!("X"),
+                    _ => panic!("Unhandled state!"),
+                }
+            }
+            println!();
+        }
+        println!();
     }
 
     fn get_next_point(&self) -> (i32, i32) {
