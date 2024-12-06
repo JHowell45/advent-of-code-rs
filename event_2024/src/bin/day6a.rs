@@ -91,13 +91,7 @@ impl PatrolMap {
     }
 
     fn interate(&mut self) -> bool {
-        let (x, y) = self.current_guard_pos;
-        let (next_x, next_y) = match self.current_guard_direction {
-            GuardDirection::North => (x, y-1),
-            GuardDirection::East => (x + 1, y),
-            GuardDirection::South => (x, y + 1),
-            GuardDirection::West => (x - 1, y),
-        };
+        let (next_x, next_y) = self.get_next_point();
         println!("{:?}", self.current_guard_pos);
         println!("{next_x:}, {next_y:}");
         println!("{:?}", self.get_point(next_x, next_y));
@@ -116,6 +110,15 @@ impl PatrolMap {
         return true;
     }
 
+    fn get_next_point(&self) -> (i32, i32) {
+        let (x, y) = self.current_guard_pos;
+        match self.current_guard_direction {
+            GuardDirection::North => (x, y-1),
+            GuardDirection::East => (x + 1, y),
+            GuardDirection::South => (x, y + 1),
+            GuardDirection::West => (x - 1, y),
+        }
+    }
     fn rotate_guard(&mut self) {
         self.current_guard_direction = match self.current_guard_direction {
             GuardDirection::North => GuardDirection::East,
