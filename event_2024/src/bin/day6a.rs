@@ -1,5 +1,5 @@
 use core::file_reader::get_file_contents;
-use std::collections::HashSet;
+use std::{collections::HashSet, thread::sleep, time::Duration};
 
 fn main() {
     let mut map: PatrolMap = PatrolMap::from_string(&get_file_contents(2024, 6));
@@ -71,6 +71,7 @@ impl PatrolMap {
     pub fn get_guard_unique_positions(&mut self) -> usize {
         while self.interate() {
             self.display_map();
+            sleep(Duration::from_secs(2));
         }
         self.all_guard_points()
     }
@@ -86,6 +87,7 @@ impl PatrolMap {
             }
             println!();
         }
+        println!();
     }
 
     fn interate(&mut self) -> bool {
