@@ -26,6 +26,8 @@ struct PatrolMap {
     map: Vec<Vec<MapState>>,
     current_guard_pos: (usize, usize),
     current_guard_direction: GuardDirection,
+    max_x: usize,
+    max_y: usize
 }
 
 impl PatrolMap {
@@ -56,10 +58,14 @@ impl PatrolMap {
             }
             local_map.push(r);
         }
+        let max_x = &local_map[0].len();
+        let max_y = &local_map.len();
         Self {
             map: local_map,
             current_guard_pos: current_guard_pos,
             current_guard_direction: guard_direction,
+            max_x: *max_x,
+            max_y: *max_y,
         }
     }
 
@@ -80,8 +86,14 @@ impl PatrolMap {
         }
     }
 
-    fn interate(&self) {
-
+    fn interate(&mut self) {
+        let (x, y) = self.current_guard_pos;
+        let (next_x, next_y) = match self.current_guard_direction {
+            GuardDirection::North => (x, y - 1),
+            GuardDirection::East => (x + 1, y),
+            GuardDirection::South => (x, y + 1),
+            GuardDirection::West => (x - 1, y),
+        };
     }
 
     fn add_guard_position(&self) {}
