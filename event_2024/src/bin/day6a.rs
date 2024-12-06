@@ -2,7 +2,7 @@ use core::file_reader::get_file_contents;
 use std::collections::HashSet;
 
 fn main() {
-    let map: PatrolMap = PatrolMap::from_string(&get_file_contents(2024, 6));
+    let mut map: PatrolMap = PatrolMap::from_string(&get_file_contents(2024, 6));
     println!("The gaurd distinct positions are: {}", map.get_guard_unique_positions());
 }
 
