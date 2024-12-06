@@ -102,8 +102,6 @@ impl PatrolMap {
         return true;
     }
 
-    fn add_guard_position(&self) {}
-
     fn guard_outside_boundaries(&self, point: (i32, i32)) -> bool {
         let (x, y) = point;
         (x < 0 || x > self.max_x - 1) || (y < 0 || y > self.max_y - 1)
