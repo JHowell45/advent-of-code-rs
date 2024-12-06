@@ -69,6 +69,9 @@ impl PatrolMap {
     }
 
     pub fn get_guard_unique_positions(&mut self) -> usize {
+        while self.interate() {
+            self.display_map();
+        }
         0
     }
 
@@ -104,6 +107,18 @@ impl PatrolMap {
     fn guard_outside_boundaries(&self, point: (i32, i32)) -> bool {
         let (x, y) = point;
         (x < 0 || x > self.max_x - 1) || (y < 0 || y > self.max_y - 1)
+    }
+
+    fn all_guard_points(&self) -> usize {
+        let mut count = 0;
+        for row in self.map.iter() {
+            for p in row.iter() {
+                if p == MapState::GuardRoute {
+                    count += 1;
+                }
+            }
+        }
+        count
     }
 }
 
