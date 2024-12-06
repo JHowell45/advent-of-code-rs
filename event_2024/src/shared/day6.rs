@@ -1,4 +1,4 @@
-use std::{collections::binary_heap::Iter, iter::Map, thread::sleep, time::Duration};
+use std::{collections::{binary_heap::Iter, HashSet}, io::stdout, iter::Map, process::exit, thread::sleep, time::Duration};
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum MapState {
@@ -75,9 +75,7 @@ impl PatrolMap {
 
     pub fn get_guard_unique_positions(&mut self) -> usize {
         while self.interate() {
-            print!("{}[2J", 27 as char);
-            self.display_map();
-            sleep(Duration::from_millis(150));
+            // self.debug_display();
         }
         self.all_guard_points()
     }
@@ -105,23 +103,26 @@ impl PatrolMap {
         let start_pos = self.current_guard_pos.clone();
         let start_direction = self.current_guard_direction;
 
+        self.run();
+
         for y in 0..self.max_y {
             for x in 0..self.max_x {
+                self.map = map_copy.clone();
+                self.current_guard_pos = start_pos.clone();
+                self.current_guard_direction = start_direction;
                 if self.get_point(x, y) == MapState::Empty {
-                    self.map = map_copy.clone();
-                    self.current_guard_pos = start_pos.clone();
-                    self.current_guard_direction = start_direction;
                     self.set_point(x, y, MapState::CustomObstruction);
 
                     let mut state: IterateState = IterateState::Continue; 
 
                     while state == IterateState::Continue {
                         state = self.viable_obstructions_iterate();
-                        self.display_map();
-                        sleep(Duration::from_millis(250));
-                        print!("{}[2J", 27 as char);
+                        self.debug_display();
                     }
                     if state == IterateState::Loop {
+                        println!("State: {state:?}");
+                        println!("Viable Count: {viable_pos:?}");
+                        self.display_map();
                         viable_pos += 1;
                     }
                     self.set_point(x, y, MapState::CustomObstruction);
@@ -134,6 +135,11 @@ impl PatrolMap {
     fn viable_obstructions_iterate(&mut self) -> IterateState {
         let (x, y) = self.current_guard_pos;
         let (next_x, next_y) = self.get_next_point();
+        let mut loops: usize = 0;
+
+        // println!("Current: ({x:},{y:})");
+        // println!("Next: ({next_x:},{next_y:})");
+
         if self.guard_outside_boundaries((next_x, next_y)) {
             return IterateState::Exit;
         }
@@ -145,20 +151,22 @@ impl PatrolMap {
                 self.current_guard_pos = (next_x, next_y);
             }
             MapState::GuardRouteHorizontal => {
-                if guard_state == MapState::GuardRouteHorizontal {
-                    return IterateState::Loop;
-                }
-                self.set_point(next_x, next_y, MapState::GuardRouteBiDirectional);
+                // if guard_state == MapState::GuardRouteHorizontal {
+                //     return IterateState::Loop;
+                // }
+                self.set_point(x, y, MapState::GuardRouteBiDirectional);
+                self.current_guard_pos = (next_x, next_y);
             }
             MapState::GuardRouteVertical => {
-                if guard_state == MapState::GuardRouteVertical {
-                    return IterateState::Loop;
-                }
-                self.set_point(next_x, next_y, MapState::GuardRouteBiDirectional);
+                // if guard_state == MapState::GuardRouteVertical {
+                //     return IterateState::Loop;
+                // }
+                self.set_point(next_x, y, MapState::GuardRouteBiDirectional);
+                self.current_guard_pos = (next_x, next_y);
             },
-            MapState::GuardRouteBiDirectional => {
-                return IterateState::Loop;
-            }
+            // MapState::GuardRouteBiDirectional => {
+            //     return IterateState::Loop;
+            // }
             MapState::Obstruction => {
                 match self.get_point(x, y) {
                     MapState::GuardRouteHorizontal => self.set_point(x, y, MapState::GuardRouteBiDirectional),
@@ -167,11 +175,28 @@ impl PatrolMap {
                 }
                 self.rotate_guard();
             },
-            MapState::CustomObstruction => self.rotate_guard(),
+            MapState::CustomObstruction => {
+                loops += 1;
+                if loops > 1 {
+                    return IterateState::Loop;
+                }
+                self.rotate_guard();
+            },
             MapState::GuardRoute => self.current_guard_pos = (next_x, next_y),
             _ => {}
         }
         return IterateState::Continue;
+    }
+
+    fn find_path_points(&mut self) -> HashSet<(i32, i32)> {
+        let mut path = HashSet::new();
+        while self.interate() {
+            let (x, y) = self.current_guard_pos;
+            if self.get_point(x, y) == MapState::GuardRoute {
+                path.insert((x, y));
+            }
+         }
+         return path;
     }
 
     pub fn display_map(&self) {
@@ -242,5 +267,11 @@ impl PatrolMap {
             }
         }
         count
+    }
+
+    fn debug_display(&self) {
+        self.display_map();
+        sleep(Duration::from_millis(50));
+        print!("{}[2J", 27 as char);
     }
 }
