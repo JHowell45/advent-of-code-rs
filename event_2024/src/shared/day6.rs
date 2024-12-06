@@ -5,6 +5,9 @@ pub enum MapState {
     Empty,
     Obstruction,
     GuardRoute,
+    GuardRouteVertical,
+    GuardRouteHorizontal,
+    CustomObstruction,
 }
 
 #[derive(Debug)]
