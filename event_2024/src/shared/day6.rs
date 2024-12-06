@@ -104,15 +104,17 @@ impl PatrolMap {
         let map_copy: Vec<Vec<MapState>> = self.map.clone();
         for y in 0..self.max_y {
             for x in 0..self.max_x {
-                self.map = map_copy.clone();
                 if self.get_point(x, y) == MapState::Empty {
+                    self.map = map_copy.clone();
                     self.set_point(x, y, MapState::CustomObstruction);
+
                     let mut state: IterateState = IterateState::Continue; 
+
                     while state == IterateState::Continue {
                         state = self.viable_obstructions_iterate();
-                        print!("{}[2J", 27 as char);
                         self.display_map();
                         sleep(Duration::from_millis(150));
+                        print!("{}[2J", 27 as char);
                     }
                     if state == IterateState::Loop {
                         viable_pos += 1;
@@ -129,12 +131,8 @@ impl PatrolMap {
         if self.guard_outside_boundaries((next_x, next_y)) {
             return IterateState::Exit;
         }
-        let guard_state: MapState = match self.current_guard_direction {
-            GuardDirection::North => MapState::GuardRouteVertical,
-            GuardDirection::South => MapState::GuardRouteVertical,
-            GuardDirection::West => MapState::GuardRouteHorizontal,
-            GuardDirection::East => MapState::GuardRouteHorizontal,
-        };
+        let guard_state: MapState = self.guard_loop_state();
+
         match self.get_point(next_x, next_y) {
             MapState::Empty => {
                 self.set_point(next_x, next_y, guard_state);
@@ -196,6 +194,15 @@ impl PatrolMap {
             GuardDirection::East => GuardDirection::South,
             GuardDirection::South => GuardDirection::West,
             GuardDirection::West => GuardDirection::North,
+        }
+    }
+
+    fn guard_loop_state(&self) -> MapState {
+        match self.current_guard_direction {
+            GuardDirection::North => MapState::GuardRouteVertical,
+            GuardDirection::South => MapState::GuardRouteVertical,
+            GuardDirection::West => MapState::GuardRouteHorizontal,
+            GuardDirection::East => MapState::GuardRouteHorizontal,
         }
     }
 
