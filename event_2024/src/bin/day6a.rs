@@ -85,7 +85,7 @@ impl PatrolMap {
         }
     }
 
-    fn interate(&mut self) {
+    fn interate(&mut self) -> bool {
         let (x, y) = self.current_guard_pos;
         let (next_x, next_y) = match self.current_guard_direction {
             GuardDirection::North => (x, y - 1),
@@ -93,6 +93,10 @@ impl PatrolMap {
             GuardDirection::South => (x, y + 1),
             GuardDirection::West => (x - 1, y),
         };
+        if self.guard_outside_boundaries((next_x, next_y)) {
+            return false;
+        }
+        return true;
     }
 
     fn add_guard_position(&self) {}
