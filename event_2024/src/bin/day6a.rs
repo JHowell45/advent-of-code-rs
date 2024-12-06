@@ -24,15 +24,15 @@ enum GuardDirection {
 #[derive(Debug)]
 struct PatrolMap {
     map: Vec<Vec<MapState>>,
-    current_guard_pos: (usize, usize),
+    current_guard_pos: (i32, i32),
     current_guard_direction: GuardDirection,
-    max_x: usize,
-    max_y: usize
+    max_x: i32,
+    max_y: i32
 }
 
 impl PatrolMap {
     pub fn from_string(map: &str) -> Self {
-        let mut current_guard_pos: (usize, usize) = (0, 0);
+        let mut current_guard_pos: (i32, i32) = (0, 0);
         let mut guard_direction: GuardDirection = GuardDirection::North;
         let mut local_map: Vec<Vec<MapState>> = Vec::new();
 
@@ -44,7 +44,7 @@ impl PatrolMap {
                     '#' => r.push(MapState::Obstruction),
                     _ => {
                         r.push(MapState::GuardRoute);
-                        current_guard_pos = (x, y);
+                        current_guard_pos = (x as i32, y as i32);
 
                         guard_direction = match point {
                             '^' => GuardDirection::North,
@@ -58,14 +58,13 @@ impl PatrolMap {
             }
             local_map.push(r);
         }
-        let max_x = &local_map[0].len();
-        let max_y = &local_map.len();
+ 
         Self {
+            max_x: local_map[0].len() as i32,
+            max_y: local_map.len() as i32,
             map: local_map,
             current_guard_pos: current_guard_pos,
             current_guard_direction: guard_direction,
-            max_x: *max_x,
-            max_y: *max_y,
         }
     }
 
@@ -98,7 +97,10 @@ impl PatrolMap {
 
     fn add_guard_position(&self) {}
 
-    fn guard_outside_boundaries(&self) {}
+    fn guard_outside_boundaries(&self, point: (i32, i32)) -> bool {
+        let (x, y) = point;
+        (x < 0 || x > self.max_x - 1) || (y < 0 || y > self.max_y - 1)
+    }
 }
 
 #[cfg(test)]
