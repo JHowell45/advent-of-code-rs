@@ -6,7 +6,7 @@ fn main() {}
 enum MapState {
     Empty,
     Obstruction,
-    Guard,
+    GuardRoute,
 }
 
 #[derive(Debug)]
@@ -39,7 +39,7 @@ impl PatrolMap {
                     '.' => r.push(MapState::Empty),
                     '#' => r.push(MapState::Obstruction),
                     _ => {
-                        r.push(MapState::Guard);
+                        r.push(MapState::GuardRoute);
                         current_guard_pos = (x, y);
                         guard_positions.insert((x, y));
 
@@ -65,7 +65,20 @@ impl PatrolMap {
 
     pub fn get_guard_unique_positions(&mut self) -> usize {
         0
-    } 
+    }
+
+    pub fn display_map(&self) {
+        for row in self.map.iter() {
+            for point in row.iter() {
+                match point {
+                    MapState::Empty => print!("."),
+                    MapState::Obstruction => print!("#"),
+                    MapState::GuardRoute => print!("X"),
+                }
+            }
+            println!("\n");
+        }
+    }
 
     fn interate(&self) {}
 
@@ -93,6 +106,7 @@ mod tests {
     fn example(#[case] map: &str, #[case] unique_points: usize) {
         let mut map = PatrolMap::from_string(map);
         println!("{map:?}");
+        map.display_map();
         assert_eq!(map.get_guard_unique_positions(), unique_points);
     }
 }
