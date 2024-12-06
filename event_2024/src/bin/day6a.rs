@@ -71,7 +71,7 @@ impl PatrolMap {
     pub fn get_guard_unique_positions(&mut self) -> usize {
         while self.interate() {
             self.display_map();
-            sleep(Duration::from_secs(2));
+            sleep(Duration::from_secs(1));
         }
         self.all_guard_points()
     }
@@ -110,9 +110,19 @@ impl PatrolMap {
                 self.set_point(next_x, next_y, MapState::GuardRoute);
                 self.current_guard_pos = (next_x, next_y);
             }
+            MapState::Obstruction => self.rotate_guard(),
             _ => {}
         }
         return true;
+    }
+
+    fn rotate_guard(&mut self) {
+        self.current_guard_direction = match self.current_guard_direction {
+            GuardDirection::North => GuardDirection::East,
+            GuardDirection::East => GuardDirection::South,
+            GuardDirection::South => GuardDirection::West,
+            GuardDirection::West => GuardDirection::North,
+        }
     }
 
     fn get_point(&self, x: i32, y: i32) -> MapState {
