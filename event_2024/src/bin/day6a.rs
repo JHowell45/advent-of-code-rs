@@ -105,6 +105,7 @@ impl PatrolMap {
                 self.current_guard_pos = (next_x, next_y);
             }
             MapState::Obstruction => self.rotate_guard(),
+            MapState::GuardRoute => self.current_guard_pos = (next_x, next_y),
             _ => {}
         }
         return true;
