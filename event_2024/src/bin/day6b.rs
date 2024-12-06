@@ -24,6 +24,8 @@ mod tests {
 #.........
 ......#...", 6)]
     fn example(#[case] map: &str, #[case] unique_obstructions: usize) {
-        let map = PatrolMap::from_string(map);
+        let mut map = PatrolMap::from_string(map);
+        println!("{map:?}");
+        assert_eq!(map.viable_obstruction_positions(), unique_obstructions);
     }
 }

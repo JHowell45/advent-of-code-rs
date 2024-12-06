@@ -75,9 +75,9 @@ impl PatrolMap {
 
     pub fn get_guard_unique_positions(&mut self) -> usize {
         while self.interate() {
-            // print!("{}[2J", 27 as char);
-            // self.display_map();
-            // sleep(Duration::from_millis(150));
+            print!("{}[2J", 27 as char);
+            self.display_map();
+            sleep(Duration::from_millis(150));
         }
         self.all_guard_points()
     }
@@ -101,16 +101,18 @@ impl PatrolMap {
 
     pub fn viable_obstruction_positions(&mut self) -> usize {
         let mut viable_pos: usize = 0;
+        let map_copy: Vec<Vec<MapState>> = self.map.clone();
         for y in 0..self.max_y {
             for x in 0..self.max_x {
+                self.map = map_copy.clone();
                 if self.get_point(x, y) == MapState::Empty {
                     self.set_point(x, y, MapState::CustomObstruction);
                     let mut state: IterateState = IterateState::Continue; 
                     while state == IterateState::Continue {
                         state = self.viable_obstructions_iterate();
-                        // print!("{}[2J", 27 as char);
-                        // self.display_map();
-                        // sleep(Duration::from_millis(150));
+                        print!("{}[2J", 27 as char);
+                        self.display_map();
+                        sleep(Duration::from_millis(150));
                     }
                     if state == IterateState::Loop {
                         viable_pos += 1;
@@ -167,8 +169,11 @@ impl PatrolMap {
                 match point {
                     MapState::Empty => print!("."),
                     MapState::Obstruction => print!("#"),
+                    MapState::CustomObstruction => print!("O"),
                     MapState::GuardRoute => print!("X"),
-                    _ => panic!("Unhandled state!"),
+                    MapState::GuardRouteHorizontal => print!("-"),
+                    MapState::GuardRouteVertical => print!("|"),
+                    MapState::GuardRouteBiDirectional => print!("+"),
                 }
             }
             println!();

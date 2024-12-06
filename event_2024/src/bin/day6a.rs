@@ -27,7 +27,6 @@ mod tests {
     fn example(#[case] map: &str, #[case] unique_points: usize) {
         let mut map = PatrolMap::from_string(map);
         println!("{map:?}");
-        map.display_map();
         assert_eq!(map.get_guard_unique_positions(), unique_points);
     }
 }
