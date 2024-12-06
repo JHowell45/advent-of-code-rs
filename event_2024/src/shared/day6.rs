@@ -1,4 +1,4 @@
-use std::{thread::sleep, time::Duration};
+use std::{collections::binary_heap::Iter, iter::Map, thread::sleep, time::Duration};
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum MapState {
@@ -7,9 +7,11 @@ pub enum MapState {
     GuardRoute,
     GuardRouteVertical,
     GuardRouteHorizontal,
+    GuardRouteBiDirectional,
     CustomObstruction,
 }
 
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum IterateState {
     Continue,
     Loop,
@@ -98,15 +100,22 @@ impl PatrolMap {
     }
 
     pub fn viable_obstruction_positions(&mut self) -> usize {
-        let viable_pos: usize = 0;
+        let mut viable_pos: usize = 0;
         for y in 0..self.max_y {
             for x in 0..self.max_x {
                 if self.get_point(x, y) == MapState::Empty {
-                    while let state = self.viable_obstructions_iterate() {
+                    self.set_point(x, y, MapState::CustomObstruction);
+                    let mut state: IterateState = IterateState::Continue; 
+                    while state == IterateState::Continue {
+                        state = self.viable_obstructions_iterate();
                         // print!("{}[2J", 27 as char);
                         // self.display_map();
                         // sleep(Duration::from_millis(150));
-                    }   
+                    }
+                    if state == IterateState::Loop {
+                        viable_pos += 1;
+                    }
+                    self.set_point(x, y, MapState::CustomObstruction);
                 }
             }
         }
@@ -118,12 +127,34 @@ impl PatrolMap {
         if self.guard_outside_boundaries((next_x, next_y)) {
             return IterateState::Exit;
         }
+        let guard_state: MapState = match self.current_guard_direction {
+            GuardDirection::North => MapState::GuardRouteVertical,
+            GuardDirection::South => MapState::GuardRouteVertical,
+            GuardDirection::West => MapState::GuardRouteHorizontal,
+            GuardDirection::East => MapState::GuardRouteHorizontal,
+        };
         match self.get_point(next_x, next_y) {
             MapState::Empty => {
-                self.set_point(next_x, next_y, MapState::GuardRoute);
+                self.set_point(next_x, next_y, guard_state);
                 self.current_guard_pos = (next_x, next_y);
             }
+            MapState::GuardRouteHorizontal => {
+                if guard_state == MapState::GuardRouteHorizontal {
+                    return IterateState::Loop;
+                }
+                self.set_point(next_x, next_y, MapState::GuardRouteBiDirectional);
+            }
+            MapState::GuardRouteVertical => {
+                if guard_state == MapState::GuardRouteVertical {
+                    return IterateState::Loop;
+                }
+                self.set_point(next_x, next_y, MapState::GuardRouteBiDirectional);
+            },
+            MapState::GuardRouteBiDirectional => {
+                return IterateState::Loop;
+            }
             MapState::Obstruction => self.rotate_guard(),
+            MapState::CustomObstruction => self.rotate_guard(),
             MapState::GuardRoute => self.current_guard_pos = (next_x, next_y),
             _ => {}
         }
