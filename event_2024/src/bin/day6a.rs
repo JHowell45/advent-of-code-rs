@@ -22,7 +22,6 @@ struct PatrolMap {
     map: Vec<Vec<MapState>>,
     current_guard_pos: (usize, usize),
     current_guard_direction: GuardDirection,
-    guard_positions: HashSet<(usize, usize)>,
 }
 
 impl PatrolMap {
@@ -30,7 +29,6 @@ impl PatrolMap {
         let mut current_guard_pos: (usize, usize) = (0, 0);
         let mut guard_direction: GuardDirection = GuardDirection::North;
         let mut local_map: Vec<Vec<MapState>> = Vec::new();
-        let mut guard_positions: HashSet<(usize, usize)> = HashSet::new();
 
         for (y, row) in map.lines().into_iter().enumerate() {
             let mut r: Vec<MapState> = Vec::new();
@@ -41,7 +39,6 @@ impl PatrolMap {
                     _ => {
                         r.push(MapState::GuardRoute);
                         current_guard_pos = (x, y);
-                        guard_positions.insert((x, y));
 
                         guard_direction = match point {
                             '^' => GuardDirection::North,
@@ -59,7 +56,6 @@ impl PatrolMap {
             map: local_map,
             current_guard_pos: current_guard_pos,
             current_guard_direction: guard_direction,
-            guard_positions: HashSet::new(),
         }
     }
 
@@ -80,7 +76,9 @@ impl PatrolMap {
         }
     }
 
-    fn interate(&self) {}
+    fn interate(&self) {
+
+    }
 
     fn add_guard_position(&self) {}
 
