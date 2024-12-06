@@ -70,8 +70,9 @@ impl PatrolMap {
 
     pub fn get_guard_unique_positions(&mut self) -> usize {
         while self.interate() {
-            self.display_map();
-            sleep(Duration::from_secs(1));
+            // print!("{}[2J", 27 as char);
+            // self.display_map();
+            // sleep(Duration::from_millis(150));
         }
         self.all_guard_points()
     }
@@ -92,10 +93,6 @@ impl PatrolMap {
 
     fn interate(&mut self) -> bool {
         let (next_x, next_y) = self.get_next_point();
-        println!("{:?}", self.current_guard_pos);
-        println!("{next_x:}, {next_y:}");
-        println!("{:?}", self.get_point(next_x, next_y));
-
         if self.guard_outside_boundaries((next_x, next_y)) {
             return false;
         }
