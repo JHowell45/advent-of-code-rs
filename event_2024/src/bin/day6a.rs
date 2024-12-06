@@ -2,12 +2,14 @@ use std::collections::HashSet;
 
 fn main() {}
 
+#[derive(Debug)]
 enum MapState {
     Empty,
     Obstruction,
     Guard,
 }
 
+#[derive(Debug)]
 enum GuardDirection {
     North,
     East,
@@ -15,6 +17,7 @@ enum GuardDirection {
     West,
 }
 
+#[derive(Debug)]
 struct PatrolMap {
     map: Vec<Vec<MapState>>,
     current_guard_pos: (usize, usize),
@@ -60,6 +63,10 @@ impl PatrolMap {
         }
     }
 
+    pub fn get_guard_unique_positions(&mut self) -> usize {
+        0
+    } 
+
     fn interate(&self) {}
 
     fn add_guard_position(&self) {}
@@ -73,5 +80,19 @@ mod tests {
     use rstest::rstest;
 
     #[rstest]
-    fn example() {}
+    #[case("....#.....
+.........#
+..........
+..#.......
+.......#..
+..........
+.#..^.....
+........#.
+#.........
+......#...", 41)]
+    fn example(#[case] map: &str, #[case] unique_points: usize) {
+        let mut map = PatrolMap::from_string(map);
+        println!("{map:?}");
+        assert_eq!(map.get_guard_unique_positions(), unique_points);
+    }
 }
