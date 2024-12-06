@@ -72,7 +72,7 @@ impl PatrolMap {
         while self.interate() {
             self.display_map();
         }
-        0
+        self.all_guard_points()
     }
 
     pub fn display_map(&self) {
