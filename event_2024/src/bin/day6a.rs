@@ -6,7 +6,7 @@ fn main() {
     println!("The gaurd distinct positions are: {}", map.get_guard_unique_positions());
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 enum MapState {
     Empty,
     Obstruction,
@@ -99,7 +99,22 @@ impl PatrolMap {
         if self.guard_outside_boundaries((next_x, next_y)) {
             return false;
         }
+        match self.get_point(x, y) {
+            MapState::Empty => {
+                self.set_point(x, y, MapState::GuardRoute);
+                self.current_guard_pos = (next_x, next_y);
+            }
+            _ => {}
+        }
         return true;
+    }
+
+    fn get_point(&self, x: i32, y: i32) -> MapState {
+        self.map[x as usize][y as usize]
+    }
+
+    fn set_point(&mut self, x: i32, y: i32, state: MapState) {
+        self.map[x as usize][y as usize] = state;
     }
 
     fn guard_outside_boundaries(&self, point: (i32, i32)) -> bool {
