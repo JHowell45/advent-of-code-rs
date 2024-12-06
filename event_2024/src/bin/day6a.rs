@@ -93,17 +93,21 @@ impl PatrolMap {
     fn interate(&mut self) -> bool {
         let (x, y) = self.current_guard_pos;
         let (next_x, next_y) = match self.current_guard_direction {
-            GuardDirection::North => (x, y - 1),
+            GuardDirection::North => (x, y-1),
             GuardDirection::East => (x + 1, y),
             GuardDirection::South => (x, y + 1),
             GuardDirection::West => (x - 1, y),
         };
+        println!("{:?}", self.current_guard_pos);
+        println!("{next_x:}, {next_y:}");
+        println!("{:?}", self.get_point(next_x, next_y));
+
         if self.guard_outside_boundaries((next_x, next_y)) {
             return false;
         }
-        match self.get_point(x, y) {
+        match self.get_point(next_x, next_y) {
             MapState::Empty => {
-                self.set_point(x, y, MapState::GuardRoute);
+                self.set_point(next_x, next_y, MapState::GuardRoute);
                 self.current_guard_pos = (next_x, next_y);
             }
             _ => {}
@@ -112,11 +116,11 @@ impl PatrolMap {
     }
 
     fn get_point(&self, x: i32, y: i32) -> MapState {
-        self.map[x as usize][y as usize]
+        self.map[y as usize][x as usize]
     }
 
     fn set_point(&mut self, x: i32, y: i32, state: MapState) {
-        self.map[x as usize][y as usize] = state;
+        self.map[y as usize][x as usize] = state;
     }
 
     fn guard_outside_boundaries(&self, point: (i32, i32)) -> bool {
