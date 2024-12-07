@@ -1,14 +1,32 @@
 fn main() {}
 
 struct WordSearch {
-
+    pub letters: Vec<Vec<char>>,
+    pub x_size: usize,
+    pub y_size: usize,
 }
 
 impl WordSearch {
-    pub fn from_string(text: &str) -> Self {
+    fn new() -> Self {
         Self {
-            
+            letters: Vec::new(),
+            x_size: 0,
+            y_size: 0
         }
+    }
+    pub fn from_string(text: &str) -> Self {
+        let mut instance = Self::new();
+        let mut x_size: usize = 0;
+        let mut y_size: usize = 0;
+        for row in text.lines().into_iter() {
+            let value: Vec<char> = row.chars().collect();
+            x_size = value.len();
+            instance.letters.push(value);
+            y_size += 1;
+        }
+        instance.x_size = x_size;
+        instance.y_size = y_size;
+        return instance;
     }
 }
 
