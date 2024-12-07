@@ -47,17 +47,13 @@ fn validate_equation(result: i32, numbers: Vec<i32>) -> bool {
 
 fn validate_equation_ops(result: i32, numbers: &Vec<i32>, operators: &Vec<&Operator>) -> bool {
     let mut total = numbers[0];
-    println!("{operators:?}");
     for idx in 1..numbers.len() {
         let v = numbers[idx];
         let op = operators[idx - 1];
-
-        print!("{total:} {op:?} {v:}");
         match op {
             Operator::Add => total += v,
             Operator::Multiply => total *= v,
         }
-        println!(" = {total:} ({result:})");
         if total > result {
             return false;
         }
@@ -69,6 +65,13 @@ fn validate_equation_ops(result: i32, numbers: &Vec<i32>, operators: &Vec<&Opera
 mod tests {
     use super::*;
     use rstest::rstest;
+
+    #[rstest]
+    #[case(190, vec![10, 19], vec![&Operator::Add], false)]
+    #[case(190, vec![10, 19], vec![&Operator::Multiply], true)]
+    fn test_validate_equation_ops(#[case] result: i32, #[case] numbers: Vec<i32>, #[case] ops: Vec<&Operator>, #[case] expected: bool) {
+        assert_eq!(validate_equation_ops(result, &numbers, &ops), expected);
+    }
 
     #[rstest]
     #[case(
