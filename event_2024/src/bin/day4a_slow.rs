@@ -42,14 +42,14 @@ impl WordSearch {
         count
     }
 
-    fn left(self, x: usize, y: usize) -> &str {}
-    fn right(self, x: usize, y: usize) -> &str {}
-    fn top(self, x: usize, y: usize) -> &str {}
-    fn bottom(self, x: usize, y: usize) -> &str {}
-    fn diagonal_top_left(self, x: usize, y: usize) -> &str {}
-    fn diagonal_top_right(self, x: usize, y: usize) -> &str {}
-    fn diagonal_bottom_left(self, x: usize, y: usize) -> &str {}
-    fn diagonal_bottom_right(self, x: usize, y: usize) -> &str {}
+    fn left(self, x: usize, y: usize, word_size: usize) -> &str {}
+    fn right(self, x: usize, y: usize, word_size: usize) -> &str {}
+    fn top(self, x: usize, y: usize, word_size: usize) -> &str {}
+    fn bottom(self, x: usize, y: usize, word_size: usize) -> &str {}
+    fn diagonal_top_left(self, x: usize, y: usize, word_size: usize) -> &str {}
+    fn diagonal_top_right(self, x: usize, y: usize, word_size: usize) -> &str {}
+    fn diagonal_bottom_left(self, x: usize, y: usize, word_size: usize) -> &str {}
+    fn diagonal_bottom_right(self, x: usize, y: usize, word_size: usize) -> &str {}
 
     fn get_value(self, x: usize, y: usize) -> char {
         self.letters[y][x]
