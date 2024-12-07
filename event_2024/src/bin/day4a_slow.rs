@@ -29,7 +29,18 @@ impl WordSearch {
         return instance;
     }
 
-    pub fn word_count(&self, word: &str) -> usize {}
+    pub fn word_count(&self, word: &str) -> usize {
+        let mut count: usize = 0;
+        let first_c: char = word.chars().next().unwrap();
+        for row in self.letters.iter() {
+            for c in row.iter() {
+                if *c == first_c {
+
+                }
+            }
+        }
+        count
+    }
 
     fn get_value(self, x: usize, y: usize) -> char {
         self.letters[y][x]
