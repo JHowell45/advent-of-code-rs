@@ -32,8 +32,8 @@ impl WordSearch {
     pub fn word_count(&self, word: &str) -> usize {
         let mut count: usize = 0;
         let first_c: char = word.chars().next().unwrap();
-        for row in self.letters.iter() {
-            for c in row.iter() {
+        for (y, row) in self.letters.iter().enumerate() {
+            for (idx, c) in row.iter().enumerate() {
                 if *c == first_c {
 
                 }
@@ -41,6 +41,15 @@ impl WordSearch {
         }
         count
     }
+
+    fn left(self, x: usize, y: usize) -> &str {}
+    fn right(self, x: usize, y: usize) -> &str {}
+    fn top(self, x: usize, y: usize) -> &str {}
+    fn bottom(self, x: usize, y: usize) -> &str {}
+    fn diagonal_top_left(self, x: usize, y: usize) -> &str {}
+    fn diagonal_top_right(self, x: usize, y: usize) -> &str {}
+    fn diagonal_bottom_left(self, x: usize, y: usize) -> &str {}
+    fn diagonal_bottom_right(self, x: usize, y: usize) -> &str {}
 
     fn get_value(self, x: usize, y: usize) -> char {
         self.letters[y][x]
