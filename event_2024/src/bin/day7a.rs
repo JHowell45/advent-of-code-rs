@@ -1,6 +1,10 @@
+use core::file_reader::get_file_contents;
+
 use itertools::{repeat_n, Itertools};
 
-fn main() {}
+fn main() {
+    println!("Total calibration result: {}", sum_of_valid_results(get_file_contents(2024, 7).as_str()));
+}
 
 #[derive(Debug, Clone, Copy)]
 enum Operator {
@@ -8,11 +12,11 @@ enum Operator {
     Multiply,
 }
 
-fn sum_of_valid_results(text: &str) -> i32 {
+fn sum_of_valid_results(text: &str) -> i64 {
     text.lines()
         .map(|equation| {
             let (result, numbers) = parse_input(equation);
-            println!("{result:} : {numbers:?}");
+            // println!("{result:} : {numbers:?}");
             if validate_equation(result, numbers) {
                 return result;
             }
@@ -21,29 +25,29 @@ fn sum_of_valid_results(text: &str) -> i32 {
         .sum()
 }
 
-fn parse_input(input: &str) -> (i32, Vec<i32>) {
+fn parse_input(input: &str) -> (i64, Vec<i64>) {
     let split: Vec<&str> = input.split(": ").collect();
     (
-        split[0].parse::<i32>().unwrap(),
+        split[0].parse::<i64>().unwrap(),
         split[1]
             .split(" ")
-            .map(|n| n.parse::<i32>().unwrap())
+            .map(|n| n.parse::<i64>().unwrap())
             .collect(),
     )
 }
 
-fn validate_equation(result: i32, numbers: Vec<i32>) -> bool {
-    println!("{result:}, {numbers:?} || {}", numbers.len() - 1);
+fn validate_equation(result: i64, numbers: Vec<i64>) -> bool {
+    // println!("{result:}, {numbers:?} || {}", numbers.len() - 1);
     for operators in repeat_n(
         vec![Operator::Add, Operator::Multiply].iter(),
         numbers.len() - 1,
     )
     .multi_cartesian_product()
     {
-        println!(
-            "{result:}, {numbers:?} || {} || {operators:?}",
-            numbers.len() - 1
-        );
+        // println!(
+        //     "{result:}, {numbers:?} || {} || {operators:?}",
+        //     numbers.len() - 1
+        // );
         if validate_equation_ops(result, &numbers, &operators) {
             return true;
         }
@@ -51,8 +55,8 @@ fn validate_equation(result: i32, numbers: Vec<i32>) -> bool {
     return false;
 }
 
-fn validate_equation_ops(result: i32, numbers: &Vec<i32>, operators: &Vec<&Operator>) -> bool {
-    let mut total = numbers[0];
+fn validate_equation_ops(result: i64, numbers: &Vec<i64>, operators: &Vec<&Operator>) -> bool {
+    let mut total: i64 = numbers[0];
     for idx in 1..numbers.len() {
         let v = numbers[idx];
         let op = operators[idx - 1];
