@@ -74,6 +74,12 @@ mod tests {
     }
 
     #[rstest]
+    #[case(190, vec![10, 19], true)]
+    fn test_validate_equation(#[case] result: i32, #[case] numbers: Vec<i32>, #[case] expected: bool) {
+        assert_eq!(validate_equation(result, numbers), expected);
+    }
+
+    #[rstest]
     #[case(
         "190: 10 19
 3267: 81 40 27
