@@ -28,6 +28,10 @@ impl WordSearch {
         instance.y_size = y_size;
         return instance;
     }
+
+    fn get_value(self, x: usize, y: usize) -> char {
+        self.letters[y][x]
+    }
 }
 
 #[cfg(test)]
