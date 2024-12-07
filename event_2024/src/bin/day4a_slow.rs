@@ -42,14 +42,19 @@ impl WordSearch {
         count
     }
 
-    fn left(self, x: usize, y: usize, word_size: usize) -> &str {}
-    fn right(self, x: usize, y: usize, word_size: usize) -> &str {}
-    fn top(self, x: usize, y: usize, word_size: usize) -> &str {}
-    fn bottom(self, x: usize, y: usize, word_size: usize) -> &str {}
-    fn diagonal_top_left(self, x: usize, y: usize, word_size: usize) -> &str {}
-    fn diagonal_top_right(self, x: usize, y: usize, word_size: usize) -> &str {}
-    fn diagonal_bottom_left(self, x: usize, y: usize, word_size: usize) -> &str {}
-    fn diagonal_bottom_right(self, x: usize, y: usize, word_size: usize) -> &str {}
+    fn left(self, x: usize, y: usize, word_size: usize) -> Option<String> {
+        if x < word_size {
+            return None;
+        }
+        return Some(self.letters[y][x - word_size..x].iter().collect());
+    }
+    fn right(self, x: usize, y: usize, word_size: usize) -> Option<String> {}
+    fn top(self, x: usize, y: usize, word_size: usize) -> Option<String> {}
+    fn bottom(self, x: usize, y: usize, word_size: usize) -> Option<String> {}
+    fn diagonal_top_left(self, x: usize, y: usize, word_size: usize) -> Option<String> {}
+    fn diagonal_top_right(self, x: usize, y: usize, word_size: usize) -> Option<String> {}
+    fn diagonal_bottom_left(self, x: usize, y: usize, word_size: usize) -> Option<String> {}
+    fn diagonal_bottom_right(self, x: usize, y: usize, word_size: usize) -> Option<String> {}
 
     fn get_value(self, x: usize, y: usize) -> char {
         self.letters[y][x]
