@@ -7,12 +7,12 @@ pub enum Operator {
     Concat,
 }
 
-pub fn sum_of_valid_results(text: &str) -> i64 {
+pub fn sum_of_valid_results(text: &str, operators: Vec<Operator>) -> i64 {
     text.lines()
         .map(|equation| {
             let (result, numbers) = parse_input(equation);
             // println!("{result:} : {numbers:?}");
-            if validate_equation(result, numbers) {
+            if validate_equation(result, numbers, &operators) {
                 return result;
             }
             return 0;
@@ -31,14 +31,9 @@ pub fn parse_input(input: &str) -> (i64, Vec<i64>) {
     )
 }
 
-pub fn validate_equation(result: i64, numbers: Vec<i64>) -> bool {
+pub fn validate_equation(result: i64, numbers: Vec<i64>, operators: &Vec<Operator>) -> bool {
     // println!("{result:}, {numbers:?} || {}", numbers.len() - 1);
-    for operators in repeat_n(
-        vec![Operator::Add, Operator::Multiply].iter(),
-        numbers.len() - 1,
-    )
-    .multi_cartesian_product()
-    {
+    for operators in repeat_n(operators.iter(), numbers.len() - 1).multi_cartesian_product() {
         // println!(
         //     "{result:}, {numbers:?} || {} || {operators:?}",
         //     numbers.len() - 1
