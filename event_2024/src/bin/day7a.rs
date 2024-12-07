@@ -1,4 +1,4 @@
-use itertools::Itertools;
+use itertools::{repeat_n, Itertools};
 
 fn main() {}
 
@@ -33,11 +33,17 @@ fn parse_input(input: &str) -> (i32, Vec<i32>) {
 }
 
 fn validate_equation(result: i32, numbers: Vec<i32>) -> bool {
-    for operators in [Operator::Add, Operator::Multiply]
-        .iter()
-        .combinations(numbers.len() - 1)
+    println!("{result:}, {numbers:?} || {}", numbers.len() - 1);
+    for operators in repeat_n(
+        vec![Operator::Add, Operator::Multiply].iter(),
+        numbers.len() - 1,
+    )
+    .multi_cartesian_product()
     {
-        println!("ops: {operators:?}");
+        println!(
+            "{result:}, {numbers:?} || {} || {operators:?}",
+            numbers.len() - 1
+        );
         if validate_equation_ops(result, &numbers, &operators) {
             return true;
         }
@@ -69,7 +75,12 @@ mod tests {
     #[rstest]
     #[case(190, vec![10, 19], vec![&Operator::Add], false)]
     #[case(190, vec![10, 19], vec![&Operator::Multiply], true)]
-    fn test_validate_equation_ops(#[case] result: i32, #[case] numbers: Vec<i32>, #[case] ops: Vec<&Operator>, #[case] expected: bool) {
+    fn test_validate_equation_ops(
+        #[case] result: i32,
+        #[case] numbers: Vec<i32>,
+        #[case] ops: Vec<&Operator>,
+        #[case] expected: bool,
+    ) {
         assert_eq!(validate_equation_ops(result, &numbers, &ops), expected);
     }
 
@@ -83,7 +94,11 @@ mod tests {
     #[case(192, vec![17, 8, 14], false)]
     #[case(21037, vec![9, 7, 18, 13], false)]
     #[case(292, vec![11, 6, 16, 20], true)]
-    fn test_validate_equation(#[case] result: i32, #[case] numbers: Vec<i32>, #[case] expected: bool) {
+    fn test_validate_equation(
+        #[case] result: i32,
+        #[case] numbers: Vec<i32>,
+        #[case] expected: bool,
+    ) {
         assert_eq!(validate_equation(result, numbers), expected);
     }
 
