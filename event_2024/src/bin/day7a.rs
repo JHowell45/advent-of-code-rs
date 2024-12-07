@@ -81,8 +81,8 @@ mod tests {
     #[case(190, vec![10, 19], vec![&Operator::Add], false)]
     #[case(190, vec![10, 19], vec![&Operator::Multiply], true)]
     fn test_validate_equation_ops(
-        #[case] result: i32,
-        #[case] numbers: Vec<i32>,
+        #[case] result: i64,
+        #[case] numbers: Vec<i64>,
         #[case] ops: Vec<&Operator>,
         #[case] expected: bool,
     ) {
@@ -100,8 +100,8 @@ mod tests {
     #[case(21037, vec![9, 7, 18, 13], false)]
     #[case(292, vec![11, 6, 16, 20], true)]
     fn test_validate_equation(
-        #[case] result: i32,
-        #[case] numbers: Vec<i32>,
+        #[case] result: i64,
+        #[case] numbers: Vec<i64>,
         #[case] expected: bool,
     ) {
         assert_eq!(validate_equation(result, numbers), expected);
@@ -120,7 +120,7 @@ mod tests {
 292: 11 6 16 20",
         3749
     )]
-    fn example(#[case] data: &str, #[case] expected: i32) {
+    fn example(#[case] data: &str, #[case] expected: i64) {
         assert_eq!(sum_of_valid_results(data), expected);
     }
 }
