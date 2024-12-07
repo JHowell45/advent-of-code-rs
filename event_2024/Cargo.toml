@@ -7,3 +7,4 @@ edition = "2021"
 rstest = "0.23.0"
 regex = "1.11.1"
 core = { path = "../core" }
+itertools = "0.13.0"
