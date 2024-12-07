@@ -10,6 +10,7 @@ fn main() {
 enum Operator {
     Add,
     Multiply,
+    Concat,
 }
 
 fn sum_of_valid_results(text: &str) -> i64 {
