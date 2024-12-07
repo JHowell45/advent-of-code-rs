@@ -1,5 +1,6 @@
 fn main() {}
 
+#[derive(Debug, Clone, Copy)]
 enum Operator {
     Plus,
     Multiply
@@ -8,7 +9,7 @@ enum Operator {
 fn sum_of_valid_results(text: &str) -> i32 {
     text.lines().map(|equation| {
         let (result, numbers) = parse_input(equation);
-        if evaluate_function(result, numbers) {
+        if validate_equation(result, numbers) {
             return result;
         }
         return 0;
@@ -23,7 +24,24 @@ fn parse_input(input: &str) -> (i32, Vec<i32>) {
     )
 }
 
-fn evaluate_function(result: i32, numbers: Vec<i32>) -> bool {}
+fn validate_equation(result: i32, numbers: Vec<i32>) -> bool {
+    let mut operators = vec![Operator::Plus; numbers.len() - 1];
+}
+
+fn evaluate_equation_ops(result: i32, numbers: Vec<i32>, operators: Vec<Operator>) -> bool {
+    let mut total = numbers[0];
+    for idx in 1..numbers.len() {
+        let v = numbers[idx];
+        match operators[idx - 1] {
+            Operator::Plus => total += v,
+            Operator::Multiply => total *= v,
+        }
+        if total > result {
+            return false;
+        }
+    }
+    return true;
+}
 
 #[cfg(test)]
 mod tests {
