@@ -14,7 +14,7 @@ impl WordSearch {
             y_size: 0
         }
     }
-    pub fn from_string(text: &str) -> Self {
+    pub fn from_string(text: String) -> Self {
         let mut instance = Self::new();
         let mut x_size: usize = 0;
         let mut y_size: usize = 0;
