@@ -35,7 +35,11 @@ impl WordSearch {
         for (y, row) in self.letters.iter().enumerate() {
             for (idx, c) in row.iter().enumerate() {
                 if *c == first_c {
-
+                    if let Some(local_word) = self.left(idx, y, word.len()) {
+                        if word == local_word.as_str() {
+                            count += 1;
+                        }
+                    }
                 }
             }
         }
