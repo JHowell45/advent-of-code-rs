@@ -29,6 +29,8 @@ impl WordSearch {
         return instance;
     }
 
+    pub fn word_count(&self, word: &str) -> usize {}
+
     fn get_value(self, x: usize, y: usize) -> char {
         self.letters[y][x]
     }
