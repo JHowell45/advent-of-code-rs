@@ -12,6 +12,7 @@ fn sum_of_valid_results(text: &str) -> i32 {
     text.lines()
         .map(|equation| {
             let (result, numbers) = parse_input(equation);
+            println!("{result:} : {numbers:?}");
             if validate_equation(result, numbers) {
                 return result;
             }
@@ -36,6 +37,7 @@ fn validate_equation(result: i32, numbers: Vec<i32>) -> bool {
         .iter()
         .combinations(numbers.len() - 1)
     {
+        println!("ops: {operators:?}");
         if validate_equation_ops(result, &numbers, &operators) {
             return true;
         }
@@ -48,15 +50,19 @@ fn validate_equation_ops(result: i32, numbers: &Vec<i32>, operators: &Vec<&Opera
     println!("{operators:?}");
     for idx in 1..numbers.len() {
         let v = numbers[idx];
-        match operators[idx - 1] {
+        let op = operators[idx - 1];
+
+        print!("{total:} {op:?} {v:}");
+        match op {
             Operator::Add => total += v,
             Operator::Multiply => total *= v,
         }
+        println!(" = {total:} ({result:})");
         if total > result {
             return false;
         }
     }
-    return true;
+    return total == result;
 }
 
 #[cfg(test)]
