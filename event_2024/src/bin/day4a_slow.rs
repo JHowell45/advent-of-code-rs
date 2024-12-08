@@ -45,6 +45,36 @@ impl WordSearch {
                             count += 1;
                         }
                     }
+                    if let Some(local_word) = self.top(idx, y, word.len()) {
+                        if word == local_word.as_str() {
+                            count += 1;
+                        }
+                    }
+                    if let Some(local_word) = self.bottom(idx, y, self.y_size, word.len()) {
+                        if word == local_word.as_str() {
+                            count += 1;
+                        }
+                    }
+                    if let Some(local_word) = self.diagonal_top_left(idx, y, word.len()) {
+                        if word == local_word.as_str() {
+                            count += 1;
+                        }
+                    }
+                    if let Some(local_word) = self.diagonal_top_right(idx, y, self.x_size, word.len()) {
+                        if word == local_word.as_str() {
+                            count += 1;
+                        }
+                    }
+                    if let Some(local_word) = self.diagonal_bottom_left(idx, y, self.y_size, word.len()) {
+                        if word == local_word.as_str() {
+                            count += 1;
+                        }
+                    }
+                    if let Some(local_word) = self.diagonal_bottom_right(idx, y, self.x_size, self.y_size, word.len()) {
+                        if word == local_word.as_str() {
+                            count += 1;
+                        }
+                    }
                 }
             }
         }
@@ -91,7 +121,7 @@ impl WordSearch {
     }
 
     fn diagonal_top_right(&self, x: usize, y: usize, x_size: usize, word_size: usize) -> Option<String> {
-        if x > x_size - word_size && y < word_size {
+        if x >= x_size - word_size && y < word_size {
             return None;
         }
         let mut res: String = String::from("");
@@ -113,7 +143,7 @@ impl WordSearch {
     }
 
     fn diagonal_bottom_right(&self, x: usize, y: usize, x_size: usize, y_size: usize, word_size: usize) -> Option<String> {
-        if x > x_size - word_size && y >= y_size - word_size {
+        if x >= x_size - word_size && y >= y_size - word_size {
             return None;
         }
         let mut res: String = String::from("");
