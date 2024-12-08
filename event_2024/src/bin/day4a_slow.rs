@@ -40,6 +40,11 @@ impl WordSearch {
                             count += 1;
                         }
                     }
+                    if let Some(local_word) = self.right(idx, y, self.x_size, word.len()) {
+                        if word == local_word.as_str() {
+                            count += 1;
+                        }
+                    }
                 }
             }
         }
@@ -52,8 +57,11 @@ impl WordSearch {
         }
         return Some(self.letters[y][x - word_size..x].iter().collect());
     }
-    fn right(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
-        None
+    fn right(&self, x: usize, y: usize, x_size: usize, word_size: usize) -> Option<String> {
+        if x >= x_size - word_size {
+            return None;
+        }
+        return Some(self.letters[y][x..x + word_size].iter().collect());
     }
     fn top(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
         None
