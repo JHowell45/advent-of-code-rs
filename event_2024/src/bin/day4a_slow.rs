@@ -11,7 +11,7 @@ impl WordSearch {
         Self {
             letters: Vec::new(),
             x_size: 0,
-            y_size: 0
+            y_size: 0,
         }
     }
     pub fn from_string(text: String) -> Self {
