@@ -26,6 +26,10 @@ impl Point {
     pub fn from_usize(x: usize, y: usize) -> Self {
         Self::new(x as i32, y as i32)
     }
+
+    pub fn distance(&self) -> i32 {
+        self.x.abs() + self.y.abs()
+    }
 }
 
 impl Add for Point {
