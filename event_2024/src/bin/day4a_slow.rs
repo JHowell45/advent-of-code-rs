@@ -56,7 +56,7 @@ impl WordSearch {
                             count += 1;
                         }
                     }
-                    if let Some(local_word) = self.diagonal_top_left(x, y, word.len()) {
+                    if let Some(local_word) = self.diagonal_top_left(x, y, self.y_size, word.len()) {
                         if word == local_word.as_str() {
                             count += 1;
                         }
@@ -118,15 +118,15 @@ impl WordSearch {
         return None;
     }
 
-    fn diagonal_top_left(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
-        if x < word_size && y < word_size {
-            return None;
+    fn diagonal_top_left(&self, x: usize, y: usize, y_size: usize, word_size: usize) -> Option<String> {
+        if x > word_size - 1 && y >= word_size - 1 && y < y_size {
+            let mut res: String = String::from("");
+            for idx in 0..word_size {
+                res.push(self.letters[y - idx][x - idx]);
+            }
+            return Some(res);
         }
-        let mut res: String = String::from("");
-        for idx in 0..word_size {
-            res.push(self.letters[y - idx][x - idx]);
-        }
-        Some(res)
+        return None;
     }
 
     fn diagonal_top_right(&self, x: usize, y: usize, x_size: usize, word_size: usize) -> Option<String> {
@@ -293,7 +293,7 @@ mod tests {
         let mut words: Vec<Option<String>> = Vec::new();
         for (y, row) in search.letters.iter().enumerate() {
             for (x, _) in row.iter().enumerate() {
-                words.push(search.diagonal_top_left(x, y, wordl));
+                words.push(search.diagonal_top_left(x, y, search.y_size, wordl));
             }
         }
         assert_eq!(words, expected);
