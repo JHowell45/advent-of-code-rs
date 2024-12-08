@@ -10,14 +10,14 @@ fn main() {
 
 
 struct FrequencyMap {
-    antennna_locations: HashMap<char, HashSet<(usize, usize)>>,
+    antennna_locations: HashMap<char, HashSet<(i32, i32)>>,
     x_dimension: usize,
     y_dimension: usize,
 }
 
 impl FrequencyMap {
     pub fn from_map(map: &str) -> Self {
-        let mut antennna_locations: HashMap<char, HashSet<(usize, usize)>> = HashMap::new();
+        let mut antennna_locations: HashMap<char, HashSet<(i32, i32)>> = HashMap::new();
         let mut x: usize = 0;
         let mut y: usize = map.lines().try_len().unwrap();
         for (y_idx, row) in map.lines().into_iter().enumerate() {
@@ -45,8 +45,14 @@ impl FrequencyMap {
     }
 
     pub fn unique_antinode_locations(&self) -> usize {
-        let antinode_locations: HashSet<(usize, usize)> = HashSet::new();
+        let antinode_locations: HashSet<(i32, i32)> = HashSet::new();
         return antinode_locations.len();
+    }
+
+    fn calculate_distance(&self, from: (i32, i32), to: (i32, i32)) -> (i32, i32) {
+        let (from_x, from_y) = from;
+        let (to_x, to_y) = to;
+        ((to_x - from_x), (to_y - from_y))
     }
 }
 
