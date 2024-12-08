@@ -1,9 +1,11 @@
+use core::file_reader::get_file_contents;
 use std::collections::{HashMap, HashSet};
 
 use itertools::Itertools;
 
 fn main() {
-    println!("Unique antinode locations: {}", 0);
+    let map = FrequencyMap::from_map(get_file_contents(2024, 8).as_str());
+    println!("Unique antinode locations: {}", map.unique_antinode_locations());
 }
 
 struct Antenna {
@@ -54,7 +56,7 @@ impl FrequencyMap {
         }
     }
 
-    pub fn unique_antinode_locations() -> usize {
+    pub fn unique_antinode_locations(&self) -> usize {
         let antinode_locations: HashSet<(usize, usize)> = HashSet::new();
         return antinode_locations.len();
     }
