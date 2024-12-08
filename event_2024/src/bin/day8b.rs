@@ -8,18 +8,6 @@ fn main() {
     println!("Unique antinode locations: {}", map.unique_antinode_locations());
 }
 
-struct Antenna {
-    frequency: String,
-    location: (usize, usize),
-}
-impl Antenna {
-    pub fn new(frequency: String, location: (usize, usize)) -> Self {
-        Self {
-            frequency,
-            location,
-        }
-    }
-}
 
 struct FrequencyMap {
     antennna_locations: HashMap<char, HashSet<(usize, usize)>>,
