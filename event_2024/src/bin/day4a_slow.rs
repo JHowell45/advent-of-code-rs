@@ -55,29 +55,42 @@ impl WordSearch {
         if x < word_size {
             return None;
         }
-        return Some(self.letters[y][x - word_size..x].iter().collect());
+        Some(self.letters[y][x - word_size..x].iter().rev().collect())
     }
+
     fn right(&self, x: usize, y: usize, x_size: usize, word_size: usize) -> Option<String> {
         if x >= x_size - word_size {
             return None;
         }
-        return Some(self.letters[y][x..x + word_size].iter().collect());
+        Some(self.letters[y][x..x + word_size].iter().collect())
     }
+
     fn top(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
-        None
+        if y < word_size {
+            return None;
+        }
+        Some(self.letters[y - word_size..y][x].iter().rev().collect())
     }
-    fn bottom(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
-        None
+
+    fn bottom(&self, x: usize, y: usize, y_size: usize, word_size: usize) -> Option<String> {
+        if y >= y_size - word_size {
+            return None;
+        }
+        Some(self.letters[y..y + word_size][x].iter().collect())
     }
+
     fn diagonal_top_left(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
         None
     }
+
     fn diagonal_top_right(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
         None
     }
+
     fn diagonal_bottom_left(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
         None
     }
+
     fn diagonal_bottom_right(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
         None
     }
