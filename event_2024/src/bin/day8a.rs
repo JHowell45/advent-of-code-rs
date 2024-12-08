@@ -1,15 +1,15 @@
 use core::file_reader::get_file_contents;
-use std::{collections::{HashMap, HashSet}, fmt::Display, iter::repeat_n, ops::{Add, Sub}};
+use std::{cmp::Ordering, collections::{HashMap, HashSet}, fmt::Display, iter::repeat_n, ops::{Add, Sub}};
 
 use itertools::Itertools;
 
 fn main() {
     let map = FrequencyMap::from_map(get_file_contents(2024, 8).as_str());
-    map.display_map();
+    map.display_map(None);
     println!("Unique antinode locations: {}", map.unique_antinode_locations());
 }
 
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Debug, Copy, Clone, Hash)]
 struct Point {
     pub x: i32,
     pub y: i32
@@ -52,6 +52,39 @@ impl Sub for Point {
         }
     }
 }
+
+impl PartialOrd for Point {
+    fn ge(&self, other: &Self) -> bool {
+        self.x >= other.x && self.y >= other.y
+    }
+
+    fn gt(&self, other: &Self) -> bool {
+        self.x > other.x && self.y > other.y
+    }
+
+    fn le(&self, other: &Self) -> bool {
+        self.x <= other.x && self.y <= other.y
+    }
+
+    fn lt(&self, other: &Self) -> bool {
+        self.x < other.x && self.y < other.y
+    }
+
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        if self.x == other.x && self.y == other.y {
+            return Some(std::cmp::Ordering::Equal);
+        }
+        return None;
+    }
+}
+
+impl PartialEq for Point {
+    fn eq(&self, other: &Self) -> bool {
+        self.x == other.x && self.y == other.y
+    }
+}
+
+impl Eq for Point {}
 
 impl Display for Point {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -107,10 +140,10 @@ impl FrequencyMap {
                     let antinode_a: Point = a.clone() - d.clone();
                     let antinode_b: Point = b.clone() + d.clone();
 
-                    if antinode_a > Point::origin() && antinode_a < self.max_dimension {
+                    if antinode_a >= Point::origin() && antinode_a <= self.max_dimension {
                         antinode_locations.insert(antinode_a);
                     }
-                    if antinode_b > Point::origin() && antinode_b < self.max_dimension {
+                    if antinode_b >= Point::origin() && antinode_b <= self.max_dimension {
                         antinode_locations.insert(antinode_b);
                     }
 
@@ -121,13 +154,21 @@ impl FrequencyMap {
                 }
             }
         }
+        self.display_map(Some(antinode_locations.clone()));
         return antinode_locations.len();
     }
 
-    pub fn display_map(&self) {
+    pub fn display_map(&self, antinodes: Option<HashSet<Point>>) {
         for y in 0..self.max_dimension.y {
             for x in 0..self.max_dimension.x {
-                match self.slow_antenna_check(Point::new(x, y)) {
+                let p = Point::new(x, y);
+                if let Some(ref check) = antinodes {
+                    if check.contains(&p) {
+                        print!("#");
+                        continue;
+                    }
+                }
+                match self.slow_antenna_check(p) {
                     Some(c) => print!("{c:}"),
                     None => print!("."),
                 }
@@ -167,7 +208,7 @@ mod tests {
 ............", 14)]
     fn example(#[case] input: &str, #[case] unique_locations: usize) {
         let map = FrequencyMap::from_map(input);
-        map.display_map();
+        map.display_map(None);
         println!("Max Dim: {}", map.max_dimension);
         assert_eq!(map.unique_antinode_locations(), unique_locations);
     }
