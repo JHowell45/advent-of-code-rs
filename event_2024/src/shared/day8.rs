@@ -188,22 +188,6 @@ impl FrequencyMap {
 
     pub fn inline_antinode_locations(&self) -> usize {
         let mut inline_antinodes: HashSet<Point> = HashSet::new();
-        // for y in 0..self.max_dimension.y {
-        //     for x in 0..self.max_dimension.x {
-        //         let p = Point::new(x, y);
-        //         for (k, points) in self.antennna_locations.iter() {
-        //             println!("{k:} : {points:?}");
-        //             for x in repeat_n(points.iter(), 2).multi_cartesian_product() {
-        //                 let (a, b) = (x[0], x[1]);
-        //                 if a != b {
-        //                     if (a.clone() - p.clone()).distance() == (b.clone() - p.clone()).distance() {
-        //                         inline_antinodes.insert(p);
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
         for (k, points) in self.antennna_locations.iter() {
             println!("{k:}");
             for x in repeat_n(points.iter(), 2).multi_cartesian_product() {
