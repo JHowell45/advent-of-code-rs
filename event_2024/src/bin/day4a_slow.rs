@@ -180,12 +180,13 @@ mod tests {
         #[case] expected: Vec<Option<String>>,
     ) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search
-            .letters
-            .iter()
-            .enumerate()
-            .map(|(idx, _c)| search.left(idx, wordl))
-            .collect();
+        let mut words: Vec<Option<String>> = Vec::new();
+        for (y, row) in search.letters.iter().enumerate() {
+            for (x, _) in row.iter().enumerate() {
+                words.push(search.left(x, y, wordl));
+            }
+        }
+        println!("{words:?}");
         assert_eq!(words, expected);
     }
 
@@ -206,12 +207,12 @@ mod tests {
         #[case] expected: Vec<Option<String>>,
     ) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search
-            .letters
-            .iter()
-            .enumerate()
-            .map(|(idx, _c)| search.right(idx, wordl))
-            .collect();
+        let mut words: Vec<Option<String>> = Vec::new();
+        for (y, row) in search.letters.iter().enumerate() {
+            for (x, _) in row.iter().enumerate() {
+                words.push(search.right(x, y, search.x_size, wordl));
+            }
+        }
         println!("{words:?}");
         assert_eq!(words, expected);
     }
@@ -229,12 +230,12 @@ mod tests {
     ])]
     fn test_top(#[case] text: String, #[case] wordl: usize, #[case] expected: Vec<Option<String>>) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search
-            .letters
-            .iter()
-            .enumerate()
-            .map(|(idx, _c)| search.top(idx, wordl))
-            .collect();
+        let mut words: Vec<Option<String>> = Vec::new();
+        for (y, row) in search.letters.iter().enumerate() {
+            for (x, _) in row.iter().enumerate() {
+                words.push(search.top(x, y, wordl));
+            }
+        }
         println!("{words:?}");
         assert_eq!(words, expected);
     }
@@ -253,12 +254,12 @@ mod tests {
         #[case] expected: Vec<Option<String>>,
     ) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search
-            .letters
-            .iter()
-            .enumerate()
-            .map(|(idx, _c)| search.bottom(idx, wordl))
-            .collect();
+        let mut words: Vec<Option<String>> = Vec::new();
+        for (y, row) in search.letters.iter().enumerate() {
+            for (x, _) in row.iter().enumerate() {
+                words.push(search.bottom(x, y, search.y_size, wordl));
+            }
+        }
         println!("{words:?}");
         assert_eq!(words, expected);
     }
@@ -282,12 +283,12 @@ mod tests {
         #[case] expected: Vec<Option<String>>,
     ) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search
-            .letters
-            .iter()
-            .enumerate()
-            .map(|(idx, _c)| search.diagonal_top_left(idx, wordl))
-            .collect();
+        let mut words: Vec<Option<String>> = Vec::new();
+        for (y, row) in search.letters.iter().enumerate() {
+            for (x, _) in row.iter().enumerate() {
+                words.push(search.diagonal_top_left(x, y, wordl));
+            }
+        }
         println!("{words:?}");
         assert_eq!(words, expected);
     }
@@ -311,12 +312,12 @@ mod tests {
         #[case] expected: Vec<Option<String>>,
     ) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search
-            .letters
-            .iter()
-            .enumerate()
-            .map(|(idx, _c)| search.diagonal_top_right(idx, wordl))
-            .collect();
+        let mut words: Vec<Option<String>> = Vec::new();
+        for (y, row) in search.letters.iter().enumerate() {
+            for (x, _) in row.iter().enumerate() {
+                words.push(search.diagonal_top_right(x, y, search.x_size, wordl));
+            }
+        }
         println!("{words:?}");
         assert_eq!(words, expected);
     }
@@ -340,12 +341,12 @@ mod tests {
         #[case] expected: Vec<Option<String>>,
     ) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search
-            .letters
-            .iter()
-            .enumerate()
-            .map(|(idx, _c)| search.diagonal_bottom_left(idx, wordl))
-            .collect();
+        let mut words: Vec<Option<String>> = Vec::new();
+        for (y, row) in search.letters.iter().enumerate() {
+            for (x, _) in row.iter().enumerate() {
+                words.push(search.diagonal_bottom_left(x, y, search.y_size, wordl));
+            }
+        }
         println!("{words:?}");
         assert_eq!(words, expected);
     }
@@ -369,12 +370,12 @@ mod tests {
         #[case] expected: Vec<Option<String>>,
     ) {
         let search = WordSearch::from_string(text);
-        let words: Vec<Option<String>> = search
-            .letters
-            .iter()
-            .enumerate()
-            .map(|(idx, _c)| search.diagonal_bottom_right(idx, wordl))
-            .collect();
+        let mut words: Vec<Option<String>> = Vec::new();
+        for (y, row) in search.letters.iter().enumerate() {
+            for (x, _) in row.iter().enumerate() {
+                words.push(search.diagonal_bottom_right(x, y, search.x_size, search.y_size, wordl));
+            }
+        }
         println!("{words:?}");
         assert_eq!(words, expected);
     }
