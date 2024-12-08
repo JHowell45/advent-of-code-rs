@@ -82,17 +82,17 @@ impl WordSearch {
     }
 
     fn left(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
-        if x < word_size {
-            return None;
+        if x >= word_size - 1 {
+            return Some(self.letters[y][x + 1 - word_size..=x].iter().rev().collect());
         }
-        Some(self.letters[y][x - word_size..x].iter().rev().collect())
+        return None;
     }
 
     fn right(&self, x: usize, y: usize, x_size: usize, word_size: usize) -> Option<String> {
-        if x >= x_size - word_size {
-            return None;
+        if x < x_size - word_size + 1 {
+            return Some(self.letters[y][x..x + word_size].iter().collect());
         }
-        Some(self.letters[y][x..x + word_size].iter().collect())
+        return None;
     }
 
     fn top(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
@@ -186,7 +186,6 @@ mod tests {
                 words.push(search.left(x, y, wordl));
             }
         }
-        println!("{words:?}");
         assert_eq!(words, expected);
     }
 
@@ -213,7 +212,6 @@ mod tests {
                 words.push(search.right(x, y, search.x_size, wordl));
             }
         }
-        println!("{words:?}");
         assert_eq!(words, expected);
     }
 
@@ -236,7 +234,6 @@ mod tests {
                 words.push(search.top(x, y, wordl));
             }
         }
-        println!("{words:?}");
         assert_eq!(words, expected);
     }
 
@@ -260,7 +257,6 @@ mod tests {
                 words.push(search.bottom(x, y, search.y_size, wordl));
             }
         }
-        println!("{words:?}");
         assert_eq!(words, expected);
     }
 
@@ -289,7 +285,6 @@ mod tests {
                 words.push(search.diagonal_top_left(x, y, wordl));
             }
         }
-        println!("{words:?}");
         assert_eq!(words, expected);
     }
 
@@ -318,7 +313,6 @@ mod tests {
                 words.push(search.diagonal_top_right(x, y, search.x_size, wordl));
             }
         }
-        println!("{words:?}");
         assert_eq!(words, expected);
     }
 
@@ -347,7 +341,6 @@ mod tests {
                 words.push(search.diagonal_bottom_left(x, y, search.y_size, wordl));
             }
         }
-        println!("{words:?}");
         assert_eq!(words, expected);
     }
 
@@ -376,7 +369,6 @@ mod tests {
                 words.push(search.diagonal_bottom_right(x, y, search.x_size, search.y_size, wordl));
             }
         }
-        println!("{words:?}");
         assert_eq!(words, expected);
     }
 
