@@ -71,9 +71,9 @@ impl FrequencyMap {
     }
 
     fn slow_antenna_check(&self, point: (i32, i32)) -> Option<char> {
-        for points in self.antennna_locations.values() {
-            if let Some(p) = points.get(&point) {
-                return Some(p);
+        for (k, points) in self.antennna_locations.iter() {
+            if let Some(_) = points.get(&point) {
+                return Some(*k);
             }
         }
         return None;
