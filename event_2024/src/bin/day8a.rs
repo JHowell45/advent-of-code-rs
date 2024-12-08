@@ -5,9 +5,11 @@ use event_2024::shared::day8::FrequencyMap;
 fn main() {
     let map = FrequencyMap::from_map(get_file_contents(2024, 8).as_str());
     map.display_map(None);
-    println!("Unique antinode locations: {}", map.unique_antinode_locations());
+    println!(
+        "Unique antinode locations: {}",
+        map.unique_antinode_locations()
+    );
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -15,7 +17,8 @@ mod tests {
     use rstest::rstest;
 
     #[rstest]
-    #[case("............
+    #[case(
+        "............
 ........0...
 .....0......
 .......0....
@@ -26,7 +29,9 @@ mod tests {
 ........A...
 .........A..
 ............
-............", 14)]
+............",
+        14
+    )]
     fn example(#[case] input: &str, #[case] unique_locations: usize) {
         let map = FrequencyMap::from_map(input);
         map.display_map(None);

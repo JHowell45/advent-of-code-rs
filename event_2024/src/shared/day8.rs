@@ -1,18 +1,22 @@
-use std::{cmp::Ordering, collections::{HashMap, HashSet}, fmt::Display, iter::repeat_n, ops::{Add, Sub}};
+use std::{
+    cmp::Ordering,
+    collections::{HashMap, HashSet},
+    fmt::Display,
+    iter::repeat_n,
+    ops::{Add, Sub},
+};
 
 use itertools::Itertools;
 
 #[derive(Debug, Copy, Clone, Hash)]
 pub struct Point {
     pub x: i32,
-    pub y: i32
+    pub y: i32,
 }
 
 impl Point {
     pub fn new(x: i32, y: i32) -> Self {
-        Self {
-            x, y
-        }
+        Self { x, y }
     }
 
     pub fn origin() -> Self {
@@ -85,7 +89,6 @@ impl Display for Point {
     }
 }
 
-
 pub struct FrequencyMap {
     antennna_locations: HashMap<char, HashSet<Point>>,
     pub max_dimension: Point,
@@ -118,7 +121,7 @@ impl FrequencyMap {
         }
         Self {
             antennna_locations,
-            max_dimension: Point::from_usize(x, y)
+            max_dimension: Point::from_usize(x, y),
         }
     }
 
@@ -143,7 +146,6 @@ impl FrequencyMap {
                     println!("\t{a:} -> {b:} == {d:}");
                     println!("\t Antinode A: {antinode_a:}");
                     println!("\tAntinode B: {antinode_b:}");
-                    
                 }
             }
         }
