@@ -159,12 +159,14 @@ impl FrequencyMap {
     }
 
     pub fn display_map(&self, antinodes: Option<HashSet<Point>>) {
+        let mut count: usize = 0;
         for y in 0..self.max_dimension.y {
             for x in 0..self.max_dimension.x {
                 let p = Point::new(x, y);
                 if let Some(ref check) = antinodes {
                     if check.contains(&p) {
                         print!("#");
+                        count += 1;
                         continue;
                     }
                 }
@@ -176,6 +178,7 @@ impl FrequencyMap {
             println!();
         }
         println!();
+        println!("count: {count:}");
     }
 
     fn slow_antenna_check(&self, point: Point) -> Option<char> {
