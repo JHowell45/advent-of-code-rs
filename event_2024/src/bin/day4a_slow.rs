@@ -1,5 +1,6 @@
 fn main() {}
 
+#[derive(Debug)]
 struct WordSearch {
     pub letters: Vec<Vec<char>>,
     pub x_size: usize,
@@ -33,44 +34,44 @@ impl WordSearch {
         let mut count: usize = 0;
         let first_c: char = word.chars().next().unwrap();
         for (y, row) in self.letters.iter().enumerate() {
-            for (idx, c) in row.iter().enumerate() {
+            for (x, c) in row.iter().enumerate() {
                 if *c == first_c {
-                    if let Some(local_word) = self.left(idx, y, word.len()) {
+                    if let Some(local_word) = self.left(x, y, word.len()) {
                         if word == local_word.as_str() {
                             count += 1;
                         }
                     }
-                    if let Some(local_word) = self.right(idx, y, self.x_size, word.len()) {
+                    if let Some(local_word) = self.right(x, y, self.x_size, word.len()) {
                         if word == local_word.as_str() {
                             count += 1;
                         }
                     }
-                    if let Some(local_word) = self.top(idx, y, word.len()) {
+                    if let Some(local_word) = self.top(x, y, self.y_size, word.len()) {
                         if word == local_word.as_str() {
                             count += 1;
                         }
                     }
-                    if let Some(local_word) = self.bottom(idx, y, self.y_size, word.len()) {
+                    if let Some(local_word) = self.bottom(x, y, self.y_size, word.len()) {
                         if word == local_word.as_str() {
                             count += 1;
                         }
                     }
-                    if let Some(local_word) = self.diagonal_top_left(idx, y, word.len()) {
+                    if let Some(local_word) = self.diagonal_top_left(x, y, word.len()) {
                         if word == local_word.as_str() {
                             count += 1;
                         }
                     }
-                    if let Some(local_word) = self.diagonal_top_right(idx, y, self.x_size, word.len()) {
+                    if let Some(local_word) = self.diagonal_top_right(x, y, self.x_size, word.len()) {
                         if word == local_word.as_str() {
                             count += 1;
                         }
                     }
-                    if let Some(local_word) = self.diagonal_bottom_left(idx, y, self.y_size, word.len()) {
+                    if let Some(local_word) = self.diagonal_bottom_left(x, y, self.y_size, word.len()) {
                         if word == local_word.as_str() {
                             count += 1;
                         }
                     }
-                    if let Some(local_word) = self.diagonal_bottom_right(idx, y, self.x_size, self.y_size, word.len()) {
+                    if let Some(local_word) = self.diagonal_bottom_right(x, y, self.x_size, self.y_size, word.len()) {
                         if word == local_word.as_str() {
                             count += 1;
                         }
@@ -95,11 +96,16 @@ impl WordSearch {
         return None;
     }
 
-    fn top(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
-        if y < word_size - 1 {
-            return None;
+    fn top(&self, x: usize, y: usize, y_size: usize, word_size: usize) -> Option<String> {
+        if y >= word_size - 1 && y < y_size {
+            let idx = y + 1 - word_size;
+            let mut word: String = String::from("");
+            for letters in self.letters[idx..=y].iter().rev() {
+                word.push(letters[x]);
+            }
+            return Some(word);
         }
-        Some(self.letters[y - word_size..y][x].iter().rev().collect())
+        return None;
     }
 
     fn bottom(&self, x: usize, y: usize, y_size: usize, word_size: usize) -> Option<String> {
@@ -228,10 +234,12 @@ mod tests {
     ])]
     fn test_top(#[case] text: String, #[case] wordl: usize, #[case] expected: Vec<Option<String>>) {
         let search = WordSearch::from_string(text);
+        println!("{search:?}");
         let mut words: Vec<Option<String>> = Vec::new();
         for (y, row) in search.letters.iter().enumerate() {
-            for (x, _) in row.iter().enumerate() {
-                words.push(search.top(x, y, wordl));
+            for (x, c) in row.iter().enumerate() {
+                println!("{y:} {x:} {c:}");
+                words.push(search.top(x, y, search.y_size, wordl));
             }
         }
         assert_eq!(words, expected);
