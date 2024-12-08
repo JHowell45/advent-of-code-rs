@@ -9,7 +9,7 @@ fn main() {
     println!("Unique antinode locations: {}", map.unique_antinode_locations());
 }
 
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 struct Point {
     pub x: i32,
     pub y: i32
@@ -20,6 +20,10 @@ impl Point {
         Self {
             x, y
         }
+    }
+
+    pub fn origin() -> Self {
+        Self::new(0, 0)
     }
 
     pub fn from_usize(x: usize, y: usize) -> Self {
@@ -58,8 +62,7 @@ impl Display for Point {
 
 struct FrequencyMap {
     antennna_locations: HashMap<char, HashSet<Point>>,
-    x_dimension: usize,
-    y_dimension: usize,
+    max_dimension: Point,
 }
 
 impl FrequencyMap {
@@ -89,8 +92,7 @@ impl FrequencyMap {
         }
         Self {
             antennna_locations,
-            x_dimension: x,
-            y_dimension: y,
+            max_dimension: Point::from_usize(x, y)
         }
     }
 
@@ -104,8 +106,12 @@ impl FrequencyMap {
                     let antinode_a: Point = a.clone() - d.clone();
                     let antinode_b: Point = b.clone() + d.clone();
 
-                    antinode_locations.insert(antinode_a);
-                    antinode_locations.insert(antinode_b);
+                    if antinode_a > Point::origin() && antinode_a < self.max_dimension {
+                        antinode_locations.insert(antinode_a);
+                    }
+                    if antinode_b > Point::origin() && antinode_b < self.max_dimension {
+                        antinode_locations.insert(antinode_b);
+                    }
 
                     println!("{a:} -> {b:} == {d:}");
                     println!("{antinode_a:}");
