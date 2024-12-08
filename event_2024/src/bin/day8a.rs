@@ -146,5 +146,8 @@ mod tests {
 .........A..
 ............
 ............", 14)]
-    fn example(#[case] input: &str, #[case] unique_locations: usize) {}
+    fn example(#[case] input: &str, #[case] unique_locations: usize) {
+        let map = FrequencyMap::from_map(input);
+        assert_eq!(map.unique_antinode_locations(), unique_locations);
+    }
 }
