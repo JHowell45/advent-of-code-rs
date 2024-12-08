@@ -98,9 +98,8 @@ impl WordSearch {
 
     fn top(&self, x: usize, y: usize, y_size: usize, word_size: usize) -> Option<String> {
         if y >= word_size - 1 && y < y_size {
-            let idx = y + 1 - word_size;
             let mut word: String = String::from("");
-            for letters in self.letters[idx..=y].iter().rev() {
+            for letters in self.letters[y + 1 - word_size..=y].iter().rev() {
                 word.push(letters[x]);
             }
             return Some(word);
@@ -109,10 +108,14 @@ impl WordSearch {
     }
 
     fn bottom(&self, x: usize, y: usize, y_size: usize, word_size: usize) -> Option<String> {
-        if y >= y_size - word_size {
-            return None;
+        if y < y_size - word_size + 1 {
+            let mut word: String = String::from("");
+            for letters in self.letters[y..y + word_size].iter() {
+                word.push(letters[x]);
+            }
+            return Some(word);
         }
-        Some(self.letters[y..y + word_size][x].iter().collect())
+        return None;
     }
 
     fn diagonal_top_left(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
