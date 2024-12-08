@@ -189,37 +189,33 @@ impl FrequencyMap {
     pub fn inline_antinode_locations(&self) -> usize {
         let mut inline_antinodes: HashSet<Point> = HashSet::new();
         for (k, points) in self.antennna_locations.iter() {
-            println!("{k:}");
             for x in repeat_n(points.iter(), 2).multi_cartesian_product() {
                 let (a, b) = (x[0], x[1]);
                 if a != b {
-                    let d = b.clone() - a.clone();
-                    let smallest_d = d.smallest_instance();
-                    let antinode_a: Point = a.clone() - smallest_d.clone();
-                    let antinode_b: Point = b.clone() + smallest_d.clone();
+                    let d = (b.clone() - a.clone()).smallest_instance();
 
-                    let mut sub_antinode_a = antinode_a.clone();
+                    let mut sub_antinode_a = a.clone();
                     while sub_antinode_a >= Point::origin() && sub_antinode_a < self.max_dimension {
                         inline_antinodes.insert(sub_antinode_a);
-                        sub_antinode_a -= smallest_d.clone();
+                        sub_antinode_a -= d.clone();
                     }
 
-                    let mut sub_antinode_a = antinode_a.clone();
+                    let mut sub_antinode_a = a.clone();
                     while sub_antinode_a >= Point::origin() && sub_antinode_a < self.max_dimension {
                         inline_antinodes.insert(sub_antinode_a);
-                        sub_antinode_a += smallest_d.clone();
+                        sub_antinode_a += d.clone();
                     }
 
-                    let mut sub_antinode_b = antinode_b.clone();
+                    let mut sub_antinode_b = b.clone();
                     while sub_antinode_b >= Point::origin() && sub_antinode_b < self.max_dimension {
                         inline_antinodes.insert(sub_antinode_b);
-                        sub_antinode_b -= smallest_d.clone();
+                        sub_antinode_b -= d.clone();
                     }
 
-                    let mut sub_antinode_b = antinode_b.clone();
+                    let mut sub_antinode_b = b.clone();
                     while sub_antinode_b >= Point::origin() && sub_antinode_b < self.max_dimension {
                         inline_antinodes.insert(sub_antinode_b);
-                        sub_antinode_b += smallest_d.clone();
+                        sub_antinode_b += d.clone();
                     }
                 }
             }
