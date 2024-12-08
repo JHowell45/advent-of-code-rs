@@ -136,10 +136,10 @@ impl FrequencyMap {
                     let antinode_a: Point = a.clone() - d.clone();
                     let antinode_b: Point = b.clone() + d.clone();
 
-                    if antinode_a >= Point::origin() && antinode_a <= self.max_dimension {
+                    if antinode_a >= Point::origin() && antinode_a < self.max_dimension {
                         antinode_locations.insert(antinode_a);
                     }
-                    if antinode_b >= Point::origin() && antinode_b <= self.max_dimension {
+                    if antinode_b >= Point::origin() && antinode_b < self.max_dimension {
                         antinode_locations.insert(antinode_b);
                     }
 
