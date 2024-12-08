@@ -1,5 +1,5 @@
 use core::file_reader::get_file_contents;
-use std::{collections::{HashMap, HashSet}, iter::repeat_n, ops::{Add, Sub}};
+use std::{collections::{HashMap, HashSet}, fmt::Display, iter::repeat_n, ops::{Add, Sub}};
 
 use itertools::Itertools;
 
@@ -49,6 +49,12 @@ impl Sub for Point {
     }
 }
 
+impl Display for Point {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "({}, {})", self.x, self.y)
+    }
+}
+
 
 struct FrequencyMap {
     antennna_locations: HashMap<char, HashSet<Point>>,
@@ -94,7 +100,7 @@ impl FrequencyMap {
             for x in repeat_n(points.iter(), 2).multi_cartesian_product() {
                 let (a, b) = (x[0], x[1]);
                 if a != b {
-                    println!("{a:?} -> {b:?} == {:?}", self.calculate_distance(*a, *b));
+                    println!("{a:} -> {b:} == {:}", self.calculate_distance(*a, *b));
                 }
             }
         }
