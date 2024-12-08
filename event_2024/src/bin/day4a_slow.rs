@@ -80,19 +80,47 @@ impl WordSearch {
     }
 
     fn diagonal_top_left(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
-        None
+        if x < word_size && y < word_size {
+            return None;
+        }
+        let mut res: String = String::from("");
+        for idx in 0..word_size {
+            res.push(self.letters[y - idx][x - idx]);
+        }
+        Some(res)
     }
 
-    fn diagonal_top_right(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
-        None
+    fn diagonal_top_right(&self, x: usize, y: usize, x_size: usize, word_size: usize) -> Option<String> {
+        if x > x_size - word_size && y < word_size {
+            return None;
+        }
+        let mut res: String = String::from("");
+        for idx in 0..word_size {
+            res.push(self.letters[y - idx][x + idx]);
+        }
+        Some(res)
     }
 
-    fn diagonal_bottom_left(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
-        None
+    fn diagonal_bottom_left(&self, x: usize, y: usize, y_size: usize, word_size: usize) -> Option<String> {
+        if x < word_size && y >= y_size - word_size {
+            return None;
+        }
+        let mut res: String = String::from("");
+        for idx in 0..word_size {
+            res.push(self.letters[y + idx][x - idx]);
+        }
+        Some(res)
     }
 
-    fn diagonal_bottom_right(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
-        None
+    fn diagonal_bottom_right(&self, x: usize, y: usize, x_size: usize, y_size: usize, word_size: usize) -> Option<String> {
+        if x > x_size - word_size && y >= y_size - word_size {
+            return None;
+        }
+        let mut res: String = String::from("");
+        for idx in 0..word_size {
+            res.push(self.letters[y + idx][x - idx]);
+        }
+        Some(res)
     }
 
     fn get_value(&self, x: usize, y: usize) -> char {
