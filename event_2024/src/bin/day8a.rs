@@ -98,7 +98,8 @@ impl FrequencyMap {
 
     pub fn unique_antinode_locations(&self) -> usize {
         let mut antinode_locations: HashSet<Point> = HashSet::new();
-        for points in self.antennna_locations.values() {
+        for (k, points) in self.antennna_locations.iter() {
+            println!("{k:}");
             for x in repeat_n(points.iter(), 2).multi_cartesian_product() {
                 let (a, b) = (x[0], x[1]);
                 if a != b {
@@ -113,9 +114,9 @@ impl FrequencyMap {
                         antinode_locations.insert(antinode_b);
                     }
 
-                    println!("{a:} -> {b:} == {d:}");
-                    println!("{antinode_a:}");
-                    println!("{antinode_b:}");
+                    println!("\t{a:} -> {b:} == {d:}");
+                    println!("\t Antinode A: {antinode_a:}");
+                    println!("\tAntinode B: {antinode_b:}");
                     
                 }
             }
@@ -124,9 +125,9 @@ impl FrequencyMap {
     }
 
     pub fn display_map(&self) {
-        for y in 0..self.y_dimension {
-            for x in 0..self.x_dimension {
-                match self.slow_antenna_check(Point::from_usize(x, y)) {
+        for y in 0..self.max_dimension.y {
+            for x in 0..self.max_dimension.x {
+                match self.slow_antenna_check(Point::new(x, y)) {
                     Some(c) => print!("{c:}"),
                     None => print!("."),
                 }
@@ -166,6 +167,8 @@ mod tests {
 ............", 14)]
     fn example(#[case] input: &str, #[case] unique_locations: usize) {
         let map = FrequencyMap::from_map(input);
+        map.display_map();
+        println!("Max Dim: {}", map.max_dimension);
         assert_eq!(map.unique_antinode_locations(), unique_locations);
     }
 }
