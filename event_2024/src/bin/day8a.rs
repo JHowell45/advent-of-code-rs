@@ -95,20 +95,26 @@ impl FrequencyMap {
     }
 
     pub fn unique_antinode_locations(&self) -> usize {
-        let antinode_locations: HashSet<Point> = HashSet::new();
+        let mut antinode_locations: HashSet<Point> = HashSet::new();
         for points in self.antennna_locations.values() {
             for x in repeat_n(points.iter(), 2).multi_cartesian_product() {
                 let (a, b) = (x[0], x[1]);
                 if a != b {
-                    println!("{a:} -> {b:} == {:}", self.calculate_distance(*a, *b));
+                    let d = b.clone() - a.clone();
+                    let antinode_a: Point = a.clone() - d.clone();
+                    let antinode_b: Point = b.clone() + d.clone();
+
+                    antinode_locations.insert(antinode_a);
+                    antinode_locations.insert(antinode_b);
+
+                    println!("{a:} -> {b:} == {d:}");
+                    println!("{antinode_a:}");
+                    println!("{antinode_b:}");
+                    
                 }
             }
         }
         return antinode_locations.len();
-    }
-
-    fn calculate_distance(&self, from: Point, to: Point) -> Point {
-        to - from
     }
 
     pub fn display_map(&self) {
