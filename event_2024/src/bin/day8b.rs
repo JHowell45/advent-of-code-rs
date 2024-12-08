@@ -23,7 +23,7 @@ impl FrequencyMap {
         for (y_idx, row) in map.lines().into_iter().enumerate() {
             x = row.chars().try_len().unwrap();
             for (idx, node) in row.chars().into_iter().enumerate() {
-                let point = (idx, y_idx);
+                let point = (idx as i32, y_idx as i32);
                 match node {
                     '.' => {}
                     _ => match antennna_locations.get_mut(&node) {
