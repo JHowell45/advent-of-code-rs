@@ -191,8 +191,8 @@ impl FrequencyMap {
                 if a != b {
                     let d = b.clone() - a.clone();
                     let smallest_d = d.smallest_instance();
-                    let antinode_a: Point = a.clone() - d.clone();
-                    let antinode_b: Point = b.clone() + d.clone();
+                    let antinode_a: Point = a.clone() - smallest_d.clone();
+                    let antinode_b: Point = b.clone() + smallest_d.clone();
 
                     let mut sub_antinode_a = antinode_a.clone();
                     while sub_antinode_a >= Point::origin() && sub_antinode_a < self.max_dimension {
