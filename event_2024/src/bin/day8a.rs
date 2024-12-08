@@ -1,5 +1,5 @@
 use core::file_reader::get_file_contents;
-use std::collections::{HashMap, HashSet};
+use std::{collections::{HashMap, HashSet}, iter::repeat_n, ops::{Add, Sub}};
 
 use itertools::Itertools;
 
@@ -9,10 +9,46 @@ fn main() {
     println!("Unique antinode locations: {}", map.unique_antinode_locations());
 }
 
+#[derive(Debug, Copy, Clone, PartialEq)]
+struct Point {
+    pub x: i32,
+    pub y: i32
+}
+
+impl Point {
+    pub fn new(x: i32, y: i32) -> Self {
+        Self {
+            x, y
+        }
+    }
+}
+
+impl Add for Point {
+    type Output = Self;
+
+    fn add(self, other: Self) -> Self {
+        Self {
+            x: self.x + other.x,
+            y: self.y + other.y,
+        }
+    }
+}
+
+impl Sub for Point {
+    type Output = Self;
+
+    fn sub(self, other: Self) -> Self {
+        Self {
+            x: self.x - other.x,
+            y: self.y - other.y,
+        }
+    }
+}
+
 
 struct FrequencyMap {
     antennna_locations: HashMap<char, HashSet<(i32, i32)>>,
-    x_dimension: usize,
+    y_dimension: usize,
     y_dimension: usize,
 }
 
@@ -50,6 +86,14 @@ impl FrequencyMap {
 
     pub fn unique_antinode_locations(&self) -> usize {
         let antinode_locations: HashSet<(i32, i32)> = HashSet::new();
+        for points in self.antennna_locations.values() {
+            for x in repeat_n(points.iter(), 2).multi_cartesian_product() {
+                let (a, b) = (x[0], x[1]);
+                if a != b {
+                    println!("{a:?} -> {b:?} == {:?}", self.calculate_distance(*a, *b));
+                }
+            }
+        }
         return antinode_locations.len();
     }
 
