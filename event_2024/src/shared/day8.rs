@@ -149,8 +149,13 @@ impl FrequencyMap {
                 }
             }
         }
-        self.display_map(Some(antinode_locations.clone()));
+        // self.display_map(Some(antinode_locations.clone()));
         return antinode_locations.len();
+    }
+
+    pub fn inline_antinode_locations(&self) -> usize {
+        let mut inline_antinodes: HashSet<Point> = HashSet::new();
+        return inline_antinodes.len();
     }
 
     pub fn display_map(&self, antinodes: Option<HashSet<Point>>) {
