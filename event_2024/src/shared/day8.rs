@@ -3,7 +3,7 @@ use std::{
     collections::{HashMap, HashSet},
     fmt::Display,
     iter::repeat_n,
-    ops::{Add, AddAssign, Div, Sub, SubAssign},
+    ops::{Add, AddAssign, Sub, SubAssign},
 };
 
 use itertools::Itertools;
@@ -200,7 +200,7 @@ impl FrequencyMap {
                 }
             }
         }
-        self.display_map(Some(antinode_locations.clone()));
+        self.display_map(Some(inline_antinodes.clone()));
         return inline_antinodes.len();
     }
 
