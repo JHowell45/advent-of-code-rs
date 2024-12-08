@@ -20,9 +20,11 @@ impl FrequencyMap {
     pub fn from_map(map: &str) -> Self {
         let mut antennna_locations: HashMap<char, HashSet<(i32, i32)>> = HashMap::new();
         let mut x: usize = 0;
-        let mut y: usize = map.lines().try_len().unwrap();
+        let mut y: usize = 0;
         for (y_idx, row) in map.lines().into_iter().enumerate() {
-            x = row.chars().try_len().unwrap();
+            if x == 0 {
+                x = row.chars().collect::<Vec<char>>().len();
+            }
             for (idx, node) in row.chars().into_iter().enumerate() {
                 let point = (idx as i32, y_idx as i32);
                 match node {
@@ -37,6 +39,7 @@ impl FrequencyMap {
                     },
                 }
             }
+            y += 1;
         }
         Self {
             antennna_locations,
