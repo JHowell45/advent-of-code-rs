@@ -3,7 +3,7 @@ use std::{
     collections::{HashMap, HashSet},
     fmt::Display,
     iter::repeat_n,
-    ops::{Add, Sub},
+    ops::{Add, AddAssign, Div, Sub, SubAssign},
 };
 
 use itertools::Itertools;
@@ -27,15 +27,18 @@ impl Point {
         Self::new(x as i32, y as i32)
     }
 
-    pub fn distance(&self) -> i32 {
-        self.x.abs() + self.y.abs()
+    fn half(self) -> Option<Point> {
+        if self.x % 2 != 0 || self.y % 2 != 0 {
+            return None;
+        }
+        Some(Point::new(self.x / 2, self.y / 2))
     }
 }
 
 impl Add for Point {
     type Output = Self;
 
-    fn add(self, other: Self) -> Self {
+    fn add(self, other: Self) -> Self::Output {
         Self {
             x: self.x + other.x,
             y: self.y + other.y,
@@ -46,11 +49,25 @@ impl Add for Point {
 impl Sub for Point {
     type Output = Self;
 
-    fn sub(self, other: Self) -> Self {
+    fn sub(self, other: Self) -> Self::Output {
         Self {
             x: self.x - other.x,
             y: self.y - other.y,
         }
+    }
+}
+
+impl SubAssign for Point {
+    fn sub_assign(&mut self, rhs: Self) {
+        self.x -= rhs.x;
+        self.y -= rhs.y;
+    }
+}
+
+impl AddAssign for Point {
+    fn add_assign(&mut self, rhs: Self) {
+        self.x += rhs.x;
+        self.y += rhs.y;
     }
 }
 
@@ -159,6 +176,31 @@ impl FrequencyMap {
 
     pub fn inline_antinode_locations(&self) -> usize {
         let mut inline_antinodes: HashSet<Point> = HashSet::new();
+        for (k, points) in self.antennna_locations.iter() {
+            println!("{k:}");
+            for x in repeat_n(points.iter(), 2).multi_cartesian_product() {
+                let (a, b) = (x[0], x[1]);
+                if a != b {
+                    let d = b.clone() - a.clone();
+                    let mut antinode_a: Point = a.clone() - d.clone();
+                    let mut antinode_b: Point = b.clone() + d.clone();
+
+                    while antinode_a >= Point::origin() && antinode_a < self.max_dimension {
+                        inline_antinodes.insert(antinode_a);
+                        antinode_a -= d.clone();
+                    }
+                    if antinode_b >= Point::origin() && antinode_b < self.max_dimension {
+                        inline_antinodes.insert(antinode_b);
+                        antinode_b += d.clone();
+                    }
+
+                    println!("\t{a:} -> {b:} == {d:}");
+                    println!("\t Antinode A: {antinode_a:}");
+                    println!("\tAntinode B: {antinode_b:}");
+                }
+            }
+        }
+        self.display_map(Some(antinode_locations.clone()));
         return inline_antinodes.len();
     }
 
