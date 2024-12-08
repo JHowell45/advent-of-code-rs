@@ -96,7 +96,7 @@ impl WordSearch {
     }
 
     fn top(&self, x: usize, y: usize, word_size: usize) -> Option<String> {
-        if y < word_size {
+        if y < word_size - 1 {
             return None;
         }
         Some(self.letters[y - word_size..y][x].iter().rev().collect())
