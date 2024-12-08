@@ -33,6 +33,14 @@ impl Point {
         }
         Some(Point::new(self.x / 2, self.y / 2))
     }
+
+    fn smallest_instance(&self) -> Point {
+        let mut p = self.clone();
+        while let Some(next) = p.half() {
+            p = next;
+        }
+        return p;
+    }
 }
 
 impl Add for Point {
@@ -182,16 +190,20 @@ impl FrequencyMap {
                 let (a, b) = (x[0], x[1]);
                 if a != b {
                     let d = b.clone() - a.clone();
-                    let mut antinode_a: Point = a.clone() - d.clone();
-                    let mut antinode_b: Point = b.clone() + d.clone();
+                    let smallest_d = d.smallest_instance();
+                    let antinode_a: Point = a.clone() - d.clone();
+                    let antinode_b: Point = b.clone() + d.clone();
 
-                    while antinode_a >= Point::origin() && antinode_a < self.max_dimension {
-                        inline_antinodes.insert(antinode_a);
-                        antinode_a -= d.clone();
+                    let mut sub_antinode_a = antinode_a.clone();
+                    while sub_antinode_a >= Point::origin() && sub_antinode_a < self.max_dimension {
+                        inline_antinodes.insert(sub_antinode_a);
+                        sub_antinode_a += smallest_d.clone();
                     }
-                    if antinode_b >= Point::origin() && antinode_b < self.max_dimension {
-                        inline_antinodes.insert(antinode_b);
-                        antinode_b += d.clone();
+
+                    let mut sub_antinode_b = antinode_b.clone();
+                    while sub_antinode_b >= Point::origin() && sub_antinode_b < self.max_dimension {
+                        inline_antinodes.insert(sub_antinode_b);
+                        sub_antinode_b -= smallest_d.clone();
                     }
 
                     println!("\t{a:} -> {b:} == {d:}");
