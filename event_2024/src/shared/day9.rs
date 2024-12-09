@@ -79,3 +79,17 @@ impl DiskMap {
         self.disk.iter().collect::<String>()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rstest::rstest;
+
+    #[rstest]
+    #[case("2333133121414131402")]
+    fn example(#[case] disk_map: &str) {
+        let map = DiskMap::from_map(disk_map);
+        println!("{map:#?}");
+        println!("{}", map.formatted_disk());
+    }
+}
