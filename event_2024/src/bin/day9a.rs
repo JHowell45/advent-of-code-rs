@@ -22,7 +22,8 @@ pub struct DiskMap {
 
 impl DiskMap {
     pub fn from_map(map: &str) -> Self {
-        for (blocks, free) in map.chars().chunks(2).into_iter().map(|mut chunk| {
+        let mut files: Vec<FileMap> = Vec::new();
+        for (idx, (blocks, free)) in map.chars().chunks(2).into_iter().map(|mut chunk| {
             (
                 match chunk.next() {
                     Some(n) => n.to_string().parse::<usize>().unwrap(),
@@ -33,10 +34,11 @@ impl DiskMap {
                     None => 0,
                 },
             )
-        }) {
-            println!("{blocks:?}, {free:?}");
+        }).enumerate() {
+            files.push(FileMap::new(idx, blocks, free));
         }
-        Self { files: Vec::new() }
+
+        Self { files }
     }
 }
 
@@ -49,6 +51,6 @@ mod tests {
     #[case("2333133121414131402")]
     fn example(#[case] disk_map: &str) {
         let map = DiskMap::from_map(disk_map);
-        println!("{map:?}");
+        println!("{map:#?}");
     }
 }
