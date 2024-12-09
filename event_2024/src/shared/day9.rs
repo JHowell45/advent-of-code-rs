@@ -1,8 +1,8 @@
-use std::collections::VecDeque;
+use std::collections::{HashSet, VecDeque};
 
 use itertools::Itertools;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct FileMap {
     id: usize,
     blocks: usize,
@@ -84,6 +84,33 @@ impl DiskMap {
             }
             // println!("{}", self.formatted_disk());
         }
+    }
+
+    pub fn defragment_files(&mut self) {
+        let mut used_ids: HashSet<usize> = HashSet::new();
+        let mut new_files: Vec<FileMap> = Vec::new();
+        for file in self.files.iter() {
+            if used_ids.contains(&file.id) {
+                continue;
+            }
+            let mut current = file.clone();
+            used_ids.insert(file.id);
+            new_files.push(current);
+            while current.free > 0 {
+                for next in self.files.iter().rev() {
+                    if !used_ids.contains(&next.id) && current.free >= next.blocks {
+                        let mut next = next.clone();
+                        next.free = current.free - next.blocks;
+                        current.free = 0;
+                        current = next;
+                        used_ids.insert(current.id);
+                        new_files.push(current);
+                        break;
+                    }
+                }
+            }
+        }
+        self.build_disk(new_files);
     }
 
     pub fn checksum(&self) -> usize {
