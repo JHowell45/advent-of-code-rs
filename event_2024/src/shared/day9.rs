@@ -14,13 +14,13 @@ impl FileMap {
         Self { id, blocks, free }
     }
 
-    pub fn build_file(&self) -> Vec<char> {
-        let mut file: Vec<char> = Vec::with_capacity(self.blocks);
-        for bit in (0..self.blocks).map(|_| char::from_digit(self.id as u32, 10).unwrap()) {
-            file.push(bit);
+    pub fn build_file(&self) -> Vec<Option<usize>> {
+        let mut file: Vec<Option<usize>> = Vec::with_capacity(self.blocks);
+        for bit in (0..self.blocks).map(|_| self.id) {
+            file.push(Some(bit));
         }
-        for bit in (0..self.free).map(|_| '.') {
-            file.push(bit);
+        for _ in 0..self.free {
+            file.push(None);
         }
         return file;
     }
@@ -34,13 +34,13 @@ impl FileMap {
 pub struct DiskMap {
     files: Vec<FileMap>,
     size: usize,
-    disk: VecDeque<char>,
+    disk: VecDeque<Option<usize>>,
 }
 
 impl DiskMap {
     pub fn from_map(map: &str) -> Self {
         let mut files: Vec<FileMap> = Vec::new();
-        let mut disk: VecDeque<char> = VecDeque::new();
+        let mut disk: VecDeque<Option<usize>> = VecDeque::new();
         let mut size: usize = 0;
         for (idx, (blocks, free)) in map
             .chars()
@@ -76,7 +76,12 @@ impl DiskMap {
     fn fragment_step(&mut self) {}
 
     pub fn formatted_disk(&self) -> String {
-        self.disk.iter().collect::<String>()
+        self.disk.iter().map(|v| {
+            match v {
+                Some(v) => char::from_digit(*v as u32, 10).unwrap(),
+                None => '.',
+            }
+        }).collect::<String>()
     }
 }
 
