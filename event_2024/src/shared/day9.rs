@@ -87,27 +87,10 @@ impl DiskMap {
     }
 
     pub fn defragment_files(&mut self) {
-        let mut used_ids: HashSet<usize> = HashSet::new();
-        let mut new_files: Vec<FileMap> = Vec::new();
-        for file in self.files.iter() {
-            if used_ids.contains(&file.id) {
-                continue;
-            }
-            let mut current = file.clone();
-            used_ids.insert(file.id);
-            new_files.push(current);
-            while current.free > 0 {
-                for next in self.files.iter().rev() {
-                    if !used_ids.contains(&next.id) && current.free >= next.blocks {
-                        let mut next = next.clone();
-                        next.free = current.free - next.blocks;
-                        current.free = 0;
-                        current = next;
-                        used_ids.insert(current.id);
-                        new_files.push(current);
-                        break;
-                    }
-                }
+        let mut new_files: Vec<FileMap> = Vec::from([self.files[0]]);
+        while new_files.len() != self.files.len() {
+            for new_file in new_files.iter_mut() {
+                println!("New File: {new_file:?}");
             }
         }
         self.build_disk(new_files);
