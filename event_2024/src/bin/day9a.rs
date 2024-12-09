@@ -1,3 +1,5 @@
+use std::collections::VecDeque;
+
 use itertools::Itertools;
 
 fn main() {}
@@ -13,16 +15,33 @@ impl FileMap {
     pub fn new(id: usize, blocks: usize, free: usize) -> Self {
         Self { id, blocks, free }
     }
+
+    pub fn build_file(&self) -> Vec<char> {
+        let mut file: Vec<char> = Vec::with_capacity(self.blocks);
+        for bit in (0..self.blocks).map(|_| char::from_digit(self.id as u32, 10).unwrap()) {
+            file.push(bit);
+        }
+        for bit in (0..self.free).map(|_| '.') {
+            file.push(bit);
+        }
+        return file;
+    }
+
+    pub fn size(&self) -> usize {
+        self.blocks + self.free
+    }
 }
 
 #[derive(Debug)]
 pub struct DiskMap {
     files: Vec<FileMap>,
+    size: usize,
 }
 
 impl DiskMap {
     pub fn from_map(map: &str) -> Self {
         let mut files: Vec<FileMap> = Vec::new();
+        let mut size: usize = 0;
         for (idx, (blocks, free)) in map.chars().chunks(2).into_iter().map(|mut chunk| {
             (
                 match chunk.next() {
@@ -35,10 +54,22 @@ impl DiskMap {
                 },
             )
         }).enumerate() {
-            files.push(FileMap::new(idx, blocks, free));
+            let file = FileMap::new(idx, blocks, free);
+            size += file.size();
+            files.push(file);
         }
 
-        Self { files }
+        Self { files, size }
+    }
+
+    pub fn build_disk(&self) -> VecDeque<char> {
+        let mut disk: VecDeque<char> = VecDeque::with_capacity(self.size);
+        for file in &self.files {
+            for b in file.build_file().iter() {
+                disk.push_back(*b);
+            }
+        }
+        return disk;
     }
 }
 
@@ -52,5 +83,7 @@ mod tests {
     fn example(#[case] disk_map: &str) {
         let map = DiskMap::from_map(disk_map);
         println!("{map:#?}");
+        println!("{:?}", map.build_disk());
+        println!("{}", map.build_disk().iter().collect::<String>());
     }
 }
