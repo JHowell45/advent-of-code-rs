@@ -67,6 +67,14 @@ impl DiskMap {
         Self { files, size, disk }
     }
 
+    pub fn defragment(&mut self) {
+
+    }
+
+    fn fragment_step(&mut self) {
+        
+    }
+
     pub fn formatted_disk(&self) -> String {
         self.disk.iter().collect::<String>()
     }
