@@ -104,6 +104,16 @@ impl DiskMap {
             })
             .collect::<String>()
     }
+
+    fn build_disk(&mut self, files: Vec<FileMap>) {
+        let mut disk: VecDeque<Option<usize>> = VecDeque::new();
+        for file in files.iter() {
+            for b in file.build_file().iter() {
+                disk.push_back(*b);
+            }
+        }
+        self.disk = disk;
+    }
 }
 
 #[cfg(test)]
