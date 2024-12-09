@@ -3,7 +3,9 @@ use core::file_reader::get_file_contents;
 use event_2024::shared::day9::DiskMap;
 
 fn main() {
-    let disk = DiskMap::from_map(get_file_contents(2024, 9).as_str());
+    let mut disk = DiskMap::from_map(get_file_contents(2024, 9).as_str());
+    disk.defragment();
+    println!("Filesystem Checksum: {}", disk.checksum());
 }
 
 #[cfg(test)]
