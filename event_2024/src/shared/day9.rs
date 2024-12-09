@@ -87,14 +87,33 @@ impl DiskMap {
     }
 
     pub fn defragment_files(&mut self) {
-        let new_files: Vec<FileMap> = Vec::from([self.files[0]]);
-        while new_files.iter().map(|f| f.id).collect::<Vec<usize>>() != self.files.iter().map(|f| f.id).collect::<Vec<usize>>()
-        {
-            for idx in 1..self.files.len() {
-
+        let mut moved_ids: HashSet<usize> = HashSet::new();
+        let mut new_files: Vec<FileMap> = self.files.clone();
+        println!("{new_files:?}");
+        for file in self.files.iter().rev() {
+            let file_idx = new_files.iter().position(|f| f.id == file.id).unwrap();
+            println!("File: {file:?} : {file_idx:}");
+            if !moved_ids.contains(&file.id) {
+                moved_ids.insert(file.id);
+                for idx in 0..new_files.len() {
+                    let check_file = new_files.get_mut(idx).unwrap();
+                    println!("Check File: {check_file:?} : {idx:}");
+                    if file.blocks <= check_file.free {
+                        let new_free = check_file.free - file.blocks;
+                        check_file.free = 0;
+                        let mut next = file.clone();
+                        next.free = new_free;
+                        new_files.remove(file_idx);
+                        new_files.insert(idx + 1, next);
+                        break;
+                    }
+                }
             }
+            println!("{new_files:?}");
         }
+        println!("{new_files:?}");
         self.disk = self.build_disk(new_files);
+        println!("{}\n", self.formatted_disk());
     }
 
     pub fn checksum(&self) -> usize {
