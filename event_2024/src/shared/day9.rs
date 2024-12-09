@@ -87,13 +87,14 @@ impl DiskMap {
     }
 
     pub fn defragment_files(&mut self) {
-        let mut new_files: Vec<FileMap> = Vec::from([self.files[0]]);
-        while new_files.len() != self.files.len() {
-            for new_file in new_files.iter_mut() {
-                println!("New File: {new_file:?}");
+        let new_files: Vec<FileMap> = Vec::from([self.files[0]]);
+        while new_files.iter().map(|f| f.id).collect::<Vec<usize>>() != self.files.iter().map(|f| f.id).collect::<Vec<usize>>()
+        {
+            for idx in 1..self.files.len() {
+
             }
         }
-        self.build_disk(new_files);
+        self.disk = self.build_disk(new_files);
     }
 
     pub fn checksum(&self) -> usize {
@@ -115,14 +116,14 @@ impl DiskMap {
             .collect::<String>()
     }
 
-    fn build_disk(&mut self, files: Vec<FileMap>) {
+    fn build_disk(&mut self, files: Vec<FileMap>) -> VecDeque<Option<usize>> {
         let mut disk: VecDeque<Option<usize>> = VecDeque::new();
         for file in files.iter() {
             for b in file.build_file().iter() {
                 disk.push_back(*b);
             }
         }
-        self.disk = disk;
+        return disk;
     }
 }
 
