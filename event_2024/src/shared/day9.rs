@@ -33,7 +33,6 @@ impl FileMap {
 #[derive(Debug)]
 pub struct DiskMap {
     files: Vec<FileMap>,
-    size: usize,
     disk: VecDeque<Option<usize>>,
 }
 
@@ -41,7 +40,6 @@ impl DiskMap {
     pub fn from_map(map: &str) -> Self {
         let mut files: Vec<FileMap> = Vec::new();
         let mut disk: VecDeque<Option<usize>> = VecDeque::new();
-        let mut size: usize = 0;
         for (idx, (blocks, free)) in map
             .chars()
             .chunks(2)
@@ -61,14 +59,13 @@ impl DiskMap {
             .enumerate()
         {
             let file = FileMap::new(idx, blocks, free);
-            size += file.size();
             for b in file.build_file().iter() {
                 disk.push_back(*b);
             }
             files.push(file);
         }
 
-        Self { files, size, disk }
+        Self { files, disk }
     }
 
     pub fn defragment(&mut self) {
