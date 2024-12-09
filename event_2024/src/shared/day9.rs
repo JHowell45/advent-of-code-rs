@@ -71,9 +71,18 @@ impl DiskMap {
         Self { files, size, disk }
     }
 
-    pub fn defragment(&mut self) {}
-
-    fn fragment_step(&mut self) {}
+    pub fn defragment(&mut self) {
+        let max: usize = self.disk.len();
+        for idx in 0..max {
+            if self.disk.get_mut(idx).unwrap().is_none() {
+                for swap_idx in (idx..max).rev() {
+                    if self.disk.get_mut(swap_idx).unwrap().is_some() {
+                        self.disk.swap(idx, swap_idx);
+                    }
+                }
+            }
+        }
+    }
 
     pub fn formatted_disk(&self) -> String {
         self.disk.iter().map(|v| {
@@ -91,10 +100,20 @@ mod tests {
     use rstest::rstest;
 
     #[rstest]
-    #[case("2333133121414131402")]
-    fn example(#[case] disk_map: &str) {
-        let map = DiskMap::from_map(disk_map);
-        println!("{map:#?}");
-        println!("{}", map.formatted_disk());
+    #[case("2333133121414131402", "00...111...2...333.44.5555.6666.777.888899")]
+    #[case("12345", "0..111....22222")]
+    fn test_formatted_disk(#[case] disk_map: &str, #[case] expected_disk: &str) {
+        let mut map = DiskMap::from_map(disk_map);
+        assert_eq!(map.formatted_disk(), expected_disk);
+        map.defragment();
+    }
+
+    #[rstest]
+    #[case("2333133121414131402", "0099811188827773336446555566..............")]
+    #[case("12345", "022111222......")]
+    fn test_defragment(#[case] disk_map: &str, #[case] expected_disk: &str) {
+        let mut map = DiskMap::from_map(disk_map);
+        map.defragment();
+        assert_eq!(map.formatted_disk(), expected_disk);
     }
 }

@@ -11,11 +11,13 @@ mod tests {
     use super::*;
     use rstest::rstest;
 
-    #[rstest]
-    #[case("2333133121414131402")]
-    fn example(#[case] disk_map: &str) {
-        let map = DiskMap::from_map(disk_map);
-        println!("{map:#?}");
-        println!("{}", map.formatted_disk());
-    }
+    // #[rstest]
+    // #[case("2333133121414131402", "")]
+    // fn example(#[case] disk_map: &str, #[case] expected_disk: &str) {
+    //     let mut map = DiskMap::from_map(disk_map);
+    //     println!("{map:#?}");
+    //     assert_eq!(map.formatted_disk(), expected_disk);
+    //     map.defragment();
+    //     println!("{}", map.formatted_disk());
+    // }
 }
