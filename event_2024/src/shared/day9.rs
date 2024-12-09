@@ -78,19 +78,31 @@ impl DiskMap {
                 for swap_idx in (idx..max).rev() {
                     if self.disk.get_mut(swap_idx).unwrap().is_some() {
                         self.disk.swap(idx, swap_idx);
+                        break;
                     }
                 }
             }
+            // println!("{}", self.formatted_disk());
         }
     }
 
+    pub fn checksum(&self) -> usize {
+        self.disk
+            .iter()
+            .filter(|v| v.is_some())
+            .enumerate()
+            .map(|(idx, v)| idx * v.unwrap())
+            .sum()
+    }
+
     pub fn formatted_disk(&self) -> String {
-        self.disk.iter().map(|v| {
-            match v {
+        self.disk
+            .iter()
+            .map(|v| match v {
                 Some(v) => char::from_digit(*v as u32, 10).unwrap(),
                 None => '.',
-            }
-        }).collect::<String>()
+            })
+            .collect::<String>()
     }
 }
 
