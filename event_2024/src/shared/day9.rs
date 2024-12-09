@@ -123,12 +123,19 @@ impl DiskMap {
     }
 
     pub fn checksum(&self) -> usize {
-        self.disk
-            .iter()
-            .filter(|v| v.is_some())
-            .enumerate()
-            .map(|(idx, v)| idx * v.unwrap())
-            .sum()
+        let mut sum: usize = 0;
+        for (idx, bit) in self.disk.iter().enumerate() {
+            if let Some(v) = bit {
+                sum += idx * v;
+            }
+        }
+        return sum;
+        // self.disk
+        //     .iter()
+        //     .filter(|v| v.is_some())
+        //     .enumerate()
+        //     .map(|(idx, v)| idx * v.unwrap())
+        //     .sum()
     }
 
     pub fn formatted_disk(&self) -> String {
@@ -187,11 +194,10 @@ mod tests {
     }
 
     #[rstest]
-    #[case("2333133121414131402", "0099811188827773336446555566..............")]
-    #[case("12345", "022111222......")]
-    fn test_defragment(#[case] disk_map: &str, #[case] expected_disk: &str) {
+    #[case("2333133121414131402", "00992111777.44.333....5555.6666.....8888..")]
+    fn test_defragmented_file(#[case] disk_map: &str, #[case] expected_disk: &str) {
         let mut map = DiskMap::from_map(disk_map);
-        map.defragment();
+        map.defragment_files();
         assert_eq!(map.formatted_disk(), expected_disk);
     }
 }
