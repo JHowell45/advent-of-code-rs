@@ -36,11 +36,13 @@ impl FileMap {
 pub struct DiskMap {
     files: Vec<FileMap>,
     size: usize,
+    disk: VecDeque<char>
 }
 
 impl DiskMap {
     pub fn from_map(map: &str) -> Self {
         let mut files: Vec<FileMap> = Vec::new();
+        let mut disk: VecDeque<char> = VecDeque::new();
         let mut size: usize = 0;
         for (idx, (blocks, free)) in map.chars().chunks(2).into_iter().map(|mut chunk| {
             (
@@ -56,20 +58,17 @@ impl DiskMap {
         }).enumerate() {
             let file = FileMap::new(idx, blocks, free);
             size += file.size();
-            files.push(file);
-        }
-
-        Self { files, size }
-    }
-
-    pub fn build_disk(&self) -> VecDeque<char> {
-        let mut disk: VecDeque<char> = VecDeque::with_capacity(self.size);
-        for file in &self.files {
             for b in file.build_file().iter() {
                 disk.push_back(*b);
             }
+            files.push(file);
         }
-        return disk;
+
+        Self { files, size, disk }
+    }
+
+    pub fn formatted_disk(&self) -> String {
+        self.disk.iter().collect::<String>()
     }
 }
 
@@ -83,7 +82,6 @@ mod tests {
     fn example(#[case] disk_map: &str) {
         let map = DiskMap::from_map(disk_map);
         println!("{map:#?}");
-        println!("{:?}", map.build_disk());
-        println!("{}", map.build_disk().iter().collect::<String>());
+        println!("{}", map.formatted_disk());
     }
 }
