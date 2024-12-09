@@ -89,19 +89,23 @@ impl DiskMap {
     pub fn defragment_files(&mut self) {
         let mut moved_ids: HashSet<usize> = HashSet::new();
         let mut new_files: Vec<FileMap> = self.files.clone();
-        println!("{new_files:?}");
+        // println!("{new_files:?}");
         for file in self.files.iter().rev() {
             let file_idx = new_files.iter().position(|f| f.id == file.id).unwrap();
-            println!("File: {file:?} : {file_idx:}");
+            // println!("File: {file:?} : {file_idx:} : {} : {}", file.free, file.size());
             if !moved_ids.contains(&file.id) {
                 moved_ids.insert(file.id);
-                for idx in 0..new_files.len() {
+                for idx in 0..file_idx {
                     let check_file = new_files.get_mut(idx).unwrap();
-                    println!("Check File: {check_file:?} : {idx:}");
+                    // println!("Check File: {check_file:?} : {idx:} : {} : {}", check_file.free, check_file.size());
                     if file.blocks <= check_file.free {
                         let new_free = check_file.free - file.blocks;
                         check_file.free = 0;
-                        let mut next = file.clone();
+                        let mut next = new_files.get_mut(file_idx).unwrap().clone();
+                        let mut prev = new_files.get_mut(file_idx - 1).unwrap();
+                        // println!("Next: {next:?} : {idx:} : {} : {}", next.free, next.size());
+
+                        prev.free += next.size();
                         next.free = new_free;
                         new_files.remove(file_idx);
                         new_files.insert(idx + 1, next);
@@ -109,9 +113,11 @@ impl DiskMap {
                     }
                 }
             }
-            println!("{new_files:?}");
+            // println!("{new_files:?}");
+            let disk = Self::create_disk(new_files.clone());
+            // println!("{}", Self::display_disk(disk));
         }
-        println!("{new_files:?}");
+        // println!("{new_files:?}");
         self.disk = self.build_disk(new_files);
         println!("{}\n", self.formatted_disk());
     }
@@ -136,6 +142,26 @@ impl DiskMap {
     }
 
     fn build_disk(&mut self, files: Vec<FileMap>) -> VecDeque<Option<usize>> {
+        let mut disk: VecDeque<Option<usize>> = VecDeque::new();
+        for file in files.iter() {
+            for b in file.build_file().iter() {
+                disk.push_back(*b);
+            }
+        }
+        return disk;
+    }
+
+    fn display_disk(disk: VecDeque<Option<usize>>) -> String {
+        disk
+            .iter()
+            .map(|v| match v {
+                Some(v) => char::from_digit(*v as u32, 10).unwrap(),
+                None => '.',
+            })
+            .collect::<String>()
+    }
+
+    fn create_disk(files: Vec<FileMap>) -> VecDeque<Option<usize>> {
         let mut disk: VecDeque<Option<usize>> = VecDeque::new();
         for file in files.iter() {
             for b in file.build_file().iter() {
