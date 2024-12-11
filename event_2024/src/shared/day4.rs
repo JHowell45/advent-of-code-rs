@@ -87,6 +87,23 @@ impl WordSearch {
                     }
                 }
 
+                // Top Right:
+                if top_check && right_check {
+                    println!("TOP RIGHT");
+                    println!("[{} -= {y_idx}]", y_idx + 1 - wordl);
+
+                    let test_word = self.words[y_idx + 1 - wordl..=y_idx]
+                        .iter()
+                        .rev()
+                        .enumerate()
+                        .map(|(idx, r)| r[x_idx + idx])
+                        .collect::<String>();
+                    // println!("TOP RIGHT | {test_word:}: {count}");
+                    if word == test_word {
+                        count += 1;
+                    }
+                }
+
                 // Bottom:
                 if bottom_check {
                     // println!("BOTTOM");
