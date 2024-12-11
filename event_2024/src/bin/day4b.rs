@@ -6,7 +6,10 @@ fn main() {
     let word: &str = "MAS";
     let word_search = WordSearch::from_string(get_file_contents(2024, 4).as_str());
     word_search.display_search();
-    println!("Number of times {word:} appears: {}", word_search.x_search(word));
+    println!(
+        "Number of times {word:} appears: {}",
+        word_search.x_search(word)
+    );
 }
 
 #[cfg(test)]

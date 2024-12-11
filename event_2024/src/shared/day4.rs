@@ -167,6 +167,15 @@ impl WordSearch {
                 let top_right: char = self.words[y_idx][x_idx + 2];
                 let bottom_left: char = self.words[y_idx + 2][x_idx];
                 let bottom_right: char = self.words[y_idx + 2][x_idx + 2];
+                if (top_left == first && bottom_right == last)
+                    || (top_left == last && bottom_right == first)
+                {
+                    if (top_right == first && bottom_left == last)
+                        || (top_right == last && bottom_left == first)
+                    {
+                        count += 1;
+                    }
+                }
             }
         }
         return count;
