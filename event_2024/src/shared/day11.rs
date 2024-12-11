@@ -14,36 +14,6 @@ impl Stones {
         }
     }
 
-    fn blink(&mut self, v: u64, blink: usize) -> usize {
-        // println!("v: {v:} || blink: {blink:}");
-        if let Some(r) = self.stones_cache.get(&v) {
-            return *r;
-        }
-        if blink == 0 {
-            return 1;
-        }
-
-        let stone_l: u32 = v.checked_ilog10().unwrap_or(0) + 1;
-        if v == 0 {
-            let res = self.blink(1, blink - 1);
-            self.stones_cache.insert(v, res);
-            return res;
-        } else if stone_l % 2 == 0 {
-            let splitter: u64 = 10_u64.pow(stone_l / 2);
-            let first = v / splitter;
-            let second = v - (first * splitter);
-
-            let res = self.blink(first, blink - 1) + self.blink(second, blink - 1);
-            self.stones_cache.insert(v, res);
-            println!("{v:}: {res:}");
-            return res;
-        } else {
-            let res = self.blink(v * 2024, blink - 1);
-            self.stones_cache.insert(v, res);
-            return res;
-        }
-    }
-
     pub fn old_blink(&mut self) {
         let mut new_stones: Vec<u64> = Vec::new();
         for stone in self.stones.iter() {
@@ -76,6 +46,35 @@ impl Stones {
             // println!("{stones_count}");
         }
         return stones_count;
+    }
+
+    fn blink(&mut self, v: u64, n: usize) -> usize {
+        // if let Some(r) = self.stones_cache.get(&v) {
+        //     return *r;
+        // }
+        if n == 0 {
+            return 1;
+        }
+
+        let stone_l: u32 = v.checked_ilog10().unwrap_or(0) + 1;
+        if v == 0 {
+            let res = self.blink(1, n - 1);
+            self.stones_cache.insert(v, res);
+            return res;
+        } else if stone_l % 2 == 0 {
+            let splitter: u64 = 10_u64.pow(stone_l / 2);
+            let first = v / splitter;
+            let second = v - (first * splitter);
+
+            let res = self.blink(first, n - 1) + self.blink(second, n - 1);
+            self.stones_cache.insert(v, res);
+            // println!("{v:}: {res:}");
+            return res;
+        } else {
+            let res = self.blink(v * 2024, n - 1);
+            self.stones_cache.insert(v, res);
+            return res;
+        }
     }
 }
 
