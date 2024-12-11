@@ -159,15 +159,24 @@ impl WordSearch {
         let mut count: usize = 0;
         let word_chars: Vec<char> = word.chars().collect();
         let first: char = word_chars[0];
+        let centre: char = word_chars[1];
         let last: char = word_chars[2];
         let row_l = self.words.iter().next().unwrap().len();
-        for y_idx in 0..self.words.len() - word.len() + 1 {
-            for x_idx in 0..row_l - word.len() + 1 {
+        for y_idx in 0..self.words.len() - word.len() {
+            for x_idx in 0..row_l - word.len() {
+                // println!("(x: {x_idx}, y: {y_idx})");
                 let top_left = self.words[y_idx][x_idx];
                 let top_right: char = self.words[y_idx][x_idx + 2];
+                let centre_point: char = self.words[y_idx + 1][x_idx + 1];
                 let bottom_left: char = self.words[y_idx + 2][x_idx];
                 let bottom_right: char = self.words[y_idx + 2][x_idx + 2];
-                if (top_left == first && bottom_right == last)
+                // println!("TOP LEFT: {top_left:}");
+                // println!("TOP RIGHT: {top_right:}");
+                // println!("CENTRE: {centre_point:}");
+                // println!("BOTTOM LEFT: {bottom_left:}");
+                // println!("BOTTOM RIGHT: {bottom_right:}");
+                if centre_point == centre {
+                    if (top_left == first && bottom_right == last)
                     || (top_left == last && bottom_right == first)
                 {
                     if (top_right == first && bottom_left == last)
@@ -175,6 +184,7 @@ impl WordSearch {
                     {
                         count += 1;
                     }
+                }
                 }
             }
         }
@@ -216,5 +226,27 @@ MXMXAXMASX
         let search = WordSearch::from_string(input);
         search.display_search();
         assert_eq!(search.search(word), count);
+    }
+
+    #[rstest]
+    #[case(
+        "MMMSXXMASM
+MSAMXMSMSA
+AMXSXMAAMM
+MSAMASMSMX
+XMASAMXAMM
+XXAMMXXAMA
+SMSMSASXSS
+SAXAMASAAA
+MAMMMXMMMM
+MXMXAXMASX
+",
+        "MAS",
+        9
+    )]
+    fn example_x_search(#[case] input: &str, #[case] word: &str, #[case] count: usize) {
+        let search = WordSearch::from_string(input);
+        search.display_search();
+        assert_eq!(search.x_search(word), count);
     }
 }
