@@ -85,21 +85,28 @@ impl DiskMap {
     pub fn defragment_files(&mut self) {
         let mut moved_ids: HashSet<usize> = HashSet::new();
         let mut new_files: Vec<FileMap> = self.files.clone();
+
         for local_file_idx in (1..self.files.len()).rev() {
             let local_file = self.files.get(local_file_idx).unwrap();
             let file_idx = new_files.iter().position(|f| f.id == local_file.id).unwrap();
-            if !moved_ids.contains(&local_file.id) {
-                moved_ids.insert(local_file.id);
+
+            let move_file = new_files.get(file_idx).unwrap().clone();
+
+            if !moved_ids.contains(&move_file.id) && moved_ids.insert(move_file.id) {
                 for idx in 0..file_idx {
                     let check_file = new_files.get_mut(idx).unwrap();
-                    if local_file.blocks <= check_file.free {
-                        let new_free = check_file.free - local_file.blocks;
+                    if move_file.blocks <= check_file.free {
+                        println!("1: {move_file:?} || {check_file:?}");
+                        let new_free = check_file.free - move_file.blocks;
                         check_file.free = 0;
                         let mut next = new_files.get_mut(file_idx).unwrap().clone();
                         let prev = new_files.get_mut(file_idx - 1).unwrap();
+                        println!("2: {next:?} || {prev:?}");
+
 
                         prev.free += next.size();
                         next.free = new_free;
+                        println!("3: {next:?} || {prev:?}\n");
                         new_files.remove(file_idx);
                         new_files.insert(idx + 1, next);
                         break;
