@@ -18,10 +18,10 @@ impl WordSearch {
     }
 
     pub fn search(&self, word: &str) -> usize {
-
+0
     }
     pub fn display_search(&self) {
-        for row in self.words {
+        for row in self.words.iter() {
             for c in row {
                 print!("{c:}");
             }
@@ -35,4 +35,21 @@ impl WordSearch {
 mod tests {
     use super::*;
     use rstest::rstest;
+
+    #[rstest]
+    #[case("MMMSXXMASM
+MSAMXMSMSA
+AMXSXMAAMM
+MSAMASMSMX
+XMASAMXAMM
+XXAMMXXAMA
+SMSMSASXSS
+SAXAMASAAA
+MAMMMXMMMM
+MXMXAXMASX
+", "XMAS", 18)]
+    fn example(#[case] input: &str, #[case] word: &str, #[case] count: usize) {
+        let search = WordSearch::from_string(input);
+        assert_eq!(search.search(word), count);
+    }
 }
