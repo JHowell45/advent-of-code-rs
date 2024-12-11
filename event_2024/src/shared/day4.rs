@@ -157,7 +157,15 @@ impl WordSearch {
 
     pub fn x_search(&self, word: &str) -> usize {
         let mut count: usize = 0;
+        let word_chars: Vec<char> = word.chars().collect();
+        let first: char = word_chars[0];
+        let last: char = word_chars[2];
         let row_l = self.words.iter().next().unwrap().len();
+        for y_idx in 0..self.words.len() - word.len() + 1 {
+            for x_idx in 0..row_l - word.len() + 1 {
+
+            }
+        }
         return count;
     }
     pub fn display_search(&self) {
