@@ -97,17 +97,20 @@ impl DiskMap {
                 if file.blocks <= prior_file.free {
                     let size = file.size();
                     file.free = prior_file.free - file.blocks;
+                    // println!("File: {file:?}");
                     prior_file.free = 0;
+                    // println!("Prior File: {prior_file:?}");
                     let old_prior_file = new_files.get_mut(new_files_idx - 1).unwrap();
                     old_prior_file.free += size;
-                    println!("{file:?} | {prior_file:?} | {old_prior_file:?}")
+                    // println!("Old Prior File: {old_prior_file:?}");
                     new_files.remove(new_files_idx);
                     new_files.insert(prior_idx + 1, file);
+                    // println!("{new_files:?}");
+                    println!("{}", Self::print_files(new_files.clone()));
                     break;
                 }
                 // println!("{file_idx} / {new_files_idx} : {file:?}");
                 // println!("{prior_idx} : {prior_file:?}");
-                println!("{new_files:?}");
             }
         }
 
@@ -169,6 +172,16 @@ impl DiskMap {
                 Some(v) => char::from_digit(*v as u32, 10).unwrap(),
                 None => '.',
             })
+            .collect::<String>()
+    }
+
+    fn print_files(files: Vec<FileMap>) -> String {
+        files
+            .iter()
+            .map(|f| f.build_file().iter().map(|c| match c {
+                Some(v) => format!("{v}"),
+                None => ".".to_string(),
+            }).collect::<String>())
             .collect::<String>()
     }
 
