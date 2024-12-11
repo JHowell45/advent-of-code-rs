@@ -163,7 +163,10 @@ impl WordSearch {
         let row_l = self.words.iter().next().unwrap().len();
         for y_idx in 0..self.words.len() - word.len() + 1 {
             for x_idx in 0..row_l - word.len() + 1 {
-
+                let top_left = self.words[y_idx][x_idx];
+                let top_right: char = self.words[y_idx][x_idx + 2];
+                let bottom_left: char = self.words[y_idx + 2][x_idx];
+                let bottom_right: char = self.words[y_idx + 2][x_idx + 2];
             }
         }
         return count;
