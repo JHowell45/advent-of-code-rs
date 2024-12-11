@@ -22,11 +22,16 @@ impl WordSearch {
         for (y_idx, row) in self.words.iter().enumerate() {
             for (x_idx, c) in row.iter().enumerate() {
                 println!("(x: {x_idx:}, y: {y_idx:})");
+                let left_check: bool = x_idx >= wordl - 1;
+                let right_check: bool = x_idx < row.len() - wordl + 1;
+                let top_check: bool = y_idx >= wordl - 1;
+                let bottom_check: bool = y_idx < self.words.len() - wordl;
+
                 if *c == first_char {
 
                 }
                 // Left:
-                if x_idx >= wordl - 1 {
+                if left_check {
                     // println!("LEFT");
                     // println!("[{} - {x_idx}]", x_idx + 1 - wordl);
 
@@ -40,7 +45,7 @@ impl WordSearch {
                     }
                 }
                 // Right:
-                if x_idx < row.len() - wordl + 1 {
+                if right_check {
                     // println!("RIGHT");
                     // println!("[{x_idx} - {}]", x_idx + wordl);
 
@@ -52,7 +57,7 @@ impl WordSearch {
                 }
 
                 // Top:
-                if y_idx >= wordl - 1 {
+                if top_check {
                     // println!("TOP");
                     // println!("[{} -= {y_idx}]", y_idx + 1 - wordl);
 
@@ -66,8 +71,13 @@ impl WordSearch {
                     }
                 }
 
+                // Top Left:
+                if top_check && left_check {
+
+                }
+
                 // Bottom:
-                if y_idx < self.words.len() - wordl {
+                if bottom_check {
                     // println!("BOTTOM");
                     // println!("[{y_idx} - {}]", y_idx + wordl);
 
