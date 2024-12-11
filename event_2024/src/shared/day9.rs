@@ -84,11 +84,33 @@ impl DiskMap {
 
     pub fn defragment_files(&mut self) {
         let mut moved_ids: HashSet<usize> = HashSet::new();
+        let mut new_files: Vec<FileMap> = Vec::new();
+        for file in self.files.iter() {
+            if !moved_ids.contains(&file.id) {
+                moved_ids.insert(file.id);
+                new_files.push(file.clone());
+                if file.free > 0 {
+                    for reverse_file in self.files.iter().rev() {
+                        if !moved_ids.contains(&reverse_file.id) && reverse_file.blocks <= file.free
+                        {
+                        }
+                    }
+                }
+            }
+        }
+        self.disk = self.build_disk(new_files);
+    }
+
+    pub fn old_defragment_files(&mut self) {
+        let mut moved_ids: HashSet<usize> = HashSet::new();
         let mut new_files: Vec<FileMap> = self.files.clone();
 
         for local_file_idx in (1..self.files.len()).rev() {
             let local_file = self.files.get(local_file_idx).unwrap();
-            let file_idx = new_files.iter().position(|f| f.id == local_file.id).unwrap();
+            let file_idx = new_files
+                .iter()
+                .position(|f| f.id == local_file.id)
+                .unwrap();
 
             let move_file = new_files.get(file_idx).unwrap().clone();
 
@@ -102,7 +124,6 @@ impl DiskMap {
                         let mut next = new_files.get_mut(file_idx).unwrap().clone();
                         let prev = new_files.get_mut(file_idx - 1).unwrap();
                         println!("2: {next:?} || {prev:?}");
-
 
                         prev.free += next.size();
                         next.free = new_free;

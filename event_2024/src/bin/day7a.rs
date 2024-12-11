@@ -5,8 +5,10 @@ use event_2024::shared::day7::{sum_of_valid_results, Operator};
 fn main() {
     println!(
         "Total calibration result: {}",
-        sum_of_valid_results(get_file_contents(2024, 7).as_str(),
-        vec![Operator::Add, Operator::Multiply])
+        sum_of_valid_results(
+            get_file_contents(2024, 7).as_str(),
+            vec![Operator::Add, Operator::Multiply]
+        )
     );
 }
 
@@ -43,7 +45,10 @@ mod tests {
         #[case] numbers: Vec<i64>,
         #[case] expected: bool,
     ) {
-        assert_eq!(validate_equation(result, numbers, &vec![Operator::Add, Operator::Multiply]), expected);
+        assert_eq!(
+            validate_equation(result, numbers, &vec![Operator::Add, Operator::Multiply]),
+            expected
+        );
     }
 
     #[rstest]
@@ -60,6 +65,9 @@ mod tests {
         3749
     )]
     fn example(#[case] data: &str, #[case] expected: i64) {
-        assert_eq!(sum_of_valid_results(data, vec![Operator::Add, Operator::Multiply]), expected);
+        assert_eq!(
+            sum_of_valid_results(data, vec![Operator::Add, Operator::Multiply]),
+            expected
+        );
     }
 }

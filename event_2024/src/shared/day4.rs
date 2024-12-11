@@ -180,14 +180,14 @@ impl WordSearch {
                 // println!("BOTTOM RIGHT: {bottom_right:}");
                 if centre_point == centre {
                     if (top_left == first && bottom_right == last)
-                    || (top_left == last && bottom_right == first)
-                {
-                    if (top_right == first && bottom_left == last)
-                        || (top_right == last && bottom_left == first)
+                        || (top_left == last && bottom_right == first)
                     {
-                        count += 1;
+                        if (top_right == first && bottom_left == last)
+                            || (top_right == last && bottom_left == first)
+                        {
+                            count += 1;
+                        }
                     }
-                }
                 }
             }
         }
