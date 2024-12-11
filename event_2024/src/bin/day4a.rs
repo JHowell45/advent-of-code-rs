@@ -7,6 +7,6 @@ mod tests {
 
     #[rstest]
     fn example() {
-        
+
     }
 }
