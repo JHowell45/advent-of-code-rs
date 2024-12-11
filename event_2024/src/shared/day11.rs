@@ -61,7 +61,6 @@ impl Stones {
 
     fn blink(&mut self, v: u64, n: usize) -> usize {
         if let Some(res) = self.cache.get(v, n) {
-            // println!("{v:}, {n:} = {res:}");
             return res;
         }
         if n == 0 {
@@ -71,7 +70,6 @@ impl Stones {
         let stone_l: u32 = v.checked_ilog10().unwrap_or(0) + 1;
         if v == 0 {
             let res = self.blink(1, n - 1);
-            // println!("{v:}, {n:} = {res:}");
             self.cache.add(v, n, res);
             return res;
         } else if stone_l % 2 == 0 {
@@ -80,12 +78,10 @@ impl Stones {
             let second = v - (first * splitter);
 
             let res = self.blink(first, n - 1) + self.blink(second, n - 1);
-            // println!("{v:}, {n:} = {res:}");
             self.cache.add(v, n, res);
             return res;
         } else {
             let res = self.blink(v * 2024, n - 1);
-            // println!("{v:}, {n:} = {res:}");
             self.cache.add(v, n, res);
             return res;
         }
@@ -96,16 +92,6 @@ impl Stones {
 mod tests {
     use super::*;
     use rstest::rstest;
-
-    // #[rstest]
-    // #[case("125 17", vec![vec![253000, 1, 7], vec![253, 0, 2024, 14168], vec![512072, 1, 20, 24, 28676032] ,vec![512, 72, 2024, 2, 0, 2, 4, 2867, 6032] ,vec![1036288, 7, 2, 20, 24, 4048, 1, 4048, 8096, 28, 67, 60, 32], vec![2097446912, 14168, 4048, 2, 0, 2, 4, 40, 48, 2024, 40, 48, 80, 96, 2, 8, 6, 7, 6, 0, 3, 2]])]
-    // fn test_blink(#[case] stones: &str, #[case] blink_results: Vec<Vec<u64>>) {
-    //     let mut stones = Stones::from_string(stones);
-    //     for results in blink_results.iter() {
-    //         stones.blink();
-    //         assert_eq!(stones.stones, *results);
-    //     }
-    // }
 
     #[rstest]
     #[case("125 17", 6, 22)]
@@ -118,13 +104,4 @@ mod tests {
         let mut stones = Stones::from_string(starting_stones);
         assert_eq!(stones.total_stones(blinks), total);
     }
-
-    // #[rstest]
-    // #[case("0 1 10 99 999", vec![1, 2024, 1, 0, 9, 9, 2021976])]
-    // fn test_stones(#[case] input: &str, #[case] expected: Vec<u64>) {
-    //     let mut stones = Stones::from_string(input);
-    //     println!();
-    //     stones.blink();
-    //     assert_eq!(stones.stones, expected);
-    // }
 }

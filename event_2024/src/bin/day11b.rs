@@ -21,5 +21,9 @@ mod tests {
     use rstest::rstest;
 
     #[rstest]
-    fn example() {}
+    #[case("5 62914 65 972 0 805922 6521 1639064", 75, 239413123020116)]
+    fn correct_result(#[case] puzzle: &str, #[case] blinks: usize, #[case] expected: usize) {
+        let mut stones = Stones::from_string(puzzle);
+        assert_eq!(stones.total_stones(blinks), expected);
+    }
 }
