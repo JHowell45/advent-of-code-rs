@@ -39,15 +39,21 @@ impl Stones {
 
         let stone_l: u32 = v.checked_ilog10().unwrap_or(0) + 1;
         if v == 0 {
-            return self.blink(1, n - 1);
+            let res = self.blink(1, n - 1);
+            println!("{v:}, {n:} = {res:}");
+            return res;
         } else if stone_l % 2 == 0 {
             let splitter: u64 = 10_u64.pow(stone_l / 2);
             let first = v / splitter;
             let second = v - (first * splitter);
 
-            return self.blink(first, n - 1) + self.blink(second, n - 1);
+            let res = self.blink(first, n - 1) + self.blink(second, n - 1);
+            println!("{v:}, {n:} = {res:}");
+            return res;
         } else {
-            return self.blink(v * 2024, n - 1);
+            let res = self.blink(v * 2024, n - 1);
+            println!("{v:}, {n:} = {res:}");
+            return res;
         }
     }
 }
