@@ -5,7 +5,10 @@ use event_2024::shared::day11::Stones;
 fn main() {
     let blinks: usize = 25;
     let mut stones = Stones::from_string(get_file_contents(2024, 11).as_str());
-    println!("Total stones after {blinks} blinks: {}", stones.total_stones(blinks));
+    println!(
+        "Total stones after {blinks} blinks: {}",
+        stones.total_stones(blinks)
+    );
 }
 
 #[cfg(test)]

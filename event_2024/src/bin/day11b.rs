@@ -9,7 +9,10 @@ fn main() {
     // let l = x.checked_ilog10().unwrap() + 1;
     // let l = x.checked_ilog10().unwrap() + 1;
     // println!("{x:}: {l:}, {}", x / (10_i32.pow(l / 2) as u32));
-    println!("Total stones after {blinks} blinks: {}", stones.total_stones(blinks));
+    println!(
+        "Total stones after {blinks} blinks: {}",
+        stones.total_stones(blinks)
+    );
 }
 
 #[cfg(test)]
