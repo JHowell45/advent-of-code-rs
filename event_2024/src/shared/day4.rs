@@ -89,8 +89,8 @@ impl WordSearch {
 
                 // Top Right:
                 if top_check && right_check {
-                    println!("TOP RIGHT");
-                    println!("[{} -= {y_idx}]", y_idx + 1 - wordl);
+                    // println!("TOP RIGHT");
+                    // println!("[{} -= {y_idx}]", y_idx + 1 - wordl);
 
                     let test_word = self.words[y_idx + 1 - wordl..=y_idx]
                         .iter()
