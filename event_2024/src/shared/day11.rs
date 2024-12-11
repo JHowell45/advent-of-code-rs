@@ -12,5 +12,22 @@ impl Stones {
         }
     }
 
-    pub fn blink(&mut self) {}
+    pub fn blink(&mut self) {
+        for stone in self.stones.iter_mut() {
+            if *stone == 0 {
+                *stone = 1;
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rstest::rstest;
+
+    #[rstest]
+    fn test_blink() {
+
+    }
 }
