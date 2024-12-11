@@ -21,7 +21,7 @@ impl WordSearch {
         let wordl: usize = word.len();
         for (y_idx, row) in self.words.iter().enumerate() {
             for (x_idx, c) in row.iter().enumerate() {
-                println!("(x: {x_idx:}, y: {y_idx:})");
+                // println!("(x: {x_idx:}, y: {y_idx:})");
                 let left_check: bool = x_idx >= wordl - 1;
                 let right_check: bool = x_idx < row.len() - wordl + 1;
                 let top_check: bool = y_idx >= wordl - 1;
