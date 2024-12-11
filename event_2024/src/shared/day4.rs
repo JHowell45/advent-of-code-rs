@@ -27,9 +27,7 @@ impl WordSearch {
                 let top_check: bool = y_idx >= wordl - 1;
                 let bottom_check: bool = y_idx < self.words.len() - wordl;
 
-                if *c == first_char {
-
-                }
+                if *c == first_char {}
                 // Left:
                 if left_check {
                     // println!("LEFT");
@@ -63,6 +61,7 @@ impl WordSearch {
 
                     let test_word = self.words[y_idx + 1 - wordl..=y_idx]
                         .iter()
+                        .rev()
                         .map(|r| r[x_idx])
                         .collect::<String>();
                     // println!("TOP | {test_word:}: {count}");
@@ -73,7 +72,19 @@ impl WordSearch {
 
                 // Top Left:
                 if top_check && left_check {
+                    // println!("TOP LEFT");
+                    // println!("[{} -= {y_idx}]", y_idx + 1 - wordl);
 
+                    let test_word = self.words[y_idx + 1 - wordl..=y_idx]
+                        .iter()
+                        .rev()
+                        .enumerate()
+                        .map(|(idx, r)| r[x_idx - idx])
+                        .collect::<String>();
+                    // println!("TOP LEFT | {test_word:}: {count}");
+                    if word == test_word {
+                        count += 1;
+                    }
                 }
 
                 // Bottom:
