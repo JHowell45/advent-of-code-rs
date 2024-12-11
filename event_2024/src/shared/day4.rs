@@ -27,18 +27,18 @@ impl WordSearch {
                     if x_idx >= wordl - 1 {
                         // println!("LEFT");
                         let test_word = row[x_idx + 1 - wordl..x_idx].iter().rev().collect::<String>();
+                        println!("LEFT | {test_word:}: {count}");
                         if word == test_word {
                             count += 1;
-                            println!("LEFT | {test_word:}: {count}");
                         }
                     }
                     // Right:
                     if x_idx < row.len() - wordl {
                         // println!("RIGHT");
                         let test_word = row[x_idx..x_idx + wordl].iter().collect::<String>();
+                        println!("RIGHT | {test_word:}: {count}");
                         if word == test_word {
                             count += 1;
-                            println!("RIGHT | {test_word:}: {count}");
                         }
                     }
 
@@ -50,13 +50,25 @@ impl WordSearch {
                             test_chars.push(self.words[idx][x_idx]);
                         }
                         let test_word = test_chars.iter().collect::<String>();
+                        println!("TOP | {test_word:}: {count}");
                         if word == test_word {
                             count += 1;
-                            println!("TOP | {test_word:}: {count}");
                         }
                     }
 
                     // Bottom:
+                    if y_idx < self.words.len() {
+                        // println!("BOTTOM");
+                        let mut test_chars: Vec<char> = Vec::new();
+                        for idx in (y_idx..y_idx + wordl) {
+                            test_chars.push(self.words[idx][x_idx]);
+                        }
+                        let test_word = test_chars.iter().collect::<String>();
+                        println!("BOTTOM | {test_word:}: {count}");
+                        if word == test_word {
+                            count += 1;
+                        }
+                    }
                 }
             }
         }
