@@ -13,22 +13,14 @@ impl Stones {
     pub fn blink(&mut self) {
         let mut new_stones: Vec<String> = Vec::new();
         for stone in self.stones.iter() {
-            let stone_v = stone.parse::<i32>().unwrap();
+            let stone_v = stone.parse::<i64>().unwrap();
             if stone_v == 0 {
                 new_stones.push(1.to_string());
             } else if stone.len() % 2 == 0 {
-                new_stones.push(
-                    stone[0..stone.len() / 2]
-                        .parse::<i32>()
-                        .unwrap()
-                        .to_string(),
-                );
-                new_stones.push(
-                    stone[stone.len() / 2..stone.len()]
-                        .parse::<i32>()
-                        .unwrap()
-                        .to_string(),
-                );
+                let first = &stone[0..stone.len() / 2];
+                let second = &stone[stone.len() / 2..stone.len()];
+                new_stones.push(first.parse::<i64>().unwrap().to_string());
+                new_stones.push(second.parse::<i64>().unwrap().to_string());
             } else {
                 new_stones.push((stone_v * 2024).to_string().to_string());
             }
