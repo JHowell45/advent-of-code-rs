@@ -36,7 +36,10 @@ impl Stones {
         self.stones = new_stones;
     }
 
-    pub fn total_stones(&self) -> usize {
+    pub fn total_stones(&mut self, blinks: usize) -> usize {
+        for _ in 0..blinks {
+            self.blink();
+        }
         self.stones.len()
     }
 }
@@ -54,5 +57,12 @@ mod tests {
             stones.blink();
             assert_eq!(stones.stones, *results);
         }
+    }
+
+    #[rstest]
+    #[case("125 17", 22, 55312)]
+    fn test_total_stones(#[case] starting_stones: &str, #[case] blinks: usize, #[case] total: usize) {
+        let mut stones = Stones::from_string(starting_stones);
+        assert_eq!(stones.total_stones(blinks), total);
     }
 }
