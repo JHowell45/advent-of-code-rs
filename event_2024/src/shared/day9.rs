@@ -32,7 +32,7 @@ impl FileMap {
 
 #[derive(Debug)]
 pub struct DiskMap {
-    files: Vec<FileMap>,
+    pub files: Vec<FileMap>,
     disk: VecDeque<Option<usize>>,
 }
 
@@ -85,24 +85,41 @@ impl DiskMap {
     pub fn defragment_files(&mut self) {
         let mut moved_ids: HashSet<usize> = HashSet::new();
         let mut new_files: Vec<FileMap> = Vec::new();
-        for file in self.files.iter() {
+        let len: usize = self.files.len();
+        for file_idx in 0..len {
+            let mut file = self.files.get(file_idx).unwrap().clone();
             if !moved_ids.contains(&file.id) {
-                moved_ids.insert(file.id);
-                new_files.push(file.clone());
                 if file.free > 0 {
-                    for reverse_file in self.files.iter_mut().rev() {
+                    for idx in (file_idx+1..len).rev() {
+                        let reverse_file = self.files.get(idx).unwrap();
+                        println!("Reverse ID: {}", reverse_file.id);
                         if !moved_ids.contains(&reverse_file.id) && reverse_file.blocks <= file.free
                         {
-                            reverse_file.free = file.free - reverse_file.blocks;
+                            let mut next = reverse_file.clone();
+                            next.free = file.free - reverse_file.blocks;
+                            file.free = 0;
+
+                            println!("File: {file:?}");
+                            println!("Next: {next:?}");
+
+                            moved_ids.insert(file.id);
+                            new_files.push(file.clone());
                             new_files.push(reverse_file.clone());
-                            if reverse_file.free == 0 {
+                            moved_ids.insert(next.id);
+                            if next.free == 0 {
                                 break;
                             }
                         }
+                        if !moved_ids.contains(&file.id) {
+                            moved_ids.insert(file.id);
+                            new_files.push(file.clone());
+                        }
                     }
                 }
+                println!("{new_files:?}");
             }
         }
+        self.files = new_files.clone();
         self.disk = self.build_disk(new_files);
     }
 
@@ -143,11 +160,11 @@ impl DiskMap {
         self.disk = self.build_disk(new_files);
     }
 
-    pub fn checksum(&self) -> usize {
-        let mut sum: usize = 0;
+    pub fn checksum(&self) -> u64 {
+        let mut sum: u64 = 0;
         for (idx, bit) in self.disk.iter().enumerate() {
             if let Some(v) = bit {
-                sum += idx * v;
+                sum += idx as u64 * *v as u64;
             }
         }
         return sum;
