@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct Stones {
     pub stones: Vec<String>,
 }
@@ -24,6 +25,10 @@ impl Stones {
         }
         self.stones = new_stones;
     }
+
+    pub fn total_stones(&self) -> usize {
+        self.stones.len()
+    }
 }
 
 #[cfg(test)]
@@ -32,5 +37,12 @@ mod tests {
     use rstest::rstest;
 
     #[rstest]
-    fn test_blink() {}
+    #[case("125 17", vec![vec!["253000", "1", "7"], vec!["253", "0", "2024", "14168"], vec!["512072", "1", "20", "24", "28676032"] ,vec!["512", "72", "2024", "2", "0", "2", "4", "2867", "6032"] ,vec!["1036288", "7", "2", "20", "24", "4048", "1", "4048", "8096", "28", "67", "60", "32"]])]
+    fn test_blink(#[case] stones: &str, #[case] blink_results: Vec<Vec<String>>) {
+        let mut stones = Stones::from_string(stones);
+        for results in blink_results.iter() {
+            stones.blink();
+            assert_eq!(stones.stones, *results);
+        }
+    }
 }
