@@ -164,7 +164,7 @@ impl WordSearch {
         let row_l = self.words.iter().next().unwrap().len();
         for y_idx in 0..self.words.len() - word.len() {
             for x_idx in 0..row_l - word.len() {
-                // println!("(x: {x_idx}, y: {y_idx})");
+                println!("(x: {x_idx}, y: {y_idx})");
                 let top_left = self.words[y_idx][x_idx];
                 let top_right: char = self.words[y_idx][x_idx + 2];
                 let centre_point: char = self.words[y_idx + 1][x_idx + 1];
