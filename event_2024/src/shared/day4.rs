@@ -163,20 +163,20 @@ impl WordSearch {
         let last: char = word_chars[2];
         let row_l = self.words.iter().next().unwrap().len();
 
-        println!("Dim: (x: {row_l}, y: {})", self.words.len());
+        // println!("Dim: (x: {row_l}, y: {})", self.words.len());
 
         for y_idx in 0..self.words.len() - word.len() {
-            for x_idx in 0..row_l - word.len() {
-                println!("(x: {x_idx}, y: {y_idx})");
+            for x_idx in 0..=row_l - word.len() {
+                // println!("(x: {x_idx}, y: {y_idx})");
                 let top_left = self.words[y_idx][x_idx];
-                let top_right: char = self.words[y_idx][x_idx + 2];
-                let centre_point: char = self.words[y_idx + 1][x_idx + 1];
-                let bottom_left: char = self.words[y_idx + 2][x_idx];
-                let bottom_right: char = self.words[y_idx + 2][x_idx + 2];
                 // println!("TOP LEFT: {top_left:}");
+                let top_right: char = self.words[y_idx][x_idx + 2];
                 // println!("TOP RIGHT: {top_right:}");
+                let centre_point: char = self.words[y_idx + 1][x_idx + 1];
                 // println!("CENTRE: {centre_point:}");
+                let bottom_left: char = self.words[y_idx + 2][x_idx];
                 // println!("BOTTOM LEFT: {bottom_left:}");
+                let bottom_right: char = self.words[y_idx + 2][x_idx + 2];
                 // println!("BOTTOM RIGHT: {bottom_right:}");
                 if centre_point == centre {
                     if (top_left == first && bottom_right == last)
