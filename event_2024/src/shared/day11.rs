@@ -1,9 +1,42 @@
 use std::collections::HashMap;
 
 #[derive(Debug)]
+pub struct StoneCache {
+    cache: HashMap<u64, HashMap<usize, usize>>,
+}
+
+impl StoneCache {
+    pub fn new() -> Self {
+        Self {
+            cache: HashMap::new(),
+        }
+    }
+
+    pub fn add(&mut self, k: u64, n: usize, v: usize) {
+        match self.cache.get_mut(&k) {
+            Some(blinks) => {
+                if blinks.get(&n).is_none() {
+                    blinks.insert(n, v);
+                }
+            }
+            None => {
+                self.cache.insert(k, HashMap::from([(n, v)]));
+            }
+        };
+    }
+
+    pub fn get(&self, k: u64, n: usize) -> Option<usize> {
+        match self.cache.get(&k) {
+            Some(blinks) => blinks.get(&n).copied(),
+            None => None,
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct Stones {
     pub stones: Vec<u64>,
-    stones_cache: HashMap<u64, usize>,
+    cache: StoneCache,
 }
 
 impl Stones {
@@ -13,7 +46,7 @@ impl Stones {
                 .split(" ")
                 .map(|s| s.to_string().parse::<u64>().unwrap())
                 .collect(),
-            stones_cache: HashMap::new(),
+            cache: StoneCache::new(),
         }
     }
 
@@ -21,18 +54,16 @@ impl Stones {
         let mut stones_count: usize = 0;
         for idx in 0..self.stones.len() {
             let stone = self.stones.get(idx).unwrap();
-            match self.stones_cache.get(stone) {
-                Some(v) => stones_count += v,
-                None => {
-                    let local_count: usize = self.blink(stone.clone(), blinks);
-                    stones_count += local_count;
-                }
-            }
+            stones_count += self.blink(*stone, blinks);
         }
         return stones_count;
     }
 
     fn blink(&mut self, v: u64, n: usize) -> usize {
+        if let Some(res) = self.cache.get(v, n) {
+            // println!("{v:}, {n:} = {res:}");
+            return res;
+        }
         if n == 0 {
             return 1;
         }
@@ -40,7 +71,8 @@ impl Stones {
         let stone_l: u32 = v.checked_ilog10().unwrap_or(0) + 1;
         if v == 0 {
             let res = self.blink(1, n - 1);
-            println!("{v:}, {n:} = {res:}");
+            // println!("{v:}, {n:} = {res:}");
+            self.cache.add(v, n, res);
             return res;
         } else if stone_l % 2 == 0 {
             let splitter: u64 = 10_u64.pow(stone_l / 2);
@@ -48,11 +80,13 @@ impl Stones {
             let second = v - (first * splitter);
 
             let res = self.blink(first, n - 1) + self.blink(second, n - 1);
-            println!("{v:}, {n:} = {res:}");
+            // println!("{v:}, {n:} = {res:}");
+            self.cache.add(v, n, res);
             return res;
         } else {
             let res = self.blink(v * 2024, n - 1);
-            println!("{v:}, {n:} = {res:}");
+            // println!("{v:}, {n:} = {res:}");
+            self.cache.add(v, n, res);
             return res;
         }
     }
