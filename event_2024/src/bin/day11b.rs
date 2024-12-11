@@ -4,7 +4,8 @@ use event_2024::shared::day11::Stones;
 
 fn main() {
     let mut stones = Stones::from_string(get_file_contents(2024, 11).as_str());
-    println!("Total stones after 25 blinks: {}", stones.total_stones(75));
+    println!("{}", 345 << 1);
+    // println!("Total stones after 25 blinks: {}", stones.total_stones(75));
 }
 
 #[cfg(test)]
