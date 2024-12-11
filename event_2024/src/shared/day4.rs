@@ -162,6 +162,9 @@ impl WordSearch {
         let centre: char = word_chars[1];
         let last: char = word_chars[2];
         let row_l = self.words.iter().next().unwrap().len();
+
+        println!("Dim: (x: {row_l}, y: {})", self.words.len());
+
         for y_idx in 0..self.words.len() - word.len() {
             for x_idx in 0..row_l - word.len() {
                 println!("(x: {x_idx}, y: {y_idx})");
