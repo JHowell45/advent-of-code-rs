@@ -1,18 +1,9 @@
+use core::file_reader::get_file_contents;
+
 use event_2024::shared::day4::WordSearch;
 
 fn main() {
-    let text = "MMMSXXMASM
-MSAMXMSMSA
-AMXSXMAAMM
-MSAMASMSMX
-XMASAMXAMM
-XXAMMXXAMA
-SMSMSASXSS
-SAXAMASAAA
-MAMMMXMMMM
-MXMXAXMASX
-";
-    let word_search = WordSearch::from_string(text);
+    let word_search = WordSearch::from_string(get_file_contents(2024, 4).as_str());
     word_search.display_search();
 }
 
