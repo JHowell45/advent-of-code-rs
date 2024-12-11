@@ -22,52 +22,58 @@ impl WordSearch {
         for (y_idx, row) in self.words.iter().enumerate() {
             for (x_idx, c) in row.iter().enumerate() {
                 println!("({x_idx:}, {y_idx:})");
-                if *c == first_char {
-                    // Left:
-                    if x_idx >= wordl - 1 {
-                        // println!("LEFT");
-                        let test_word = row[x_idx + 1 - wordl..x_idx].iter().rev().collect::<String>();
-                        println!("LEFT | {test_word:}: {count}");
-                        if word == test_word {
-                            count += 1;
-                        }
-                    }
-                    // Right:
-                    if x_idx < row.len() - wordl {
-                        // println!("RIGHT");
-                        let test_word = row[x_idx..x_idx + wordl].iter().collect::<String>();
-                        println!("RIGHT | {test_word:}: {count}");
-                        if word == test_word {
-                            count += 1;
-                        }
-                    }
+                // if *c == first_char {
 
-                    // Top:
-                    if y_idx >= wordl - 1 {
-                        // println!("TOP");
-                        let mut test_chars: Vec<char> = Vec::new();
-                        for idx in (y_idx + 1 - wordl..y_idx).rev() {
-                            test_chars.push(self.words[idx][x_idx]);
-                        }
-                        let test_word = test_chars.iter().collect::<String>();
-                        println!("TOP | {test_word:}: {count}");
-                        if word == test_word {
-                            count += 1;
-                        }
+                // }
+                // Left:
+                if x_idx >= wordl - 1 {
+                    // println!("LEFT");
+                    let test_word = row[x_idx + 1 - wordl..=x_idx]
+                        .iter()
+                        .rev()
+                        .collect::<String>();
+                    // println!("LEFT | {test_word:}: {count}");
+                    if word == test_word {
+                        count += 1;
                     }
+                }
+                // Right:
+                if x_idx < row.len() - wordl + 1 {
+                    // println!("RIGHT");
+                    // println!("[{x_idx} - {}]", x_idx + wordl);
+                    let test_word = row[x_idx..x_idx + wordl].iter().collect::<String>();
+                    // println!("RIGHT | {test_word:}: {count}");
+                    if word == test_word {
+                        count += 1;
+                    }
+                }
 
-                    // Bottom:
-                    if y_idx < self.words.len() {
-                        // println!("BOTTOM");
-                        let mut test_chars: Vec<char> = Vec::new();
-                        for idx in (y_idx..y_idx + wordl) {
-                            test_chars.push(self.words[idx][x_idx]);
-                        }
-                        let test_word = test_chars.iter().collect::<String>();
-                        println!("BOTTOM | {test_word:}: {count}");
-                        if word == test_word {
-                            count += 1;
-                        }
+                // Top:
+                if y_idx >= wordl - 1 {
+                    // println!("TOP");
+                    let mut test_chars: Vec<char> = Vec::new();
+                    for idx in (y_idx + 1 - wordl..=y_idx).rev() {
+                        test_chars.push(self.words[idx][x_idx]);
+                    }
+                    let test_word = test_chars.iter().collect::<String>();
+                    // println!("TOP | {test_word:}: {count}");
+                    if word == test_word {
+                        count += 1;
+                    }
+                }
+
+                // Bottom:
+                if y_idx < self.words.len() - wordl + 1 {
+                    println!("BOTTOM");
+                    let mut test_chars: Vec<char> = Vec::new();
+                    println!("[{y_idx} - {}]", y_idx + wordl);
+                    let test_word = self.words[y_idx..y_idx + wordl]
+                        .iter()
+                        .map(|r| r[x_idx])
+                        .collect::<String>();
+                    println!("BOTTOM | {test_word:}: {count}");
+                    if word == test_word {
+                        count += 1;
                     }
                 }
             }
@@ -109,6 +115,7 @@ MXMXAXMASX
     )]
     fn example(#[case] input: &str, #[case] word: &str, #[case] count: usize) {
         let search = WordSearch::from_string(input);
+        search.display_search();
         assert_eq!(search.search(word), count);
     }
 }
