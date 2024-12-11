@@ -155,6 +155,11 @@ impl WordSearch {
         return count;
     }
 
+    pub fn x_search(&self, word: &str) -> usize {
+        let mut count: usize = 0;
+        let row_l = self.words.iter().next().unwrap().len();
+        return count;
+    }
     pub fn display_search(&self) {
         for row in self.words.iter() {
             for c in row {
