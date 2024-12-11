@@ -4,7 +4,10 @@ use event_2024::shared::day11::Stones;
 
 fn main() {
     let mut stones = Stones::from_string(get_file_contents(2024, 11).as_str());
-    println!("{}", 345 << 1);
+    let x: u32 = 345564;
+    let l = x.checked_ilog10().unwrap() + 1;
+    let l = x.checked_ilog10().unwrap() + 1;
+    println!("{x:}: {l:}, {}", x / (10_i32.pow(l / 2) as u32));
     // println!("Total stones after 25 blinks: {}", stones.total_stones(75));
 }
 

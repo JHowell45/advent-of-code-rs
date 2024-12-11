@@ -1,28 +1,30 @@
 #[derive(Debug)]
 pub struct Stones {
-    pub stones: Vec<String>,
+    pub stones: Vec<u32>,
 }
 
 impl Stones {
     pub fn from_string(text: &str) -> Self {
         Self {
-            stones: text.split(" ").map(|s| s.to_string()).collect(),
+            stones: text.split(" ").map(|s| s.to_string().parse::<u32>().unwrap()).collect(),
         }
     }
 
     pub fn blink(&mut self) {
-        let mut new_stones: Vec<String> = Vec::new();
+        let mut new_stones: Vec<u32> = Vec::new();
         for stone in self.stones.iter() {
-            let stone_v = stone.parse::<i64>().unwrap();
-            if stone_v == 0 {
-                new_stones.push(1.to_string());
-            } else if stone.len() % 2 == 0 {
-                let first = &stone[0..stone.len() / 2];
-                let second = &stone[stone.len() / 2..stone.len()];
-                new_stones.push(first.parse::<i64>().unwrap().to_string());
-                new_stones.push(second.parse::<i64>().unwrap().to_string());
+            println!("{stone:} ");
+            let stone_l: u32 = stone.checked_ilog10().unwrap_or(0) + 1;
+            if *stone == 0 {
+                new_stones.push(1);
+            } else if stone_l % 2 == 0 {
+                let splitter: u32 = 10_i32.pow(stone_l / 2) as u32;
+                let first = *stone / splitter;
+                let second = *stone - (first * splitter);
+                new_stones.push(first);
+                new_stones.push(second);
             } else {
-                new_stones.push((stone_v * 2024).to_string().to_string());
+                new_stones.push(stone * 2024);
             }
         }
         self.stones = new_stones;
@@ -42,8 +44,8 @@ mod tests {
     use rstest::rstest;
 
     #[rstest]
-    #[case("125 17", vec![vec!["253000", "1", "7"], vec!["253", "0", "2024", "14168"], vec!["512072", "1", "20", "24", "28676032"] ,vec!["512", "72", "2024", "2", "0", "2", "4", "2867", "6032"] ,vec!["1036288", "7", "2", "20", "24", "4048", "1", "4048", "8096", "28", "67", "60", "32"], vec!["2097446912", "14168", "4048", "2", "0", "2", "4", "40", "48", "2024", "40", "48", "80", "96", "2", "8", "6", "7", "6", "0", "3", "2"]])]
-    fn test_blink(#[case] stones: &str, #[case] blink_results: Vec<Vec<&str>>) {
+    #[case("125 17", vec![vec![253000, 1, 7], vec![253, 0, 2024, 14168], vec![512072, 1, 20, 24, 28676032] ,vec![512, 72, 2024, 2, 0, 2, 4, 2867, 6032] ,vec![1036288, 7, 2, 20, 24, 4048, 1, 4048, 8096, 28, 67, 60, 32], vec![2097446912, 14168, 4048, 2, 0, 2, 4, 40, 48, 2024, 40, 48, 80, 96, 2, 8, 6, 7, 6, 0, 3, 2]])]
+    fn test_blink(#[case] stones: &str, #[case] blink_results: Vec<Vec<u32>>) {
         let mut stones = Stones::from_string(stones);
         for results in blink_results.iter() {
             stones.blink();
