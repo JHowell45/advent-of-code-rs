@@ -70,7 +70,7 @@ impl Stones {
         // }
         // self.stones.len()
         let mut stones_count: usize = 0;
-        for (idx, _) in self.stones.iter().enumerate() {
+        for idx in 0..self.stones.len() {
             let stone = self.stones.get(idx).unwrap();
             stones_count += self.blink(*stone, blinks);
             // println!("{stones_count}");
