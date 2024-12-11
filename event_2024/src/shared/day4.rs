@@ -57,7 +57,7 @@ impl WordSearch {
                 // Top:
                 if top_check {
                     // println!("TOP");
-                    // println!("[{} -= {y_idx}]", y_idx + 1 - wordl);
+                    // println!("[{y_idx} -= {}]", y_idx + 1 - wordl);
 
                     let test_word = self.words[y_idx + 1 - wordl..=y_idx]
                         .iter()
@@ -73,7 +73,7 @@ impl WordSearch {
                 // Top Left:
                 if top_check && left_check {
                     // println!("TOP LEFT");
-                    // println!("[{} -= {y_idx}]", y_idx + 1 - wordl);
+                    // println!("[{y_idx} -= {}]", y_idx + 1 - wordl);
 
                     let test_word = self.words[y_idx + 1 - wordl..=y_idx]
                         .iter()
@@ -90,7 +90,7 @@ impl WordSearch {
                 // Top Right:
                 if top_check && right_check {
                     // println!("TOP RIGHT");
-                    // println!("[{} -= {y_idx}]", y_idx + 1 - wordl);
+                    // println!("[{y_idx} -= {}]", y_idx + 1 - wordl);
 
                     let test_word = self.words[y_idx + 1 - wordl..=y_idx]
                         .iter()
@@ -107,13 +107,45 @@ impl WordSearch {
                 // Bottom:
                 if bottom_check {
                     // println!("BOTTOM");
-                    // println!("[{y_idx} - {}]", y_idx + wordl);
+                    // println!("[{} - {y_idx}]", y_idx..y_idx + wordl);
 
                     let test_word = self.words[y_idx..y_idx + wordl]
                         .iter()
                         .map(|r| r[x_idx])
                         .collect::<String>();
                     // println!("BOTTOM | {test_word:}: {count}");
+                    if word == test_word {
+                        count += 1;
+                    }
+                }
+
+                // Bottom Left:
+                if bottom_check && left_check {
+                    // println!("BOTTOM LEFT");
+                    // println!("[{} - {y_idx}]", y_idx..y_idx + wordl);
+
+                    let test_word = self.words[y_idx..y_idx + wordl]
+                        .iter()
+                        .enumerate()
+                        .map(|(idx, r)| r[x_idx - idx])
+                        .collect::<String>();
+                    // println!("BOTTOM LEFT | {test_word:}: {count}");
+                    if word == test_word {
+                        count += 1;
+                    }
+                }
+
+                // Bottom Right:
+                if bottom_check && right_check {
+                    // println!("BOTTOM RIGHT");
+                    // println!("[{} - {y_idx}]", y_idx..y_idx + wordl);
+
+                    let test_word = self.words[y_idx..y_idx + wordl]
+                        .iter()
+                        .enumerate()
+                        .map(|(idx, r)| r[x_idx + idx])
+                        .collect::<String>();
+                    // println!("BOTTOM RIGHT | {test_word:}: {count}");
                     if word == test_word {
                         count += 1;
                     }
