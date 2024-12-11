@@ -90,9 +90,14 @@ impl DiskMap {
                 moved_ids.insert(file.id);
                 new_files.push(file.clone());
                 if file.free > 0 {
-                    for reverse_file in self.files.iter().rev() {
+                    for reverse_file in self.files.iter_mut().rev() {
                         if !moved_ids.contains(&reverse_file.id) && reverse_file.blocks <= file.free
                         {
+                            reverse_file.free = file.free - reverse_file.blocks;
+                            new_files.push(reverse_file.clone());
+                            if reverse_file.free == 0 {
+                                break;
+                            }
                         }
                     }
                 }
