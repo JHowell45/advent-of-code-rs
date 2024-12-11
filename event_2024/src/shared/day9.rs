@@ -84,41 +84,32 @@ impl DiskMap {
 
     pub fn defragment_files(&mut self) {
         let mut moved_ids: HashSet<usize> = HashSet::new();
-        let mut new_files: Vec<FileMap> = Vec::new();
+        let mut new_files: Vec<FileMap> = self.files.clone();
         let len: usize = self.files.len();
-        for file_idx in 0..len {
+
+        for file_idx in (1..len).rev() {
             let mut file = self.files.get(file_idx).unwrap().clone();
-            if !moved_ids.contains(&file.id) {
-                if file.free > 0 {
-                    for idx in (file_idx+1..len).rev() {
-                        let reverse_file = self.files.get(idx).unwrap();
-                        println!("Reverse ID: {}", reverse_file.id);
-                        if !moved_ids.contains(&reverse_file.id) && reverse_file.blocks <= file.free
-                        {
-                            let mut next = reverse_file.clone();
-                            next.free = file.free - reverse_file.blocks;
-                            file.free = 0;
+            let new_files_idx: usize = new_files.iter().position(|f| f.id == file.id).unwrap();
+            // println!("{file_idx} / {new_files_idx} : {file:?}");
 
-                            println!("File: {file:?}");
-                            println!("Next: {next:?}");
-
-                            moved_ids.insert(file.id);
-                            new_files.push(file.clone());
-                            new_files.push(reverse_file.clone());
-                            moved_ids.insert(next.id);
-                            if next.free == 0 {
-                                break;
-                            }
-                        }
-                        if !moved_ids.contains(&file.id) {
-                            moved_ids.insert(file.id);
-                            new_files.push(file.clone());
-                        }
-                    }
+            for prior_idx in 0..new_files_idx {
+                let prior_file = new_files.get_mut(prior_idx).unwrap();
+                if file.blocks <= prior_file.free {
+                    let size = file.size();
+                    file.free = prior_file.free - file.blocks;
+                    prior_file.free = 0;
+                    let old_prior_file = new_files.get_mut(new_files_idx - 1).unwrap();
+                    old_prior_file.free += size;
+                    new_files.remove(new_files_idx);
+                    new_files.insert(prior_idx + 1, file);
+                    break;
                 }
+                // println!("{file_idx} / {new_files_idx} : {file:?}");
+                // println!("{prior_idx} : {prior_file:?}");
                 println!("{new_files:?}");
             }
         }
+
         self.files = new_files.clone();
         self.disk = self.build_disk(new_files);
     }
