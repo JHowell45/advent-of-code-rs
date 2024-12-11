@@ -21,31 +21,42 @@ impl WordSearch {
         let wordl: usize = word.len();
         for (y_idx, row) in self.words.iter().enumerate() {
             for (x_idx, c) in row.iter().enumerate() {
+                println!("({x_idx:}, {y_idx:})");
                 if *c == first_char {
                     // Left:
                     if x_idx >= wordl - 1 {
-                        if word == row[x_idx - wordl..x_idx].iter().rev().collect::<String>() {
+                        // println!("LEFT");
+                        let test_word = row[x_idx + 1 - wordl..x_idx].iter().rev().collect::<String>();
+                        if word == test_word {
                             count += 1;
+                            println!("LEFT | {test_word:}: {count}");
                         }
                     }
                     // Right:
                     if x_idx < row.len() - wordl {
-                        if word == row[x_idx..x_idx + wordl].iter().collect::<String>() {
+                        // println!("RIGHT");
+                        let test_word = row[x_idx..x_idx + wordl].iter().collect::<String>();
+                        if word == test_word {
                             count += 1;
+                            println!("RIGHT | {test_word:}: {count}");
                         }
                     }
-
 
                     // Top:
                     if y_idx >= wordl - 1 {
-                        let mut test_word: Vec<char> = Vec::new();
-                        for idx in (y_idx - wordl..y_idx).rev() {
-                            test_word.push(self.words[idx][x_idx]);
+                        // println!("TOP");
+                        let mut test_chars: Vec<char> = Vec::new();
+                        for idx in (y_idx + 1 - wordl..y_idx).rev() {
+                            test_chars.push(self.words[idx][x_idx]);
                         }
-                        if word == test_word.iter().collect::<String>() {
+                        let test_word = test_chars.iter().collect::<String>();
+                        if word == test_word {
                             count += 1;
+                            println!("TOP | {test_word:}: {count}");
                         }
                     }
+
+                    // Bottom:
                 }
             }
         }
