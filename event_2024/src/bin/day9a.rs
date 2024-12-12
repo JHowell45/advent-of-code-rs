@@ -15,7 +15,7 @@ mod tests {
 
     #[rstest]
     #[case("2333133121414131402", 1928)]
-    fn example(#[case] disk_map: &str, #[case] expected_checksum: usize) {
+    fn example(#[case] disk_map: &str, #[case] expected_checksum: u64) {
         let mut map = DiskMap::from_map(disk_map);
         map.defragment();
         assert_eq!(map.checksum(), expected_checksum);
