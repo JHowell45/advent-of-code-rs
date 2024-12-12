@@ -3,7 +3,7 @@ use std::collections::HashSet;
 
 pub fn main() {
     let mut nice_strings: usize = 0;
-    for string in get_file_contents(2015, 5).lines().into_iter() {
+    for string in get_file_contents(2015, 5).lines() {
         if is_nice_string(string) {
             nice_strings += 1;
         }
@@ -51,7 +51,7 @@ impl LetterRepeat {
         if self.characters[0] == self.characters[self.len - 1] {
             return true;
         }
-        return false;
+        false
     }
 
     pub fn valid_pair(&self) -> Option<String> {
@@ -70,7 +70,7 @@ impl LetterRepeat {
                 self.characters[2].unwrap()
             ));
         }
-        return None;
+        None
     }
 }
 
@@ -90,7 +90,7 @@ impl NiceString {
 
         let mut prior_pair: Option<String> = None;
 
-        for letter in string.chars().into_iter() {
+        for letter in string.chars() {
             letter_repeat.add(letter);
             if !spaced_letter_repeat {
                 spaced_letter_repeat = letter_repeat.check();
