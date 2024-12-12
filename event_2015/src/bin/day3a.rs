@@ -15,6 +15,12 @@ pub struct SantaLocation {
     visited: VisitedHouses,
 }
 
+impl Default for SantaLocation {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl SantaLocation {
     pub fn new() -> Self {
         Self {
@@ -28,7 +34,7 @@ impl SantaLocation {
     }
 
     pub fn apply_directions(&mut self, directions: &str) {
-        for direction in directions.chars().into_iter() {
+        for direction in directions.chars() {
             self.move_house(direction);
         }
     }
