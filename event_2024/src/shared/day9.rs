@@ -92,7 +92,7 @@ impl DiskMap {
             let new_files_idx: usize = new_files.iter().position(|f| f.id == file_idx).unwrap();
             let mut file = new_files.get(new_files_idx).unwrap().clone();
             // println!("{file_idx} / {new_files_idx} : {file:?}");
-            
+
             for prior_idx in 0..new_files_idx {
                 let prior_file = new_files.get_mut(prior_idx).unwrap();
                 if prior_file.free > 0 && file.blocks <= prior_file.free {
@@ -159,13 +159,14 @@ impl DiskMap {
     }
 
     pub fn checksum(&self) -> u64 {
-        let mut sum: u64 = 0;
-        for (idx, bit) in self.disk.iter().enumerate() {
-            if let Some(v) = bit {
-                sum += idx as u64 * *v as u64;
-            }
-        }
-        return sum;
+        self.disk
+            .iter()
+            .enumerate()
+            .map(|(idx, v)| match v {
+                Some(v) => idx as u64 * *v as u64,
+                None => 0,
+            })
+            .sum()
     }
 
     pub fn formatted_disk(&self) -> String {
@@ -175,10 +176,15 @@ impl DiskMap {
     fn print_files(files: Vec<FileMap>) -> String {
         files
             .iter()
-            .map(|f| f.build_file().iter().map(|c| match c {
-                Some(v) => format!("{v}"),
-                None => ".".to_string(),
-            }).collect::<String>())
+            .map(|f| {
+                f.build_file()
+                    .iter()
+                    .map(|c| match c {
+                        Some(v) => format!("{v}"),
+                        None => ".".to_string(),
+                    })
+                    .collect::<String>()
+            })
             .collect::<String>()
     }
 
