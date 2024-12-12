@@ -4,7 +4,7 @@ use event_2015::shared::day6::{Coords, FormationTrait};
 
 pub fn main() {
     let mut formation = LightFormation::new();
-    for instruction in get_file_contents(2015, 6).lines().into_iter() {
+    for instruction in get_file_contents(2015, 6).lines() {
         instruction_parser(&mut formation, instruction);
     }
     println!(
@@ -79,6 +79,12 @@ fn instruction_parser(formation: &mut LightFormation, instruction: &str) {
 
 pub struct LightFormation {
     lights: [i32; 1000000],
+}
+
+impl Default for LightFormation {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl LightFormation {
