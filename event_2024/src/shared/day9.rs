@@ -87,31 +87,34 @@ impl DiskMap {
         let mut new_files: Vec<FileMap> = self.files.clone();
         let len: usize = self.files.len();
 
+        // println!("{}", Self::print_files(new_files.clone()));
         for file_idx in (1..len).rev() {
-            let mut file = self.files.get(file_idx).unwrap().clone();
-            let new_files_idx: usize = new_files.iter().position(|f| f.id == file.id).unwrap();
+            let new_files_idx: usize = new_files.iter().position(|f| f.id == file_idx).unwrap();
+            let mut file = new_files.get(new_files_idx).unwrap().clone();
             // println!("{file_idx} / {new_files_idx} : {file:?}");
-
+            
             for prior_idx in 0..new_files_idx {
                 let prior_file = new_files.get_mut(prior_idx).unwrap();
-                if file.blocks <= prior_file.free {
+                if prior_file.free > 0 && file.blocks <= prior_file.free {
                     let size = file.size();
+                    // println!("File: {file:?}");
                     file.free = prior_file.free - file.blocks;
                     // println!("File: {file:?}");
                     prior_file.free = 0;
                     // println!("Prior File: {prior_file:?}");
                     let old_prior_file = new_files.get_mut(new_files_idx - 1).unwrap();
+                    // println!("Old Prior File: {old_prior_file:?}");
                     old_prior_file.free += size;
                     // println!("Old Prior File: {old_prior_file:?}");
                     new_files.remove(new_files_idx);
                     new_files.insert(prior_idx + 1, file);
                     // println!("{new_files:?}");
-                    println!("{}", Self::print_files(new_files.clone()));
                     break;
                 }
                 // println!("{file_idx} / {new_files_idx} : {file:?}");
                 // println!("{prior_idx} : {prior_file:?}");
             }
+            // println!("{}: {}", file.id, Self::print_files(new_files.clone()));
         }
 
         self.files = new_files.clone();
