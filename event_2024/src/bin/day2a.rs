@@ -4,7 +4,7 @@ use event_2024::shared::day2::{is_safe, parse_report};
 
 fn main() {
     let mut safe_reports: usize = 0;
-    for report in get_file_contents(2024, 2).lines().into_iter() {
+    for report in get_file_contents(2024, 2).lines() {
         if is_safe(parse_report(report)).is_none() {
             safe_reports += 1;
         }
