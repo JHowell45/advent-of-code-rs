@@ -113,7 +113,7 @@ impl DiskMap {
                 // println!("{file_idx} / {new_files_idx} : {file:?}");
                 // println!("{prior_idx} : {prior_file:?}");
             }
-            // println!("{}: {}", file.id, Self::print_files(new_files.clone()));
+            println!("{}: {}", file.id, Self::print_files(new_files.clone()));
         }
 
         self.files = new_files.clone();

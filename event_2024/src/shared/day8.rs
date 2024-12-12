@@ -41,10 +41,6 @@ impl Point {
         }
         return p;
     }
-
-    fn distance(&self) -> i32 {
-        self.x.abs() + self.y.abs()
-    }
 }
 
 impl Add for Point {
