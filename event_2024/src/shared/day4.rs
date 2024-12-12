@@ -5,9 +5,9 @@ pub struct WordSearch {
 impl WordSearch {
     pub fn from_string(text: &str) -> Self {
         let mut word_search: Vec<Vec<char>> = Vec::new();
-        for row in text.split("\n").into_iter() {
+        for row in text.split("\n") {
             let mut row_search: Vec<char> = Vec::new();
-            for c in row.chars().into_iter() {
+            for c in row.chars() {
                 row_search.push(c);
             }
             word_search.push(row_search);
@@ -27,7 +27,7 @@ impl WordSearch {
                 let top_check: bool = y_idx >= wordl - 1;
                 let bottom_check: bool = y_idx < self.words.len() - wordl;
 
-                if *c == first_char {}
+                *c == first_char;
                 // Left:
                 if left_check {
                     // println!("LEFT");
@@ -152,7 +152,7 @@ impl WordSearch {
                 }
             }
         }
-        return count;
+        count
     }
 
     pub fn x_search(&self, word: &str) -> usize {
@@ -161,7 +161,7 @@ impl WordSearch {
         let first: char = word_chars[0];
         let centre: char = word_chars[1];
         let last: char = word_chars[2];
-        let row_l = self.words.iter().next().unwrap().len();
+        let row_l = self.words.first().unwrap().len();
 
         // println!("Dim: (x: {row_l}, y: {})", self.words.len());
 
@@ -178,20 +178,12 @@ impl WordSearch {
                 // println!("BOTTOM LEFT: {bottom_left:}");
                 let bottom_right: char = self.words[y_idx + 2][x_idx + 2];
                 // println!("BOTTOM RIGHT: {bottom_right:}");
-                if centre_point == centre {
-                    if (top_left == first && bottom_right == last)
-                        || (top_left == last && bottom_right == first)
-                    {
-                        if (top_right == first && bottom_left == last)
-                            || (top_right == last && bottom_left == first)
-                        {
-                            count += 1;
-                        }
-                    }
+                if centre_point == centre && ((top_left == first && bottom_right == last) || (top_left == last && bottom_right == first)) && ((top_right == first && bottom_left == last) || (top_right == last && bottom_left == first)) {
+                    count += 1;
                 }
             }
         }
-        return count;
+        count
     }
     pub fn display_search(&self) {
         for row in self.words.iter() {

@@ -14,7 +14,7 @@ pub fn is_safe(values: Vec<i32>) -> Option<usize> {
         if (a - b).abs() > 3 || (a - b).abs() < 1 {
             return Some(index + 1);
         }
-        let local_state = if a < b { true } else { false };
+        let local_state = a < b;
         match state {
             None => state = Some(local_state),
             Some(state) => {
@@ -24,5 +24,5 @@ pub fn is_safe(values: Vec<i32>) -> Option<usize> {
             }
         }
     }
-    return None;
+    None
 }

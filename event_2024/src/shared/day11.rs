@@ -5,6 +5,12 @@ pub struct StoneCache {
     cache: HashMap<u64, HashMap<usize, usize>>,
 }
 
+impl Default for StoneCache {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl StoneCache {
     pub fn new() -> Self {
         Self {
@@ -56,7 +62,7 @@ impl Stones {
             let stone = self.stones.get(idx).unwrap();
             stones_count += self.blink(*stone, blinks);
         }
-        return stones_count;
+        stones_count
     }
 
     fn blink(&mut self, v: u64, n: usize) -> usize {
@@ -71,7 +77,7 @@ impl Stones {
         if v == 0 {
             let res = self.blink(1, n - 1);
             self.cache.add(v, n, res);
-            return res;
+            res
         } else if stone_l % 2 == 0 {
             let splitter: u64 = 10_u64.pow(stone_l / 2);
             let first = v / splitter;

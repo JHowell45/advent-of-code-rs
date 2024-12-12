@@ -6,6 +6,12 @@ pub struct Location {
     y: i32,
 }
 
+impl Default for Location {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Location {
     pub fn new() -> Self {
         Self { x: 0, y: 0 }
@@ -35,11 +41,17 @@ pub struct VisitedHouses {
     visited: HashMap<String, usize>,
 }
 
+impl Default for VisitedHouses {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl VisitedHouses {
     pub fn new() -> Self {
         let mut visited: HashMap<String, usize> = HashMap::new();
         visited.insert(String::from("00"), 1);
-        Self { visited: visited }
+        Self { visited }
     }
 
     pub fn houses_visited(&self) -> usize {

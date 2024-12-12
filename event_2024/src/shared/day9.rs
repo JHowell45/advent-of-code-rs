@@ -1,4 +1,4 @@
-use std::collections::{HashSet, VecDeque};
+use std::collections::VecDeque;
 
 use itertools::Itertools;
 
@@ -22,7 +22,7 @@ impl FileMap {
         for _ in 0..self.free {
             file.push(None);
         }
-        return file;
+        file
     }
 
     pub fn size(&self) -> usize {
@@ -89,7 +89,7 @@ impl DiskMap {
         // println!("{}", Self::print_files(new_files.clone()));
         for file_idx in (1..len).rev() {
             let new_files_idx: usize = new_files.iter().position(|f| f.id == file_idx).unwrap();
-            let mut file = new_files.get(new_files_idx).unwrap().clone();
+            let mut file = *new_files.get(new_files_idx).unwrap();
             // println!("{file_idx} / {new_files_idx} : {file:?}");
 
             for prior_idx in 0..new_files_idx {
@@ -158,7 +158,7 @@ impl DiskMap {
                 disk.push_back(*b);
             }
         }
-        return disk;
+        disk
     }
 }
 

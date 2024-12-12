@@ -5,6 +5,12 @@ pub struct LocationSearch {
     right_locations: [i32; 1000],
 }
 
+impl Default for LocationSearch {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl LocationSearch {
     pub fn new() -> Self {
         Self {
@@ -15,12 +21,12 @@ impl LocationSearch {
 
     pub fn parse_input(locations: &str) -> Self {
         let mut instance = Self::new();
-        for (index, line) in locations.lines().into_iter().enumerate() {
-            let inputs: Vec<&str> = line.split(" ").filter(|v| *v != "").collect();
+        for (index, line) in locations.lines().enumerate() {
+            let inputs: Vec<&str> = line.split(" ").filter(|v| !v.is_empty()).collect();
             instance.add_left(index, inputs[0].trim().parse::<i32>().unwrap());
             instance.add_right(index, inputs[1].trim().parse::<i32>().unwrap());
         }
-        return instance;
+        instance
     }
 
     pub fn add_left(&mut self, index: usize, value: i32) {
@@ -38,7 +44,7 @@ impl LocationSearch {
         for (left, right) in self.left_locations.iter().zip(self.right_locations.iter()) {
             distance += (left - right).abs();
         }
-        return distance as usize;
+        distance as usize
     }
 
     pub fn similarity_score(&self) -> usize {
@@ -57,6 +63,6 @@ impl LocationSearch {
                 similarity_score += number * count;
             }
         }
-        return similarity_score as usize;
+        similarity_score as usize
     }
 }

@@ -22,7 +22,7 @@ impl LaunchSafetyManual {
     pub fn sum_middle_values(&self) -> i32 {
         let mut result = 0;
         for page in self.pages.iter() {
-            if self.validate_pages(&page) {
+            if self.validate_pages(page) {
                 let v = &page[page.len() / 2];
                 result += v;
             }
@@ -33,8 +33,8 @@ impl LaunchSafetyManual {
     pub fn fix_and_sum_middle(&self) -> i32 {
         let mut result = 0;
         for page in self.pages.iter() {
-            if !self.validate_pages(&page) {
-                let fixed_page = self.fix_page(&page);
+            if !self.validate_pages(page) {
+                let fixed_page = self.fix_page(page);
                 let v = &fixed_page[fixed_page.len() / 2];
                 result += v;
             }
@@ -44,14 +44,14 @@ impl LaunchSafetyManual {
 
     fn validate_pages(&self, page: &Vec<i32>) -> bool {
         let mut existing: HashSet<i32> = HashSet::new();
-        for values in page.windows(2).into_iter() {
+        for values in page.windows(2) {
             let (current, next) = (values[0], values[1]);
             existing.insert(current);
             if !self.rules.validate_next(&existing, next) {
                 return false;
             }
         }
-        return true;
+        true
     }
 
     fn fix_page(&self, page: &Vec<i32>) -> Vec<i32> {
@@ -87,7 +87,7 @@ impl PageOrderingRules {
 
     pub fn from_string(rules: &str) -> Self {
         let mut instance = Self::new();
-        for rule in rules.lines().into_iter() {
+        for rule in rules.lines() {
             let split: Vec<&str> = rule.split("|").collect();
             let (a, b) = (
                 split[0].parse::<i32>().unwrap(),
@@ -95,7 +95,7 @@ impl PageOrderingRules {
             );
             instance.add_rule(a, b);
         }
-        return instance;
+        instance
     }
 
     pub fn add_rule(&mut self, key: i32, value: i32) {
@@ -115,10 +115,10 @@ impl PageOrderingRules {
                 .not_valid_before
                 .get(&next)
                 .unwrap()
-                .intersection(&existing);
+                .intersection(existing);
             return intersection.count() == 0;
         }
-        return true;
+        true
     }
 }
 

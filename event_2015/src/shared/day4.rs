@@ -6,7 +6,7 @@ pub fn lowest_hex(secret: &str, n: usize) -> usize {
         index += 1;
         hex = generate_hex(format!("{}{}", secret, index).as_str());
     }
-    return index;
+    index
 }
 
 fn generate_hex(secret: &str) -> String {

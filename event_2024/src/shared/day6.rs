@@ -1,8 +1,5 @@
 use std::{
-    collections::{binary_heap::Iter, HashMap, HashSet},
-    io::stdout,
-    iter::Map,
-    process::exit,
+    collections::{HashMap, HashSet},
     thread::sleep,
     time::Duration,
 };
@@ -48,9 +45,9 @@ impl PatrolMap {
         let mut guard_direction: GuardDirection = GuardDirection::North;
         let mut local_map: Vec<Vec<MapState>> = Vec::new();
 
-        for (y, row) in map.lines().into_iter().enumerate() {
+        for (y, row) in map.lines().enumerate() {
             let mut r: Vec<MapState> = Vec::new();
-            for (x, point) in row.chars().into_iter().enumerate() {
+            for (x, point) in row.chars().enumerate() {
                 match point {
                     '.' => r.push(MapState::Empty),
                     '#' => r.push(MapState::Obstruction),
@@ -75,7 +72,7 @@ impl PatrolMap {
             max_x: local_map[0].len() as i32,
             max_y: local_map.len() as i32,
             map: local_map,
-            current_guard_pos: current_guard_pos,
+            current_guard_pos,
             current_guard_direction: guard_direction,
         }
     }
@@ -101,19 +98,19 @@ impl PatrolMap {
             MapState::GuardRoute => self.current_guard_pos = (next_x, next_y),
             _ => {}
         }
-        return true;
+        true
     }
 
     pub fn viable_obstruction_positions(&mut self) -> usize {
         let mut viable_pos: usize = 0;
         let map_copy: Vec<Vec<MapState>> = self.map.clone();
-        let start_pos = self.current_guard_pos.clone();
+        let start_pos = self.current_guard_pos;
         let start_direction = self.current_guard_direction;
 
         for (x, y) in self.find_path_points().iter() {
             self.map = map_copy.clone();
             if self.get_point(*x, *y) == MapState::Empty {
-                self.current_guard_pos = start_pos.clone();
+                self.current_guard_pos = start_pos;
                 self.current_guard_direction = start_direction;
                 self.set_point(*x, *y, MapState::CustomObstruction);
 
@@ -123,7 +120,7 @@ impl PatrolMap {
 
                 while state == IterateState::Continue {
                     state = self.viable_obstructions_iterate();
-                    if paths.contains_key(&self.current_guard_pos) {}
+                    paths.contains_key(&self.current_guard_pos);
                     match paths.get_mut(&self.current_guard_pos) {
                         Some(count) => {
                             *count += 1;
@@ -142,7 +139,7 @@ impl PatrolMap {
                 self.set_point(*x, *y, MapState::Empty);
             }
         }
-        return viable_pos;
+        viable_pos
     }
 
     fn viable_obstructions_iterate(&mut self) -> IterateState {
@@ -193,7 +190,7 @@ impl PatrolMap {
                 self.current_guard_pos = (next_x, next_y);
             }
         }
-        return IterateState::Continue;
+        IterateState::Continue
     }
 
     fn find_path_points(&mut self) -> HashSet<(i32, i32)> {
@@ -204,7 +201,7 @@ impl PatrolMap {
                 path.insert((x, y));
             }
         }
-        return path;
+        path
     }
 
     pub fn display_map(&self) {

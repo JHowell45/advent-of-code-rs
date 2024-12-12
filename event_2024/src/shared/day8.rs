@@ -35,11 +35,11 @@ impl Point {
     }
 
     fn smallest_instance(&self) -> Point {
-        let mut p = self.clone();
+        let mut p = *self;
         while let Some(next) = p.half() {
             p = next;
         }
-        return p;
+        p
     }
 }
 
@@ -100,7 +100,7 @@ impl PartialOrd for Point {
         if self.x == other.x && self.y == other.y {
             return Some(std::cmp::Ordering::Equal);
         }
-        return None;
+        None
     }
 }
 
@@ -128,11 +128,11 @@ impl FrequencyMap {
         let mut antennna_locations: HashMap<char, HashSet<Point>> = HashMap::new();
         let mut x: usize = 0;
         let mut y: usize = 0;
-        for (y_idx, row) in map.lines().into_iter().enumerate() {
+        for (y_idx, row) in map.lines().enumerate() {
             if x == 0 {
                 x = row.chars().collect::<Vec<char>>().len();
             }
-            for (idx, node) in row.chars().into_iter().enumerate() {
+            for (idx, node) in row.chars().enumerate() {
                 let point = Point::from_usize(idx, y_idx);
                 match node {
                     '.' => {}
@@ -161,9 +161,9 @@ impl FrequencyMap {
             for x in repeat_n(points.iter(), 2).multi_cartesian_product() {
                 let (a, b) = (x[0], x[1]);
                 if a != b {
-                    let d = b.clone() - a.clone();
-                    let antinode_a: Point = a.clone() - d.clone();
-                    let antinode_b: Point = b.clone() + d.clone();
+                    let d = *b - *a;
+                    let antinode_a: Point = *a - d;
+                    let antinode_b: Point = *b + d;
 
                     if antinode_a >= Point::origin() && antinode_a < self.max_dimension {
                         antinode_locations.insert(antinode_a);
@@ -179,7 +179,7 @@ impl FrequencyMap {
             }
         }
         // self.display_map(Some(antinode_locations.clone()));
-        return antinode_locations.len();
+        antinode_locations.len()
     }
 
     pub fn inline_antinode_locations(&self) -> usize {
@@ -188,36 +188,36 @@ impl FrequencyMap {
             for x in repeat_n(points.iter(), 2).multi_cartesian_product() {
                 let (a, b) = (x[0], x[1]);
                 if a != b {
-                    let d = (b.clone() - a.clone()).smallest_instance();
+                    let d = (*b - *a).smallest_instance();
 
-                    let mut sub_antinode_a = a.clone();
+                    let mut sub_antinode_a = *a;
                     while sub_antinode_a >= Point::origin() && sub_antinode_a < self.max_dimension {
                         inline_antinodes.insert(sub_antinode_a);
-                        sub_antinode_a -= d.clone();
+                        sub_antinode_a -= d;
                     }
 
-                    let mut sub_antinode_a = a.clone();
+                    let mut sub_antinode_a = *a;
                     while sub_antinode_a >= Point::origin() && sub_antinode_a < self.max_dimension {
                         inline_antinodes.insert(sub_antinode_a);
-                        sub_antinode_a += d.clone();
+                        sub_antinode_a += d;
                     }
 
-                    let mut sub_antinode_b = b.clone();
+                    let mut sub_antinode_b = *b;
                     while sub_antinode_b >= Point::origin() && sub_antinode_b < self.max_dimension {
                         inline_antinodes.insert(sub_antinode_b);
-                        sub_antinode_b -= d.clone();
+                        sub_antinode_b -= d;
                     }
 
-                    let mut sub_antinode_b = b.clone();
+                    let mut sub_antinode_b = *b;
                     while sub_antinode_b >= Point::origin() && sub_antinode_b < self.max_dimension {
                         inline_antinodes.insert(sub_antinode_b);
-                        sub_antinode_b += d.clone();
+                        sub_antinode_b += d;
                     }
                 }
             }
         }
         self.display_map(Some(inline_antinodes.clone()));
-        return inline_antinodes.len();
+        inline_antinodes.len()
     }
 
     pub fn display_map(&self, antinodes: Option<HashSet<Point>>) {
@@ -245,10 +245,10 @@ impl FrequencyMap {
 
     fn slow_antenna_check(&self, point: Point) -> Option<char> {
         for (k, points) in self.antennna_locations.iter() {
-            if let Some(_) = points.get(&point) {
+            if points.get(&point).is_some() {
                 return Some(*k);
             }
         }
-        return None;
+        None
     }
 }

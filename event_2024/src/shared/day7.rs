@@ -15,7 +15,7 @@ pub fn sum_of_valid_results(text: &str, operators: Vec<Operator>) -> i64 {
             if validate_equation(result, numbers, &operators) {
                 return result;
             }
-            return 0;
+            0
         })
         .sum()
 }
@@ -42,7 +42,7 @@ pub fn validate_equation(result: i64, numbers: Vec<i64>, operators: &Vec<Operato
             return true;
         }
     }
-    return false;
+    false
 }
 
 pub fn validate_equation_ops(result: i64, numbers: &Vec<i64>, operators: &Vec<&Operator>) -> bool {
@@ -63,5 +63,5 @@ pub fn validate_equation_ops(result: i64, numbers: &Vec<i64>, operators: &Vec<&O
             return false;
         }
     }
-    return total == result;
+    total == result
 }
