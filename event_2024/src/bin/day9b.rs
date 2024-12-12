@@ -4,7 +4,7 @@ use event_2024::shared::day9::DiskMap;
 
 fn main() {
     let mut disk = DiskMap::from_map(get_file_contents(2024, 9).as_str());
-    disk.old_defragment_files();
+    disk.defragment_files();
     println!("Filesystem Checksum: {}", disk.checksum());
 }
 
