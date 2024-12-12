@@ -89,7 +89,7 @@ impl DiskMap {
         // println!("{}", Self::print_files(new_files.clone()));
         for file_idx in (1..len).rev() {
             let new_files_idx: usize = new_files.iter().position(|f| f.id == file_idx).unwrap();
-            let mut file = *new_files.get(new_files_idx).unwrap();
+            let mut file = new_files.get(new_files_idx).unwrap().clone();
             // println!("{file_idx} / {new_files_idx} : {file:?}");
 
             for prior_idx in 0..new_files_idx {
@@ -113,7 +113,7 @@ impl DiskMap {
                 // println!("{file_idx} / {new_files_idx} : {file:?}");
                 // println!("{prior_idx} : {prior_file:?}");
             }
-            println!("{}: {}", file.id, Self::print_files(new_files.clone()));
+            // println!("{}: {}", file.id, Self::print_files(new_files.clone()));
         }
 
         self.files = new_files.clone();
