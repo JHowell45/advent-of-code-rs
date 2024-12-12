@@ -83,7 +83,6 @@ impl DiskMap {
     }
 
     pub fn defragment_files(&mut self) {
-        let mut moved_ids: HashSet<usize> = HashSet::new();
         let mut new_files: Vec<FileMap> = self.files.clone();
         let len: usize = self.files.len();
 
