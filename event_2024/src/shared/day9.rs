@@ -86,7 +86,7 @@ impl DiskMap {
         let mut new_files: Vec<FileMap> = self.files.clone();
         let len: usize = self.files.len();
 
-        // println!("{}", Self::print_files(new_files.clone()));
+        println!("{}", Self::print_files(new_files.clone()));
         for file_idx in (1..len).rev() {
             let new_files_idx: usize = new_files.iter().position(|f| f.id == file_idx).unwrap();
             let mut file = new_files.get(new_files_idx).unwrap().clone();
@@ -113,11 +113,12 @@ impl DiskMap {
                 // println!("{file_idx} / {new_files_idx} : {file:?}");
                 // println!("{prior_idx} : {prior_file:?}");
             }
-            // println!("{}: {}", file.id, Self::print_files(new_files.clone()));
+            println!("{}: {}", file.id, Self::print_files(new_files.clone()));
         }
 
         self.files = new_files.clone();
         self.disk = self.build_disk(new_files);
+        println!("{:?}", self.disk);
     }
 
     pub fn checksum(&self) -> u64 {
@@ -178,9 +179,18 @@ mod tests {
 
     #[rstest]
     #[case("2333133121414131402", "00992111777.44.333....5555.6666.....8888..")]
+    // #[case("233993382141413140924654317", "0012121211113131313131313442222222227773331111111111......5555.6666.....8888999999999..10101010..........................")]
     fn test_defragmented_file(#[case] disk_map: &str, #[case] expected_disk: &str) {
         let mut map = DiskMap::from_map(disk_map);
         map.defragment_files();
         assert_eq!(map.formatted_disk(), expected_disk);
+    }
+
+    #[rstest]
+    #[case("233993382141413140924654317", 16491)]
+    fn test_checksum(#[case] text: &str, #[case] checksum: u64) {
+        let mut map = DiskMap::from_map(text);
+        map.defragment_files();
+        assert_eq!(map.checksum(), checksum);
     }
 }
