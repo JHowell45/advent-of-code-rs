@@ -17,7 +17,7 @@ fn first_floor_in_basement(directions: &str) -> i32 {
             return index as i32 + 1;
         }
     }
-    return -1;
+    -1
 }
 
 #[cfg(test)]
