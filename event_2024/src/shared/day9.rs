@@ -114,7 +114,7 @@ impl DiskMap {
                 // println!("{file_idx} / {new_files_idx} : {file:?}");
                 // println!("{prior_idx} : {prior_file:?}");
             }
-            // println!("{}: {}", file.id, Self::print_files(new_files.clone()));
+            println!("{}: {}", file.id, Self::print_files(new_files.clone()));
         }
 
         self.files = new_files.clone();
@@ -169,13 +169,7 @@ impl DiskMap {
     }
 
     pub fn formatted_disk(&self) -> String {
-        self.disk
-            .iter()
-            .map(|v| match v {
-                Some(v) => char::from_digit(*v as u32, 10).unwrap(),
-                None => '.',
-            })
-            .collect::<String>()
+        Self::print_files(self.files.clone())
     }
 
     fn print_files(files: Vec<FileMap>) -> String {

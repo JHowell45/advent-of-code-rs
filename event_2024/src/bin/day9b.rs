@@ -18,8 +18,6 @@ mod tests {
     fn example(#[case] disk_map: &str, #[case] expected_checksum: u64) {
         let mut map: DiskMap = DiskMap::from_map(disk_map);
         map.defragment_files();
-        println!("{:?}", map.files);
-        println!("{}", map.formatted_disk());
         assert_eq!(map.checksum(), expected_checksum);
     }
 }
