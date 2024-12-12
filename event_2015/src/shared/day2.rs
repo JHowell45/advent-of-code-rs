@@ -36,9 +36,11 @@ impl Present {
     }
 
     fn slack(&self) -> i32 {
-        *[self.length_width_area(),
+        *[
+            self.length_width_area(),
             self.width_height_area(),
-            self.height_length_area()]
+            self.height_length_area(),
+        ]
         .iter()
         .min()
         .unwrap()

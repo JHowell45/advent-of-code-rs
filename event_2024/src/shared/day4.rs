@@ -17,17 +17,16 @@ impl WordSearch {
 
     pub fn search(&self, word: &str) -> usize {
         let mut count: usize = 0;
-        let first_char = word.chars().next().unwrap();
+        // let first_char: char = word.chars().next().unwrap();
         let wordl: usize = word.len();
         for (y_idx, row) in self.words.iter().enumerate() {
-            for (x_idx, c) in row.iter().enumerate() {
+            for (x_idx, _) in row.iter().enumerate() {
                 // println!("(x: {x_idx:}, y: {y_idx:})");
                 let left_check: bool = x_idx >= wordl - 1;
                 let right_check: bool = x_idx < row.len() - wordl + 1;
                 let top_check: bool = y_idx >= wordl - 1;
                 let bottom_check: bool = y_idx < self.words.len() - wordl;
 
-                *c == first_char;
                 // Left:
                 if left_check {
                     // println!("LEFT");
@@ -178,7 +177,12 @@ impl WordSearch {
                 // println!("BOTTOM LEFT: {bottom_left:}");
                 let bottom_right: char = self.words[y_idx + 2][x_idx + 2];
                 // println!("BOTTOM RIGHT: {bottom_right:}");
-                if centre_point == centre && ((top_left == first && bottom_right == last) || (top_left == last && bottom_right == first)) && ((top_right == first && bottom_left == last) || (top_right == last && bottom_left == first)) {
+                if centre_point == centre
+                    && ((top_left == first && bottom_right == last)
+                        || (top_left == last && bottom_right == first))
+                    && ((top_right == first && bottom_left == last)
+                        || (top_right == last && bottom_left == first))
+                {
                     count += 1;
                 }
             }

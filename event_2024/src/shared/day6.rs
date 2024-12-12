@@ -1,8 +1,4 @@
-use std::{
-    collections::{HashMap, HashSet},
-    thread::sleep,
-    time::Duration,
-};
+use std::collections::{HashMap, HashSet};
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum MapState {
@@ -272,11 +268,5 @@ impl PatrolMap {
             }
         }
         count
-    }
-
-    fn debug_display(&self) {
-        self.display_map();
-        sleep(Duration::from_millis(50));
-        print!("{}[2J", 27 as char);
     }
 }
