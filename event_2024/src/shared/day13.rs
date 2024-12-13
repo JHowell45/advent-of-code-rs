@@ -5,7 +5,7 @@ use regex::Regex;
 #[derive(Debug)]
 pub enum ButtonType {
     A,
-    B
+    B,
 }
 
 #[derive(Debug)]
@@ -17,6 +17,10 @@ pub struct Point {
 impl Point {
     pub fn new(x: usize, y: usize) -> Self {
         Self { x, y }
+    }
+
+    pub fn prize_point(text: &str) -> Self {
+        Self { x: 0, y: 0}
     }
 }
 
@@ -48,7 +52,7 @@ impl Sub for Point {
 pub struct Button {
     button_type: ButtonType,
     point: Point,
-    token_price: usize
+    token_price: usize,
 }
 
 impl Button {
@@ -79,17 +83,30 @@ pub struct ClawMachine {
 }
 
 impl ClawMachine {
-    pub fn new(button_a_x: usize, button_a_y: usize, button_b_x: usize, button_b_y: usize, prize_x: usize, prize_y: usize) -> Self {
-        // Self {
-        //     a: Button::button_a(button_a_x, button_a_y),
-        //     b: Button::button_b(button_b_x, button_b_y),
-        //     prize: Point::new(prize_x, prize_y),
-        // }
-    }
-
     pub fn from_string(text: &str) -> Self {
-        Self {
+        let mut a: Option<Button> = None;
+        let mut b: Option<Button> = None;
+        let mut prize_point: Option<Point> = None;
 
+        for line in text.lines().into_iter() {
+            if line.contains("Button A") {
+                a = Some(Button::from_string(line, ButtonType::A));
+            } else if line.contains("Button B") {
+                b = Some(Button::from_string(line, ButtonType::B));
+            } else if line.contains("Prize") {
+                prize_point = Some(Point::prize_point(&line));
+            } else {
+            }
+        }
+
+        if a.is_none() || b.is_none() || prize_point.is_none() {
+            panic!("Failed to parse!!");
+        }
+
+        Self {
+            a: a.unwrap(),
+            b: b.unwrap(),
+            prize: prize_point.unwrap(),
         }
     }
 }
