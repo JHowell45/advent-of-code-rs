@@ -1,7 +1,6 @@
 use core::file_reader::get_file_contents;
 
 use event_2024::shared::day13::ClawMachine;
-use itertools::Itertools;
 
 fn main() {
     println!(

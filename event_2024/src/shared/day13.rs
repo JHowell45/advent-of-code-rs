@@ -181,6 +181,21 @@ impl ClawMachine {
 
     pub fn least_tokens_offset(&mut self, offset: usize) -> Option<usize> {
         self.prize *= offset;
-        self.least_tokens()
+        let mut tokens: usize = 0;
+
+        for idx in 100..=(self.prize / self.a.point).unwrap() {
+            let current = self.a.point * idx;
+            if let Some(m) = current.get_opposite_factor(self.prize, self.b.point) {
+                let current_tokens: usize = (self.a.token_price * idx) + (self.b.token_price * m);
+
+                if tokens == 0 || tokens > current_tokens {
+                    tokens = current_tokens;
+                }
+            }
+        }
+        if tokens == 0 {
+            return None;
+        }
+        Some(tokens)
     }
 }
