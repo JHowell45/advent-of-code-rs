@@ -1,5 +1,7 @@
 use std::ops::{Add, Mul, Sub};
 
+use regex::Regex;
+
 #[derive(Debug)]
 pub enum ButtonType {
     A,
@@ -50,6 +52,19 @@ pub struct Button {
 }
 
 impl Button {
+    pub fn from_string(text: &str, btype: ButtonType) -> Self {
+        let re = Regex::new(r"(X(?<x_sign>.)(?<x>\d+), Y(?<y_sign>.)(?<y>\d+))").unwrap();
+        let caps = re.captures(&text).unwrap();
+        let _ = caps.name("x_sign").unwrap();
+        let _ = caps.name("y_sign").unwrap();
+        let x = caps.name("x").unwrap().as_str().parse::<usize>().unwrap();
+        let y = caps.name("y").unwrap().as_str().parse::<usize>().unwrap();
+        return match btype {
+            ButtonType::A => Self::button_a(x, y),
+            ButtonType::B => Self::button_b(x, y),
+        }
+    }
+
     pub fn button_a(x: usize, y: usize) -> Self {
         Self {
             button_type: ButtonType::A,
@@ -80,6 +95,12 @@ impl ClawMachine {
             a: Button::button_a(button_a_x, button_a_y),
             b: Button::button_b(button_b_x, button_b_y),
             prize: Point::new(prize_x, prize_y),
+        }
+    }
+
+    pub fn from_string(text: &str) -> Self {
+        Self {
+
         }
     }
 }
