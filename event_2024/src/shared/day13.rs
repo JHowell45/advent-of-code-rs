@@ -29,8 +29,18 @@ impl Point {
         }
     }
 
-    pub fn zero() -> Self {
-        Self { x: 0, y: 0 }
+    pub fn get_opposite_factor(&self, target: Point, other: Point) -> Option<usize> {
+        let target_x: usize = target.x - self.x;
+        let target_y: usize = target.y - self.y;
+
+        if target_x % other.x == 0 || target_y % other.y == 0 {
+            let x = target_x / other.x;
+            let y = target_y / other.y;
+            if x == y {
+                return Some(x);
+            }
+        }
+        None
     }
 }
 
@@ -129,22 +139,19 @@ impl ClawMachine {
     }
 
     pub fn least_tokens(&self) -> Option<usize> {
-        let a_count: usize = 0;
-        let b_count: usize = (self.prize / self.b.point).unwrap();
-        
-        let x_weight = if self.a.point.x < self.b.point.x { ButtonType::B } else { ButtonType::A };
-        let y_weight = if self.a.point.y < self.b.point.y { ButtonType::B } else { ButtonType::A };
-
-        let mut current: Point = self.b.point * b_count;
-
-
-        println!("A: {:?}", self.a);
-        println!("B: {:?}", self.b);
-        println!("Prize: {:?}", self.prize);
-        println!("Current: {current:?}");
-
-
-
-        Some(0)
+        let mut tokens: usize = 0;
+        for idx in 1..(self.prize / self.a.point).unwrap() {
+            let current = self.a.point * idx;
+            if let Some(m) = current.get_opposite_factor(self.prize, self.b.point) {
+                let current_tokens: usize = (self.a.token_price * idx) * (self.b.token_price * m);
+                if tokens == 0 || tokens > current_tokens {
+                    tokens = current_tokens;
+                }
+            }
+        }
+        if tokens == 0 {
+            return None;
+        }
+        Some(tokens)
     }
 }
