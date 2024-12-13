@@ -33,7 +33,7 @@ impl Point {
         if target % other == 0 {
             let x = target.x / other.x;
             let y = target.y / other.y;
-            if x == y {
+            if x == y && x < 100 {
                 return Some(x);
             }
         }
@@ -151,7 +151,8 @@ impl ClawMachine {
 
     pub fn least_tokens(&self) -> Option<usize> {
         let mut tokens: usize = 0;
-        for idx in 0..=(self.prize / self.a.point).unwrap() {
+        let max = *vec![100, (self.prize / self.a.point).unwrap()].iter().min().unwrap();
+        for idx in 0..max {
             let current = self.a.point * idx;
             if let Some(m) = current.get_opposite_factor(self.prize, self.b.point) {
                 let current_tokens: usize = (self.a.token_price * idx) + (self.b.token_price * m);
