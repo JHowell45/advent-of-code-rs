@@ -1,6 +1,5 @@
-use std::ops::{Add, Div, Mul, Sub};
+use std::ops::{Add, Div, Mul, Rem, Sub};
 
-use itertools::min;
 use regex::Regex;
 
 #[derive(Debug)]
@@ -30,12 +29,13 @@ impl Point {
     }
 
     pub fn get_opposite_factor(&self, target: Point, other: Point) -> Option<usize> {
-        let target_x: usize = target.x - self.x;
-        let target_y: usize = target.y - self.y;
-
-        if target_x % other.x == 0 || target_y % other.y == 0 {
-            let x = target_x / other.x;
-            let y = target_y / other.y;
+        let target = target - *self;
+        if target % other == 0 {
+            println!("Target: {target:?}");
+            println!("Target % Other (Inside): {:?}", target % other);
+            let x = target.x / other.x;
+            let y = target.y / other.y;
+            println!("({x:}, {y:})");
             if x == y {
                 return Some(x);
             }
@@ -74,6 +74,20 @@ impl Sub for Point {
     fn sub(self, rhs: Self) -> Self::Output {
         Self::new(self.x - rhs.x, self.y - rhs.y)
     }
+}
+
+impl Rem for Point {
+    type Output = Point;
+
+    fn rem(self, rhs: Self) -> Self::Output {
+        Point::new(self.x % rhs.x, self.y % rhs.y)
+    }
+}
+
+impl PartialEq<usize> for Point {
+    fn eq(&self, other: &usize) -> bool {
+        self.x + self.y == *other
+    }   
 }
 
 #[derive(Debug)]
@@ -140,10 +154,11 @@ impl ClawMachine {
 
     pub fn least_tokens(&self) -> Option<usize> {
         let mut tokens: usize = 0;
-        for idx in 1..(self.prize / self.a.point).unwrap() {
+        for idx in 0..=(self.prize / self.a.point).unwrap() {
             let current = self.a.point * idx;
             if let Some(m) = current.get_opposite_factor(self.prize, self.b.point) {
-                let current_tokens: usize = (self.a.token_price * idx) * (self.b.token_price * m);
+                let current_tokens: usize = (self.a.token_price * idx) + (self.b.token_price * m);
+
                 if tokens == 0 || tokens > current_tokens {
                     tokens = current_tokens;
                 }
