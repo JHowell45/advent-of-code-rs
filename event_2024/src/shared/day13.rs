@@ -131,7 +131,12 @@ impl ClawMachine {
     pub fn least_tokens(&self) -> Option<usize> {
         let a_count: usize = 0;
         let b_count: usize = (self.prize / self.b.point).unwrap();
+        
+        let x_weight = if self.a.point.x < self.b.point.x { ButtonType::B } else { ButtonType::A };
+        let y_weight = if self.a.point.y < self.b.point.y { ButtonType::B } else { ButtonType::A };
+
         let mut current: Point = self.b.point * b_count;
+
 
         println!("A: {:?}", self.a);
         println!("B: {:?}", self.b);
