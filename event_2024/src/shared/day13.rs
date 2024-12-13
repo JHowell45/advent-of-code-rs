@@ -84,7 +84,7 @@ impl Rem for Point {
 impl PartialEq<usize> for Point {
     fn eq(&self, other: &usize) -> bool {
         self.x + self.y == *other
-    }   
+    }
 }
 
 #[derive(Debug)]
