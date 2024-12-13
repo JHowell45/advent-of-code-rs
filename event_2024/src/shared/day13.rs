@@ -160,11 +160,11 @@ impl ClawMachine {
         let mut tokens: usize = 0;
 
         let div = (self.prize / self.a.point).unwrap();
-        // let max = *vec![100, div]
-        //     .iter()
-        //     .min()
-        //     .unwrap();
-        for idx in 1..=(self.prize / self.a.point).unwrap() {
+        let max = *vec![100, div]
+            .iter()
+            .min()
+            .unwrap();
+        for idx in 1..=max {
             let current = self.a.point * idx;
             if let Some(m) = current.get_opposite_factor(self.prize, self.b.point) {
                 let current_tokens: usize = (self.a.token_price * idx) + (self.b.token_price * m);
