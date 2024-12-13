@@ -1,10 +1,12 @@
 use std::ops::{Add, Mul, Sub};
 
+#[derive(Debug)]
 pub enum ButtonType {
     A,
     B
 }
 
+#[derive(Debug)]
 pub struct Point {
     x: usize,
     y: usize,
@@ -40,6 +42,7 @@ impl Sub for Point {
     }
 }
 
+#[derive(Debug)]
 pub struct Button {
     button_type: ButtonType,
     point: Point,
@@ -62,4 +65,11 @@ impl Button {
             token_price: 1
         }
     }
+}
+
+#[derive(Debug)]
+pub struct ClawMachine {
+    a: Button,
+    b: Button,
+    prize: Point,
 }
