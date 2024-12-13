@@ -1,5 +1,10 @@
 use std::ops::{Add, Mul, Sub};
 
+pub enum ButtonType {
+    A,
+    B
+}
+
 pub struct Point {
     x: usize,
     y: usize,
@@ -32,5 +37,29 @@ impl Sub for Point {
 
     fn sub(self, rhs: Self) -> Self::Output {
         Self::new(self.x - rhs.x, self.y - rhs.y)
+    }
+}
+
+pub struct Button {
+    button_type: ButtonType,
+    point: Point,
+    token_price: usize
+}
+
+impl Button {
+    pub fn button_a(x: usize, y: usize) -> Self {
+        Self {
+            button_type: ButtonType::A,
+            point: Point::new(x, y),
+            token_price: 3
+        }
+    }
+
+    pub fn button_b(x: usize, y: usize) -> Self {
+        Self {
+            button_type: ButtonType::B,
+            point: Point::new(x, y),
+            token_price: 1
+        }
     }
 }
