@@ -159,8 +159,7 @@ impl ClawMachine {
     pub fn least_tokens(&self) -> Option<usize> {
         let mut tokens: usize = 0;
 
-        let div = (self.prize / self.a.point).unwrap();
-        let max = *vec![100, div]
+        let max = *vec![100, (self.prize / self.a.point).unwrap()]
             .iter()
             .min()
             .unwrap();
