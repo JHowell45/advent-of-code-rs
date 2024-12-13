@@ -33,7 +33,8 @@ Prize: X=18641, Y=10279",
     )]
     fn example(#[case] input: &str, #[case] tokens: Option<usize>) {
         let machine: ClawMachine = ClawMachine::from_string(input);
-        println!("{machine:?}");
+        // println!("{input:}");
+        // println!("{machine:?}");
         assert_eq!(machine.least_tokens(), tokens);
     }
 }

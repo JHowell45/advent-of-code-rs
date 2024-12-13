@@ -1,4 +1,4 @@
-use std::ops::{Add, Mul, Sub};
+use std::ops::{Add, Div, Mul, Sub};
 
 use regex::Regex;
 
@@ -8,7 +8,7 @@ pub enum ButtonType {
     B,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct Point {
     x: usize,
     y: usize,
@@ -37,6 +37,14 @@ impl Mul<usize> for Point {
     }
 }
 
+impl Div for Point {
+    type Output = (usize, usize);
+
+    fn div(self, rhs: Self) -> Self::Output {
+        (self.x / rhs.x, self.y / rhs.y)
+    }
+}
+
 impl Add for Point {
     type Output = Self;
 
@@ -55,9 +63,9 @@ impl Sub for Point {
 
 #[derive(Debug)]
 pub struct Button {
-    button_type: ButtonType,
-    point: Point,
-    token_price: usize,
+    pub button_type: ButtonType,
+    pub point: Point,
+    pub token_price: usize,
 }
 
 impl Button {
@@ -115,5 +123,14 @@ impl ClawMachine {
         }
     }
 
-    pub fn least_tokens(&self) -> Option<usize> {Some(0)}
+    pub fn least_tokens(&self) -> Option<usize> {
+        println!("{:?}", self.a);
+        println!("{:?}", self.b);
+        println!("{:?}", self.prize);
+
+        println!("{:?}", self.prize / self.a.point);
+        println!("{:?}", self.prize / self.b.point);
+
+        Some(0)
+    }
 }
