@@ -1,5 +1,6 @@
 use std::ops::{Add, Div, Mul, Sub};
 
+use itertools::min;
 use regex::Regex;
 
 #[derive(Debug)]
@@ -27,6 +28,10 @@ impl Point {
             y: caps.name("y").unwrap().as_str().parse::<usize>().unwrap(),
         }
     }
+
+    pub fn zero() -> Self {
+        Self { x: 0, y: 0 }
+    }
 }
 
 impl Mul<usize> for Point {
@@ -38,10 +43,10 @@ impl Mul<usize> for Point {
 }
 
 impl Div for Point {
-    type Output = (usize, usize);
+    type Output = Option<usize>;
 
     fn div(self, rhs: Self) -> Self::Output {
-        (self.x / rhs.x, self.y / rhs.y)
+        vec![self.x / rhs.x, self.y / rhs.y].iter().min().copied()
     }
 }
 
@@ -124,12 +129,16 @@ impl ClawMachine {
     }
 
     pub fn least_tokens(&self) -> Option<usize> {
-        println!("{:?}", self.a);
-        println!("{:?}", self.b);
-        println!("{:?}", self.prize);
+        let a_count: usize = 0;
+        let b_count: usize = (self.prize / self.b.point).unwrap();
+        let mut current: Point = self.b.point * b_count;
 
-        println!("{:?}", self.prize / self.a.point);
-        println!("{:?}", self.prize / self.b.point);
+        println!("A: {:?}", self.a);
+        println!("B: {:?}", self.b);
+        println!("Prize: {:?}", self.prize);
+        println!("Current: {current:?}");
+
+
 
         Some(0)
     }
