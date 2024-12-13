@@ -158,7 +158,10 @@ impl ClawMachine {
 
     pub fn least_tokens(&self) -> Option<usize> {
         let mut tokens: usize = 0;
-        let max = *vec![100, (self.prize / self.a.point).unwrap()].iter().min().unwrap();
+        let max = *vec![100, (self.prize / self.a.point).unwrap()]
+            .iter()
+            .min()
+            .unwrap();
         for idx in 0..max {
             let current = self.a.point * idx;
             if let Some(m) = current.get_opposite_factor(self.prize, self.b.point) {
