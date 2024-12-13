@@ -73,3 +73,13 @@ pub struct ClawMachine {
     b: Button,
     prize: Point,
 }
+
+impl ClawMachine {
+    pub fn new(button_a_x: usize, button_a_y: usize, button_b_x: usize, button_b_y: usize, prize_x: usize, prize_y: usize) {
+        Self {
+            a: Button::button_a(button_a_x, button_a_y),
+            b: Button::button_b(button_b_x, button_b_y),
+            prize: Point::new(prize_x, prize_y),
+        }
+    }
+}
