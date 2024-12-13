@@ -20,7 +20,12 @@ impl Point {
     }
 
     pub fn prize_point(text: &str) -> Self {
-        Self { x: 0, y: 0}
+        let re = Regex::new(r"(X=(?<x>\d+), Y=(?<y>\d+))").unwrap();
+        let caps = re.captures(&text).unwrap();
+        Self {
+            x: caps.name("x").unwrap().as_str().parse::<usize>().unwrap(),
+            y: caps.name("y").unwrap().as_str().parse::<usize>().unwrap(),
+        }
     }
 }
 
