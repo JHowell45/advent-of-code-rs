@@ -51,8 +51,8 @@ impl Mul<usize> for Point {
 
 impl MulAssign<usize> for Point {
     fn mul_assign(&mut self, rhs: usize) {
-        self.x * rhs;
-        self.y * rhs;
+        self.x *= rhs;
+        self.y *= rhs;
     }
 }
 
