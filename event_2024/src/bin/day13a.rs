@@ -9,6 +9,7 @@ fn main() {
 fn total_tokens(text: &str) -> usize {
     let mut tokens: usize = 0;
     for group in text.split("\n\n").into_iter() {
+        println!("{group:}");
         let machine: ClawMachine = ClawMachine::from_string(group);
         if let Some(local_tokens) = machine.least_tokens() {
             tokens += local_tokens;

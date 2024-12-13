@@ -31,11 +31,8 @@ impl Point {
     pub fn get_opposite_factor(&self, target: Point, other: Point) -> Option<usize> {
         let target = target - *self;
         if target % other == 0 {
-            println!("Target: {target:?}");
-            println!("Target % Other (Inside): {:?}", target % other);
             let x = target.x / other.x;
             let y = target.y / other.y;
-            println!("({x:}, {y:})");
             if x == y {
                 return Some(x);
             }
