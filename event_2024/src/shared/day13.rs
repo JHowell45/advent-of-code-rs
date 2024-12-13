@@ -49,12 +49,12 @@ impl Mul<usize> for Point {
     }
 }
 
-// impl MulAssign<usize> for Point {
-//     fn mul_assign(&mut self, rhs: usize) {
-//         self.x *= rhs;
-//         self.y *= rhs;
-//     }
-// }
+impl MulAssign<usize> for Point {
+    fn mul_assign(&mut self, rhs: usize) {
+        self.x *= rhs;
+        self.y *= rhs;
+    }
+}
 
 impl Div for Point {
     type Output = Option<usize>;
@@ -180,7 +180,7 @@ impl ClawMachine {
     }
 
     pub fn least_tokens_offset(&mut self, offset: usize) -> Option<usize> {
-        // self.prize *= offset;
+        self.prize *= offset;
         self.least_tokens()
     }
 }
