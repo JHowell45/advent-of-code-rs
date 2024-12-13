@@ -19,7 +19,7 @@ Prize: X=7870, Y=6450", Some(200))]
     #[case("Button A: X+69, Y+23
 Button B: X+27, Y+71
 Prize: X=18641, Y=10279", None)]
-    fn example(#[case] input: &str, #[case] tokens: usize) {
+    fn example(#[case] input: &str, #[case] tokens: Option<usize>) {
         let machine: ClawMachine = ClawMachine::from_string(input);
         assert_eq!(machine.least_tokens(), tokens);
     }
