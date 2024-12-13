@@ -33,7 +33,7 @@ impl Point {
         if target % other == 0 {
             let x = target.x / other.x;
             let y = target.y / other.y;
-            if x == y && x < 100 {
+            if x == y {
                 return Some(x);
             }
         }
@@ -49,12 +49,12 @@ impl Mul<usize> for Point {
     }
 }
 
-impl MulAssign<usize> for Point {
-    fn mul_assign(&mut self, rhs: usize) {
-        self.x *= rhs;
-        self.y *= rhs;
-    }
-}
+// impl MulAssign<usize> for Point {
+//     fn mul_assign(&mut self, rhs: usize) {
+//         self.x *= rhs;
+//         self.y *= rhs;
+//     }
+// }
 
 impl Div for Point {
     type Output = Option<usize>;
@@ -158,11 +158,13 @@ impl ClawMachine {
 
     pub fn least_tokens(&self) -> Option<usize> {
         let mut tokens: usize = 0;
-        let max = *vec![100, (self.prize / self.a.point).unwrap()]
-            .iter()
-            .min()
-            .unwrap();
-        for idx in 0..max {
+
+        let div = (self.prize / self.a.point).unwrap();
+        // let max = *vec![100, div]
+        //     .iter()
+        //     .min()
+        //     .unwrap();
+        for idx in 1..=(self.prize / self.a.point).unwrap() {
             let current = self.a.point * idx;
             if let Some(m) = current.get_opposite_factor(self.prize, self.b.point) {
                 let current_tokens: usize = (self.a.token_price * idx) + (self.b.token_price * m);
@@ -179,7 +181,7 @@ impl ClawMachine {
     }
 
     pub fn least_tokens_offset(&mut self, offset: usize) -> Option<usize> {
-        self.prize *= offset;
+        // self.prize *= offset;
         self.least_tokens()
     }
 }
