@@ -59,25 +59,14 @@ impl Button {
         let _ = caps.name("y_sign").unwrap();
         let x = caps.name("x").unwrap().as_str().parse::<usize>().unwrap();
         let y = caps.name("y").unwrap().as_str().parse::<usize>().unwrap();
-        return match btype {
-            ButtonType::A => Self::button_a(x, y),
-            ButtonType::B => Self::button_b(x, y),
-        }
-    }
 
-    pub fn button_a(x: usize, y: usize) -> Self {
         Self {
-            button_type: ButtonType::A,
             point: Point::new(x, y),
-            token_price: 3
-        }
-    }
-
-    pub fn button_b(x: usize, y: usize) -> Self {
-        Self {
-            button_type: ButtonType::B,
-            point: Point::new(x, y),
-            token_price: 1
+            token_price: match btype {
+                ButtonType::A => 3,
+                ButtonType::B => 1,
+            },
+            button_type: btype,
         }
     }
 }
@@ -91,11 +80,11 @@ pub struct ClawMachine {
 
 impl ClawMachine {
     pub fn new(button_a_x: usize, button_a_y: usize, button_b_x: usize, button_b_y: usize, prize_x: usize, prize_y: usize) -> Self {
-        Self {
-            a: Button::button_a(button_a_x, button_a_y),
-            b: Button::button_b(button_b_x, button_b_y),
-            prize: Point::new(prize_x, prize_y),
-        }
+        // Self {
+        //     a: Button::button_a(button_a_x, button_a_y),
+        //     b: Button::button_b(button_b_x, button_b_y),
+        //     prize: Point::new(prize_x, prize_y),
+        // }
     }
 
     pub fn from_string(text: &str) -> Self {
