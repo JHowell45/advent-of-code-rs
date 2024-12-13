@@ -1,6 +1,7 @@
 use core::file_reader::get_file_contents;
 
 use event_2024::shared::day13::ClawMachine;
+use itertools::Itertools;
 
 fn main() {
     println!(
@@ -10,10 +11,13 @@ fn main() {
 }
 
 fn total_tokens_offset(text: &str, offset: usize) -> usize {
-    text.split("\n\n")
-        .into_iter()
-        .map(|g| {
+    let split = text.split("\n\n");
+    let l = split.clone().into_iter().collect::<Vec<&str>>().len();
+    split
+        .into_iter().enumerate()
+        .map(|(idx, g): (usize, &str)| {
             let mut machine: ClawMachine = ClawMachine::from_string(g);
+            println!("{idx:} / {}", l);
             return match machine.least_tokens_offset(offset) {
                 Some(tokens) => tokens,
                 None => 0,
