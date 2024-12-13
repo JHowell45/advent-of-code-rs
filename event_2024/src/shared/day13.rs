@@ -1,4 +1,4 @@
-use std::ops::{Add, Div, Mul, Rem, Sub};
+use std::ops::{Add, Div, Mul, MulAssign, Rem, Sub};
 
 use regex::Regex;
 
@@ -46,6 +46,13 @@ impl Mul<usize> for Point {
 
     fn mul(self, rhs: usize) -> Self::Output {
         Self::new(self.x * rhs, self.y * rhs)
+    }
+}
+
+impl MulAssign<usize> for Point {
+    fn mul_assign(&mut self, rhs: usize) {
+        self.x * rhs;
+        self.y * rhs;
     }
 }
 
@@ -166,5 +173,10 @@ impl ClawMachine {
             return None;
         }
         Some(tokens)
+    }
+
+    pub fn least_tokens_offset(&mut self, offset: usize) -> Option<usize> {
+        self.prize *= offset;
+        self.least_tokens()
     }
 }
