@@ -114,4 +114,6 @@ impl ClawMachine {
             prize: prize_point.unwrap(),
         }
     }
+
+    pub fn least_tokens(&self) -> Option<usize> {Some(0)}
 }
