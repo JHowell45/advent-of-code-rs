@@ -6,7 +6,7 @@ pub enum Direction {
     West
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Point {
     x: usize,
     y: usize,
@@ -83,12 +83,50 @@ impl PathFinder {
         }
     }
 
-    fn move_forward(&mut self) {
+    pub fn lowest_point_path(&mut self) {
+        while self.player_position != self.map.end {
+            self.move_next();
+        }
+    }
+
+    fn move_next(&mut self) {
+        let next: Point = match self.player_direction {
+            Direction::North => Point::new(self.player_position.x, self.player_position.y + 1),
+            Direction::South => Point::new(self.player_position.x, self.player_position.y - 1),
+            Direction::East => Point::new(self.player_position.x + 1, self.player_position.y),
+            Direction::West => Point::new(self.player_position.x - 1, self.player_position.y),
+        };
+        if !self.move_forward(next) {
+            self.rotate();
+        }
+    }
+
+    fn player_check_next(&self) -> bool {
+        match self.player_direction {
+            Direction::North => self.map.data[self.player_position.y + 1][self.player_position.x] == '.',
+            Direction::South => self.map.data[self.player_position.y - 1][self.player_position.x] == '.',
+            Direction::East => self.map.data[self.player_position.y][self.player_position.x + 1] == '.',
+            Direction::West => self.map.data[self.player_position.y][self.player_position.x - 1] == '.',
+        }
+    }
+
+    fn move_forward(&mut self, next: Point) -> bool {
+        if self.map.data[next.y][next.x] == '.' {
+            return false;
+        }
+        self.player_position = next;
         self.score += 1;
+        return true;
     }
 
     fn rotate(&mut self) {
         self.score += 1000;
+        self.player_direction = match self.player_direction {
+            Direction::North => Direction::East,
+            Direction::East => Direction::South,
+            Direction::South => Direction::West,
+            Direction::West => Direction::North,
+        }
     }
 
     pub fn display_map(&self) {
