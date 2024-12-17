@@ -208,10 +208,10 @@ impl ProgramDuplicator {
         }
     }
 
-    pub fn smallest_a(&mut self) -> usize {
+    pub fn smallest_a(&mut self) -> Option<usize> {
         let op: OpCode = OpCode::from(self.instructions[self.pointer]);
         let operand = self.instructions[self.pointer + 1];
-        return self.run_instruction(op, operand).unwrap();
+        return self.run_instruction(op, operand);
     }
 
     fn run_instruction(&mut self, op: OpCode, operand: i8) -> Option<usize> {
@@ -223,14 +223,17 @@ impl ProgramDuplicator {
             OpCode::JNZ => match self.jump {
                 true => {}
                 false => {
-                    for a in 0..8 {
+                    for local_a in 0..8 {
                         let mut dup = ProgramDuplicator::next_instance(
-                            Some(a),
+                            Some(local_a),
                             self.register_b,
                             self.register_c,
                             self.instructions[0..self.pointer].to_vec(),
                         );
-                        let next_a = dup.smallest_a();
+                        let new_a = dup.smallest_a();
+                        if a.is_none() || new_a.is_none() || dup.smallest_a() < a {
+                            a = new_a;
+                        }
                     }
                 }
             },
