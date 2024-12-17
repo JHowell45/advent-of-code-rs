@@ -2,27 +2,8 @@ use itertools::Itertools;
 use regex::Regex;
 
 #[derive(Debug)]
-pub enum ComputerResults<T> {
-    Result(T),
-    Halt,
-}
-
-impl<T> ComputerResults<T> {
-    pub fn is_result(&self) -> bool {
-        match self {
-            Self::Result(_) => true,
-            Self::Halt => false,
-        }
-    }
-
-    pub fn is_halt(&self) -> bool {
-        !self.is_result()
-    }
-}
-
-#[derive(Debug)]
 pub struct Computer {
-    pub registers: [i32; 3],
+    pub registers: [u64; 3],
     pub output: Vec<i8>,
     instruction_p: usize,
     jumped: bool,
@@ -33,7 +14,7 @@ impl Computer {
         Self::define_registers(0, 0, 0)
     }
 
-    pub fn define_registers(a: i32, b: i32, c: i32) -> Self {
+    pub fn define_registers(a: u64, b: u64, c: u64) -> Self {
         Self {
             registers: [a, b, c],
             output: Vec::new(),
@@ -46,9 +27,9 @@ impl Computer {
         let pattern = Regex::new(r"Register A: (?<a>\d+)\nRegister B: (?<b>\d+)\nRegister C: (?<c>\d+)\n\nProgram: (?<program>.+)").unwrap();
         let caps = pattern.captures(&information).unwrap();
         let instance = Self::define_registers(
-            caps["a"].parse::<i32>().unwrap(),
-            caps["b"].parse::<i32>().unwrap(),
-            caps["c"].parse::<i32>().unwrap(),
+            caps["a"].parse::<u64>().unwrap(),
+            caps["b"].parse::<u64>().unwrap(),
+            caps["c"].parse::<u64>().unwrap(),
         );
         return (
             instance,
@@ -59,22 +40,32 @@ impl Computer {
         );
     }
 
-    pub fn copy_program_smallest_a(&mut self, program: Vec<i8>) -> i32 {
-        let mut a: i32 = self.registers[0];
-        let b: i32 = self.registers[1];
-        let c: i32 = self.registers[2];
+    pub fn copy_program_smallest_a(&mut self, program: Vec<i8>) -> u64 {
+        let mut a: u64 = self.registers[0];
+        let b: u64 = self.registers[1];
+        let c: u64 = self.registers[2];
         loop {
-            println!("{self:?}");
-            self.run(program.clone());
-            println!("{self:?}");
+
+            while self.instruction_p < program.len() - 1 {
+                let op: i8 = program[self.instruction_p];
+                let operand: i8 = program[self.instruction_p + 1];
+                self.run_instruction(op, operand);
+                if self.output.len() > 0 {
+                    if self.output != program[0..self.output.len()] {
+                        break;
+                    }
+                }
+                match self.jumped {
+                    true => self.jumped = false,
+                    false => self.instruction_p += 2,
+                }
+            }
+
             if self.output == program || a == 117440 {
                 break;
             }
             a += 1;
-            self.output = Vec::new();
-            self.registers[0] = a;
-            self.registers[1] = b;
-            self.registers[2] = c;
+            self.reset(a, b, c);
         }
         return a;
     }
@@ -116,37 +107,29 @@ impl Computer {
             .collect()
     }
 
-    fn combo_operand(&self, operand: i8) -> ComputerResults<i32> {
+    fn combo_operand(&self, operand: i8) -> u64 {
         match operand {
-            0 => ComputerResults::Result(0),
-            1 => ComputerResults::Result(1),
-            2 => ComputerResults::Result(2),
-            3 => ComputerResults::Result(3),
-            4 => ComputerResults::Result(self.registers[0]),
-            5 => ComputerResults::Result(self.registers[1]),
-            6 => ComputerResults::Result(self.registers[2]),
-            _ => ComputerResults::Halt,
+            0 => 0,
+            1 => 1,
+            2 => 2,
+            3 => 3,
+            4 => self.registers[0],
+            5 => self.registers[1],
+            6 => self.registers[2],
+            _ => panic!("Invalid operand number! '{operand:}'"),
         }
     }
 
     fn adv(&mut self, operand: i8) {
-        match self.combo_operand(operand) {
-            ComputerResults::Result(denominator) => {
-                self.registers[0] /= 2_i32.pow(denominator as u32);
-            }
-            ComputerResults::Halt => {}
-        }
+        self.registers[0] /= 2_i32.pow(self.combo_operand(operand) as u32) as u64
     }
 
     fn bxl(&mut self, operand: i8) {
-        self.registers[1] = self.registers[1] ^ operand as i32;
+        self.registers[1] = self.registers[1] ^ operand as u64;
     }
 
     fn bst(&mut self, operand: i8) {
-        match self.combo_operand(operand) {
-            ComputerResults::Result(v) => self.registers[1] = v % 8,
-            ComputerResults::Halt => {}
-        }
+        self.registers[1] = self.combo_operand(operand) % 8
     }
 
     fn jnz(&mut self, operand: i8) {
@@ -164,27 +147,24 @@ impl Computer {
     }
 
     fn out(&mut self, operand: i8) {
-        if let ComputerResults::Result(v) = self.combo_operand(operand) {
-            self.output.push((v % 8) as i8);
-        }
+        self.output.push((self.combo_operand(operand) % 8) as i8);
     }
 
     fn bdv(&mut self, operand: i8) {
-        match self.combo_operand(operand) {
-            ComputerResults::Result(denominator) => {
-                self.registers[1] = self.registers[0] / 2_i32.pow(denominator as u32)
-            }
-            ComputerResults::Halt => {}
-        }
+        self.registers[1] = self.registers[0] / 2_i32.pow(self.combo_operand(operand) as u32) as u64
     }
 
     fn cdv(&mut self, operand: i8) {
-        match self.combo_operand(operand) {
-            ComputerResults::Result(denominator) => {
-                self.registers[2] = self.registers[0] / 2_i32.pow(denominator as u32)
-            }
-            ComputerResults::Halt => {}
-        }
+        self.registers[2] = self.registers[0] / 2_i32.pow(self.combo_operand(operand) as u32) as u64
+    }
+
+    fn reset(&mut self, a: u64, b: u64, c: u64) {
+        self.output = Vec::new();
+        self.registers[0] = a;
+        self.registers[1] = b;
+        self.registers[2] = c;
+        self.jumped = false;
+        self.instruction_p = 0;
     }
 }
 
@@ -200,9 +180,9 @@ mod tests {
     #[case([0, 29, 0], vec![1,7], [0, 26, 0], vec![])]
     #[case([0, 2024, 43690], vec![4, 0], [0, 44354, 43690], vec![])]
     fn test_instructions(
-        #[case] registers: [i32; 3],
+        #[case] registers: [u64; 3],
         #[case] program: Vec<i8>,
-        #[case] expected_registers: [i32; 3],
+        #[case] expected_registers: [u64; 3],
         #[case] expected_output: Vec<i32>,
     ) {
         let mut computer = Computer::define_registers(registers[0], registers[1], registers[2]);
