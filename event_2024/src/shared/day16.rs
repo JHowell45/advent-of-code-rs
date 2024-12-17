@@ -1,4 +1,12 @@
 #[derive(Debug)]
+pub enum Direction {
+    North,
+    East,
+    South,
+    West
+}
+
+#[derive(Debug, Clone, Copy)]
 pub struct Point {
     x: usize,
     y: usize,
@@ -48,13 +56,18 @@ impl Map {
 
 pub struct PathFinder {
     map: Map,
-    score: usize
+    score: usize,
+    player_position: Point,
+    player_direction: Direction,
 }
 
 impl PathFinder {
     pub fn from_string(map: &str) -> Self {
+        let map: Map = Map::from_string(map);
         Self {
-            map: Map::from_string(map),
+            player_direction: Direction::East,
+            player_position: map.start.clone(),
+            map: map,
             score: 0,
         }
     }
