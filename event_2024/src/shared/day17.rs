@@ -5,6 +5,11 @@ pub struct Computer {
     instruction_p: usize,
 }
 
+pub enum ComputerReturnState<T> {
+    Result(T),
+    Halt
+}
+
 impl Computer {
     pub fn new() -> Self {
         Self {
