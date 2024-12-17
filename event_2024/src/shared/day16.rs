@@ -1,3 +1,5 @@
+use std::{fmt::Debug, str::FromStr};
+
 #[derive(Debug)]
 pub enum Direction {
     North,
@@ -18,7 +20,6 @@ impl Point {
     }
 }
 
-#[derive(Debug)]
 pub struct Map {
     data: Vec<Vec<char>>,
     start: Point,
@@ -52,15 +53,16 @@ impl Map {
             end: end.unwrap()
         }
     }
+}
 
-    pub fn display(&self) {
+impl Debug for Map {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let mut s: String = String::from("\n"); 
         for y in self.data.iter() {
-            for c in y{
-                print!("{c:}");
-            }
-            println!();
+            s.push_str(y.iter().collect::<String>().as_str());
+            s.push('\n');
         }
-        println!();
+        write!(f, "{}", s)
     }
 }
 
@@ -86,6 +88,7 @@ impl PathFinder {
     pub fn lowest_point_path(&mut self) -> usize {
         while self.player_position != self.map.end {
             self.move_next();
+            println!("{self:#?}");
         }
         self.score
     }
@@ -115,6 +118,7 @@ impl PathFinder {
         if self.map.data[next.y][next.x] == '.' {
             return false;
         }
+        self.map.data[self.player_position.y][self.player_position.x] = 'X';
         self.player_position = next;
         self.score += 1;
         return true;
@@ -128,10 +132,6 @@ impl PathFinder {
             Direction::South => Direction::West,
             Direction::West => Direction::North,
         }
-    }
-
-    pub fn display_map(&self) {
-        self.map.display()
     }
 }
 
@@ -159,7 +159,6 @@ mod tests {
 ", 7036)]
     fn example(#[case] map: &str, #[case] score: usize) {
         let mut path_finder: PathFinder = PathFinder::from_string(map);
-        path_finder.display_map();
         println!("{path_finder:?}");
         assert_eq!(path_finder.lowest_point_path(), score);
     }
