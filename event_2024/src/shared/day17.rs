@@ -23,7 +23,7 @@ impl<T> ComputerResults<T> {
 #[derive(Debug)]
 pub struct Computer {
     pub registers: [i32; 3],
-    pub output: Vec<i32>,
+    pub output: Vec<i8>,
     instruction_p: usize,
     jumped: bool,
 }
@@ -63,11 +63,7 @@ impl Computer {
         while self.instruction_p < instructions.len() - 1 {
             let op: i8 = instructions[self.instruction_p];
             let operand: i8 = instructions[self.instruction_p + 1];
-
-            println!("{:}: {op:} => {operand:}", self.instruction_p);
             self.run_instruction(op, operand);
-            println!("{self:?}");
-
             match self.jumped {
                 true => self.jumped = false,
                 false => self.instruction_p += 2,
@@ -147,7 +143,7 @@ impl Computer {
 
     fn out(&mut self, operand: i8) {
         if let ComputerResults::Result(v) = self.combo_operand(operand) {
-            self.output.push(v % 8);
+            self.output.push((v % 8) as i8);
         }
     }
 
