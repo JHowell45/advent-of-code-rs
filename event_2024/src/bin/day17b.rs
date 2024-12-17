@@ -4,8 +4,8 @@ use event_2024::shared::day17::{Computer, ProgramDuplicator};
 
 fn main() {
     let (_, program) = Computer::from_string(get_file_contents(2024, 17).as_str());
-    let dup = ProgramDuplicator::new(program);
-    println!("Smallest A {}", dup.smallest_a(program));
+    let mut dup = ProgramDuplicator::new(program);
+    println!("Smallest A {}", dup.smallest_a());
 }
 
 #[cfg(test)]
@@ -18,6 +18,6 @@ mod tests {
     fn example() {
         let program = vec![0, 3, 5, 4, 3, 0];
         let mut duplicator = ProgramDuplicator::new(program);
-        assert_eq!(duplicator.smallest_a(program), 117440);
+        assert_eq!(duplicator.smallest_a(), 117440);
     }
 }
