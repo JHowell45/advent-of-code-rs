@@ -17,7 +17,11 @@ mod tests {
     #[rstest]
     fn example() {
         let program = vec![0, 3, 5, 4, 3, 0];
-        let mut duplicator = ProgramDuplicator::new(program);
-        assert_eq!(duplicator.smallest_a(), Some(117440));
+        // let mut duplicator = ProgramDuplicator::new(program);
+        // assert_eq!(duplicator.smallest_a(), Some(117440));
+        let mut comp = Computer::define_registers(2024, 0, 0);
+        comp.run(program.clone());
+        println!("\n");
+        assert_eq!(comp.smallest_a(program), 117440);
     }
 }
