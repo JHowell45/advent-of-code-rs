@@ -10,7 +10,7 @@ pub enum OpCode {
     BXC,
     OUT,
     BDV,
-    CDV
+    CDV,
 }
 
 impl From<i8> for OpCode {
@@ -173,6 +173,7 @@ pub struct ProgramDuplicator {
     output: Vec<i8>,
     instructions: Vec<i8>,
     jump: bool,
+    pointer: usize,
 }
 
 impl ProgramDuplicator {
@@ -184,49 +185,40 @@ impl ProgramDuplicator {
             output: Vec::new(),
             instructions: instructions,
             jump: false,
+            pointer: 0,
         }
     }
 
     pub fn smallest_a(&mut self) -> usize {
-        let mut point: usize = self.instructions.len();
-        while point > 0 {
-            point -= 2;
-            let op = OpCode::from(self.instructions[point]);
-            let operand = self.instructions[point + 1];
-            self.run_instruction(op, operand);
-        }
-        return 0;
+        let mut point: usize = self.instructions.len() - 2;
+        let op: OpCode = OpCode::from(self.instructions[point]);
+        let operand = OpCode::from(self.instructions[point + 1]);
+        return self.run_instruction(op, operand).unwrap();
     }
 
-    fn run_instruction(&mut self, op: OpCode, operand: i8) -> bool {
+    fn run_instruction(&mut self, op: OpCode, operand: i8) -> Option<usize> {
+        let mut a: Option<usize> = None;
         match op {
-            OpCode::ADV => self.adv(operand),
-            OpCode::BXL => self.bxl(operand),
-            OpCode::BST => self.bst(operand),
-            OpCode::JNZ => self.jnz(operand),
-            OpCode::BXC => self.bxc(operand),
-            OpCode::OUT => self.out(operand),
-            OpCode::BDV => self.bdv(operand),
-            OpCode::CDV => self.cdv(operand),
+            OpCode::ADV => {}
+            OpCode::BXL => {}
+            OpCode::BST => {}
+            OpCode::JNZ => {
+                match self.jump {
+                    true => {},
+                    false => {
+                        for local_a in 0..8 {
+
+                        }
+                    },
+                }
+            }
+            OpCode::BXC => {}
+            OpCode::OUT => {}
+            OpCode::BDV => {}
+            OpCode::CDV => {}
         }
+        return a;
     }
-
-    fn adv(&mut self, operand: i8) -> bool {}
-    
-    fn bxl(&mut self, operand: i8) -> bool {}
-
-    fn bst(&mut self, operand: i8) -> bool {}
-
-    fn jnz(&mut self, operand: i8) -> bool {}
-
-    fn bxc(&mut self, operand: i8) -> bool {}
-
-    fn out(&mut self, operand: i8) -> bool {}
-
-    fn bdv(&mut self, operand: i8) -> bool {}
-
-    fn cdv(&mut self, operand: i8) -> bool {}
-
 }
 
 #[cfg(test)]
