@@ -1,4 +1,5 @@
 use itertools::Itertools;
+use regex::Regex;
 
 #[derive(Debug)]
 pub enum ComputerResults<T> {
@@ -41,15 +42,31 @@ impl Computer {
         }
     }
 
+    pub fn from_string(information: &str) -> (Self, Vec<i8>) {
+        let pattern = Regex::new(r"Register A: (?<a>\d+)\nRegister B: (?<b>\d+)\nRegister C: (?<c>\d+)\n\nProgram: (?<program>.+)").unwrap();
+        let caps = pattern.captures(&information).unwrap();
+        let instance = Self::define_registers(
+            caps["a"].parse::<i32>().unwrap(),
+            caps["b"].parse::<i32>().unwrap(),
+            caps["c"].parse::<i32>().unwrap(),
+        );
+        return (
+            instance,
+            caps["program"]
+                .split(",")
+                .map(|v| v.parse::<i8>().unwrap())
+                .collect(),
+        );
+    }
+
     pub fn run(&mut self, instructions: Vec<i8>) {
         while self.instruction_p < instructions.len() - 1 {
             let op: i8 = instructions[self.instruction_p];
             let operand: i8 = instructions[self.instruction_p + 1];
 
-            // println!("{:}: {op:} => {operand:}", self.instruction_p);
+            println!("{:}: {op:} => {operand:}", self.instruction_p);
             self.run_instruction(op, operand);
-
-            // println!("{self:?}");
+            println!("{self:?}");
 
             match self.jumped {
                 true => self.jumped = false,
@@ -66,14 +83,19 @@ impl Computer {
             3 => self.jnz(operand),
             4 => self.bxc(operand),
             5 => self.out(operand),
-            6 => self.bxl(operand),
-            7 => self.bdv(operand),
-            _ => self.cdv(operand),
+            6 => self.bdv(operand),
+            7 => self.cdv(operand),
+            _ => {},
         }
     }
 
     pub fn output(&self) -> String {
-        self.output.iter().map(|v| format!("{v},")).collect()
+        self.output.iter().enumerate().map(|(i, v)| {
+            match i {
+                0 => format!("{v}"),
+                _ => format!(",{v}")
+            }
+        }).collect()
     }
 
     fn combo_operand(&self, operand: i8) -> ComputerResults<i32> {
@@ -99,7 +121,7 @@ impl Computer {
     }
 
     fn bxl(&mut self, operand: i8) {
-        self.registers[1] ^= operand as i32;
+        self.registers[1] = self.registers[1] ^ operand as i32;
     }
 
     fn bst(&mut self, operand: i8) {

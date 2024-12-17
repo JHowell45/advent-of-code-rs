@@ -1,9 +1,11 @@
+use core::file_reader::get_file_contents;
+
 use event_2024::shared::day17::Computer;
 
 fn main() {
-    let mut computer = Computer::define_registers(64196994, 0, 0);
+    let (mut computer, program) = Computer::from_string(get_file_contents(2024, 17).as_str());
     println!("{computer:?}");
-    computer.run(vec![2, 4, 1, 1, 7, 5, 1, 5, 4, 0, 0, 3, 5, 5, 3, 0]);
+    computer.run(program);
     println!("{computer:?}");
     println!("{:?}", computer.output());
 }
