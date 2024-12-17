@@ -106,7 +106,7 @@ impl PathFinder {
     }
 
     fn move_forward(&mut self, next: Point) -> bool {
-        if self.map.data[next.y][next.x] == '.' {
+        if self.map.data[next.y][next.x] != '.' {
             return false;
         }
         self.map.data[self.player_position.y][self.player_position.x] = 'X';
