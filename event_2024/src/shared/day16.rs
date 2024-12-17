@@ -105,15 +105,6 @@ impl PathFinder {
         }
     }
 
-    fn player_check_next(&self) -> bool {
-        match self.player_direction {
-            Direction::North => self.map.data[self.player_position.y + 1][self.player_position.x] == '.',
-            Direction::South => self.map.data[self.player_position.y - 1][self.player_position.x] == '.',
-            Direction::East => self.map.data[self.player_position.y][self.player_position.x + 1] == '.',
-            Direction::West => self.map.data[self.player_position.y][self.player_position.x - 1] == '.',
-        }
-    }
-
     fn move_forward(&mut self, next: Point) -> bool {
         if self.map.data[next.y][next.x] == '.' {
             return false;
