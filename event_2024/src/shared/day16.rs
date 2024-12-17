@@ -53,12 +53,19 @@ pub struct PathFinder {
 
 impl PathFinder {
     pub fn from_string(map: &str) -> Self {
-
+        Self {
+            map: Map::from_string(map),
+            score: 0,
+        }
     }
 
-    fn move_forward(&mut self) {}
+    fn move_forward(&mut self) {
+        self.score += 1;
+    }
 
-    fn rotate(&mut self) {}
+    fn rotate(&mut self) {
+        self.score += 1000;
+    }
 }
 
 #[cfg(test)]
