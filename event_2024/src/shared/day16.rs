@@ -52,6 +52,16 @@ impl Map {
             end: end.unwrap()
         }
     }
+
+    pub fn display(&self) {
+        for y in self.data.iter() {
+            for c in y{
+                print!("{c:}");
+            }
+            println!();
+        }
+        println!();
+    }
 }
 
 #[derive(Debug)]
@@ -80,6 +90,10 @@ impl PathFinder {
     fn rotate(&mut self) {
         self.score += 1000;
     }
+
+    pub fn display_map(&self) {
+        self.map.display()
+    }
 }
 
 #[cfg(test)]
@@ -106,6 +120,7 @@ mod tests {
 ")]
     fn example(#[case] map: &str) {
         let path_finder: PathFinder = PathFinder::from_string(map);
+        path_finder.display_map();
         println!("{path_finder:?}");
     }
 }
