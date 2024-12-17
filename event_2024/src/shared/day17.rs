@@ -167,9 +167,9 @@ impl Computer {
 }
 
 pub struct ProgramDuplicator {
-    register_a: u64,
-    register_b: u64,
-    register_c: u64,
+    register_a: Option<u64>,
+    register_b: Option<u64>,
+    register_c: Option<u64>,
     output: Vec<i8>,
     instructions: Vec<i8>,
     jump: bool,
@@ -178,21 +178,34 @@ pub struct ProgramDuplicator {
 
 impl ProgramDuplicator {
     pub fn new(instructions: Vec<i8>) -> Self {
+        let p = instructions.len() - 2;
         Self {
-            register_a: 0,
-            register_b: 0,
-            register_c: 0,
+            register_a: None,
+            register_b: None,
+            register_c: None,
             output: Vec::new(),
             instructions: instructions,
             jump: false,
-            pointer: 0,
+            pointer: p,
+        }
+    }
+
+    pub fn next_instance(a: Option<u64>, b: Option<u64>, c: Option<u64>, instructions: Vec<i8>) -> Self {
+        let p = instructions.len() - 2;
+        Self {
+            register_a: a,
+            register_b: b,
+            register_c: c,
+            output: Vec::new(),
+            instructions: instructions,
+            jump: true,
+            pointer: p
         }
     }
 
     pub fn smallest_a(&mut self) -> usize {
-        let mut point: usize = self.instructions.len() - 2;
         let op: OpCode = OpCode::from(self.instructions[point]);
-        let operand = OpCode::from(self.instructions[point + 1]);
+        let operand = self.instructions[point + 1];
         return self.run_instruction(op, operand).unwrap();
     }
 
