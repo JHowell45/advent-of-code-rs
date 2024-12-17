@@ -1,4 +1,4 @@
-use std::{fmt::Debug, str::FromStr};
+use std::{fmt::{write, Debug, Display}, str::FromStr, thread::sleep, time::Duration};
 
 #[derive(Debug)]
 pub enum Direction {
@@ -8,7 +8,7 @@ pub enum Direction {
     West
 }
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Clone, Copy, PartialEq)]
 pub struct Point {
     x: usize,
     y: usize,
@@ -17,6 +17,18 @@ pub struct Point {
 impl Point {
     pub fn new(x: usize, y: usize) -> Self {
         Self { x, y }
+    }
+}
+
+impl Debug for Point {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "({}, {})", self.y, self.x)
+    }
+}
+
+impl Display for Point {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "({}, {})", self.y, self.x)
     }
 }
 
@@ -89,6 +101,7 @@ impl PathFinder {
         while self.player_position != self.map.end {
             self.move_next();
             println!("{self:#?}");
+            sleep(Duration::from_secs(1));
         }
         self.score
     }
@@ -100,6 +113,7 @@ impl PathFinder {
             Direction::East => Point::new(self.player_position.x + 1, self.player_position.y),
             Direction::West => Point::new(self.player_position.x - 1, self.player_position.y),
         };
+        println!("Next: {next:?}");
         if !self.move_forward(next) {
             self.rotate();
         }
