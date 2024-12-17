@@ -5,7 +5,7 @@ use event_2024::shared::day17::{Computer, ProgramDuplicator};
 fn main() {
     let (_, program) = Computer::from_string(get_file_contents(2024, 17).as_str());
     let mut dup = ProgramDuplicator::new(program);
-    println!("Smallest A {}", dup.smallest_a());
+    println!("Smallest A {:?}", dup.smallest_a());
 }
 
 #[cfg(test)]
