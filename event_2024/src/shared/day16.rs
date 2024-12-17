@@ -83,10 +83,11 @@ impl PathFinder {
         }
     }
 
-    pub fn lowest_point_path(&mut self) {
+    pub fn lowest_point_path(&mut self) -> usize {
         while self.player_position != self.map.end {
             self.move_next();
         }
+        self.score
     }
 
     fn move_next(&mut self) {
@@ -155,10 +156,11 @@ mod tests {
 #.###.#.#.#.#.#
 #S..#.....#...#
 ###############
-")]
-    fn example(#[case] map: &str) {
-        let path_finder: PathFinder = PathFinder::from_string(map);
+", 7036)]
+    fn example(#[case] map: &str, #[case] score: usize) {
+        let mut path_finder: PathFinder = PathFinder::from_string(map);
         path_finder.display_map();
         println!("{path_finder:?}");
+        assert_eq!(path_finder.lowest_point_path(), score);
     }
 }
