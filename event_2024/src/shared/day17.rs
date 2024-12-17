@@ -190,7 +190,12 @@ impl ProgramDuplicator {
         }
     }
 
-    pub fn next_instance(a: Option<u64>, b: Option<u64>, c: Option<u64>, instructions: Vec<i8>) -> Self {
+    pub fn next_instance(
+        a: Option<u64>,
+        b: Option<u64>,
+        c: Option<u64>,
+        instructions: Vec<i8>,
+    ) -> Self {
         let p = instructions.len() - 2;
         Self {
             register_a: a,
@@ -199,13 +204,13 @@ impl ProgramDuplicator {
             output: Vec::new(),
             instructions: instructions,
             jump: true,
-            pointer: p
+            pointer: p,
         }
     }
 
     pub fn smallest_a(&mut self) -> usize {
-        let op: OpCode = OpCode::from(self.instructions[point]);
-        let operand = self.instructions[point + 1];
+        let op: OpCode = OpCode::from(self.instructions[self.pointer]);
+        let operand = self.instructions[self.pointer + 1];
         return self.run_instruction(op, operand).unwrap();
     }
 
@@ -215,16 +220,20 @@ impl ProgramDuplicator {
             OpCode::ADV => {}
             OpCode::BXL => {}
             OpCode::BST => {}
-            OpCode::JNZ => {
-                match self.jump {
-                    true => {},
-                    false => {
-                        for local_a in 0..8 {
-
-                        }
-                    },
+            OpCode::JNZ => match self.jump {
+                true => {}
+                false => {
+                    for a in 0..8 {
+                        let dup = ProgramDuplicator::next_instance(
+                            Some(a),
+                            self.register_b,
+                            self.register_c,
+                            self.instructions[0..self.pointer].to_vec(),
+                        );
+                        let next_a = dup.smallest_a();
+                    }
                 }
-            }
+            },
             OpCode::BXC => {}
             OpCode::OUT => {}
             OpCode::BDV => {}
