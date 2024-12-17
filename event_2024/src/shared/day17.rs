@@ -193,25 +193,39 @@ impl ProgramDuplicator {
             point -= 2;
             let op = OpCode::from(self.instructions[point]);
             let operand = self.instructions[point + 1];
+            self.run_instruction(op, operand);
         }
         return 0;
     }
 
-    fn adv(&mut self, operand: i8) {}
+    fn run_instruction(&mut self, op: OpCode, operand: i8) -> bool {
+        match op {
+            OpCode::ADV => self.adv(operand),
+            OpCode::BXL => self.bxl(operand),
+            OpCode::BST => self.bst(operand),
+            OpCode::JNZ => self.jnz(operand),
+            OpCode::BXC => self.bxc(operand),
+            OpCode::OUT => self.out(operand),
+            OpCode::BDV => self.bdv(operand),
+            OpCode::CDV => self.cdv(operand),
+        }
+    }
+
+    fn adv(&mut self, operand: i8) -> bool {}
     
-    fn bxl(&mut self, operand: i8) {}
+    fn bxl(&mut self, operand: i8) -> bool {}
 
-    fn bst(&mut self, operand: i8) {}
+    fn bst(&mut self, operand: i8) -> bool {}
 
-    fn jnz(&mut self, operand: i8) {}
+    fn jnz(&mut self, operand: i8) -> bool {}
 
-    fn bxc(&mut self, operand: i8) {}
+    fn bxc(&mut self, operand: i8) -> bool {}
 
-    fn out(&mut self, operand: i8) {}
+    fn out(&mut self, operand: i8) -> bool {}
 
-    fn bdv(&mut self, operand: i8) {}
+    fn bdv(&mut self, operand: i8) -> bool {}
 
-    fn cdv(&mut self, operand: i8) {}
+    fn cdv(&mut self, operand: i8) -> bool {}
 
 }
 
