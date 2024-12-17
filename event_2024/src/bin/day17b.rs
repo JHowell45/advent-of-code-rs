@@ -18,6 +18,6 @@ mod tests {
     fn example() {
         let program = vec![0, 3, 5, 4, 3, 0];
         let mut duplicator = ProgramDuplicator::new(program);
-        assert_eq!(duplicator.smallest_a(), 117440);
+        assert_eq!(duplicator.smallest_a(), Some(117440));
     }
 }
