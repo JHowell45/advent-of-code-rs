@@ -29,6 +29,7 @@ impl Map {
                     'E' => end = Some(Point::new(x_idx, y_idx)),
                     _ => {},
                 }
+                row_data.push(c);
             }
             data.push(row_data);
             if start.is_none() || end.is_none() {
