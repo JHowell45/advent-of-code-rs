@@ -54,6 +54,7 @@ impl Map {
     }
 }
 
+#[derive(Debug)]
 pub struct PathFinder {
     map: Map,
     score: usize,
@@ -83,7 +84,8 @@ impl PathFinder {
 
 #[cfg(test)]
 mod tests {
-    use super::PathFinder;
+    use super::*;
+    use rstest::rstest;
 
     #[rstest]
     #[case("###############
@@ -102,8 +104,8 @@ mod tests {
 #S..#.....#...#
 ###############
 ")]
-    fn example(map: &str) {
-        let path_finder: PathFinder = PathFinder::from_string(map;
+    fn example(#[case] map: &str) {
+        let path_finder: PathFinder = PathFinder::from_string(map);
         println!("{path_finder:?}");
     }
 }
