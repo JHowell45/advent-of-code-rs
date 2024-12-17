@@ -42,9 +42,9 @@ impl Map {
                 row_data.push(c);
             }
             data.push(row_data);
-            if start.is_none() || end.is_none() {
-                panic!("No start or end found!!");
-            }
+        }
+        if start.is_none() || end.is_none() {
+            panic!("No start or end found!!");
         }
         Self {
             data: data,
