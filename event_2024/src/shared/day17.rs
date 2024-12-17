@@ -2,6 +2,34 @@ use itertools::Itertools;
 use regex::Regex;
 
 #[derive(Debug)]
+pub enum OpCode {
+    ADV,
+    BXL,
+    BST,
+    JNZ,
+    BXC,
+    OUT,
+    BDV,
+    CDV
+}
+
+impl OpCode {
+    pub fn from(id: i8) -> Self {
+        match id {
+            0 => Self::ADV,
+            1 => Self::BXL,
+            2 => Self::BST,
+            3 => Self::JNZ,
+            4 => Self::BXC,
+            5 => Self::OUT,
+            6 => Self::BDV,
+            7 => Self::CDV,
+            _ => panic!("Invalid op code value: {id}!!"),
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct Computer {
     pub registers: [u64; 3],
     pub output: Vec<i8>,
@@ -40,40 +68,11 @@ impl Computer {
         );
     }
 
-    pub fn copy_program_smallest_a(&mut self, program: Vec<i8>) -> u64 {
-        let mut a: u64 = self.registers[0];
-        let b: u64 = self.registers[1];
-        let c: u64 = self.registers[2];
-        loop {
-
-            while self.instruction_p < program.len() - 1 {
-                let op: i8 = program[self.instruction_p];
-                let operand: i8 = program[self.instruction_p + 1];
-                self.run_instruction(op, operand);
-                if self.output.len() > 0 {
-                    if self.output != program[0..self.output.len()] {
-                        break;
-                    }
-                }
-                match self.jumped {
-                    true => self.jumped = false,
-                    false => self.instruction_p += 2,
-                }
-            }
-
-            if self.output == program || a == 117440 {
-                break;
-            }
-            a += 1;
-            self.reset(a, b, c);
-        }
-        return a;
-    }
-
     pub fn run(&mut self, instructions: Vec<i8>) {
         while self.instruction_p < instructions.len() - 1 {
-            let op: i8 = instructions[self.instruction_p];
+            let op: OpCode = OpCode::from(instructions[self.instruction_p]);
             let operand: i8 = instructions[self.instruction_p + 1];
+            println!("{} : {op:?} -> {operand}", self.instruction_p);
             self.run_instruction(op, operand);
             match self.jumped {
                 true => self.jumped = false,
@@ -82,17 +81,16 @@ impl Computer {
         }
     }
 
-    pub fn run_instruction(&mut self, op: i8, operand: i8) {
+    pub fn run_instruction(&mut self, op: OpCode, operand: i8) {
         match op {
-            0 => self.adv(operand),
-            1 => self.bxl(operand),
-            2 => self.bst(operand),
-            3 => self.jnz(operand),
-            4 => self.bxc(operand),
-            5 => self.out(operand),
-            6 => self.bdv(operand),
-            7 => self.cdv(operand),
-            _ => {}
+            OpCode::ADV => self.adv(operand),
+            OpCode::BXL => self.bxl(operand),
+            OpCode::BST => self.bst(operand),
+            OpCode::JNZ => self.jnz(operand),
+            OpCode::BXC => self.bxc(operand),
+            OpCode::OUT => self.out(operand),
+            OpCode::BDV => self.bdv(operand),
+            OpCode::CDV => self.cdv(operand),
         }
     }
 
@@ -125,7 +123,7 @@ impl Computer {
     }
 
     fn bxl(&mut self, operand: i8) {
-        self.registers[1] = self.registers[1] ^ operand as u64;
+        self.registers[1] = self.registers[1] ^ operand as u64
     }
 
     fn bst(&mut self, operand: i8) {
@@ -143,11 +141,11 @@ impl Computer {
     }
 
     fn bxc(&mut self, _operand: i8) {
-        self.registers[1] ^= self.registers[2];
+        self.registers[1] ^= self.registers[2]
     }
 
     fn out(&mut self, operand: i8) {
-        self.output.push((self.combo_operand(operand) % 8) as i8);
+        self.output.push((self.combo_operand(operand) % 8) as i8)
     }
 
     fn bdv(&mut self, operand: i8) {
@@ -168,6 +166,26 @@ impl Computer {
     }
 }
 
+pub struct ProgramDuplicator {
+    register_a: u64,
+    register_b: u64,
+    register_c: u64,
+    output: Vec<i8>,
+    instructions: Vec<i8>
+}
+
+impl ProgramDuplicator {
+    pub fn new(instructions: Vec<i8>) -> Self {
+        Self {
+            register_a: 0,
+            register_b: 0,
+            register_c: 0,
+            output: Vec::new(),
+            instructions: instructions,
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -183,7 +201,7 @@ mod tests {
         #[case] registers: [u64; 3],
         #[case] program: Vec<i8>,
         #[case] expected_registers: [u64; 3],
-        #[case] expected_output: Vec<i32>,
+        #[case] expected_output: Vec<i8>,
     ) {
         let mut computer = Computer::define_registers(registers[0], registers[1], registers[2]);
         computer.run(program);
