@@ -13,9 +13,9 @@ pub enum OpCode {
     CDV
 }
 
-impl OpCode {
-    pub fn from(id: i8) -> Self {
-        match id {
+impl From<i8> for OpCode {
+    fn from(value: i8) -> Self {
+        match value {
             0 => Self::ADV,
             1 => Self::BXL,
             2 => Self::BST,
@@ -24,7 +24,7 @@ impl OpCode {
             5 => Self::OUT,
             6 => Self::BDV,
             7 => Self::CDV,
-            _ => panic!("Invalid op code value: {id}!!"),
+            _ => panic!("Invalid op code value: {value}!!"),
         }
     }
 }
@@ -185,7 +185,15 @@ impl ProgramDuplicator {
         }
     }
 
-    pub fn smallest_a() -> usize {}
+    pub fn smallest_a(&mut self) -> usize {
+        let mut point: usize = self.instructions.len();
+        while point > 0 {
+            point -= 2;
+            let op = OpCode::from(self.instructions[point]);
+            let operand = self.instructions[point + 1];
+        }
+        return 0;
+    }
 }
 
 #[cfg(test)]
