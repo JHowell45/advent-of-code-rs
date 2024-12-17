@@ -59,6 +59,26 @@ impl Computer {
         );
     }
 
+    pub fn copy_program_smallest_a(&mut self, program: Vec<i8>) -> i32 {
+        let mut a: i32 = self.registers[0];
+        let b: i32 = self.registers[1];
+        let c: i32 = self.registers[2];
+        loop {
+            println!("{self:?}");
+            self.run(program.clone());
+            println!("{self:?}");
+            if self.output == program || a == 117440 {
+                break;
+            }
+            a += 1;
+            self.output = Vec::new();
+            self.registers[0] = a;
+            self.registers[1] = b;
+            self.registers[2] = c;
+        }
+        return a;
+    }
+
     pub fn run(&mut self, instructions: Vec<i8>) {
         while self.instruction_p < instructions.len() - 1 {
             let op: i8 = instructions[self.instruction_p];
@@ -81,17 +101,19 @@ impl Computer {
             5 => self.out(operand),
             6 => self.bdv(operand),
             7 => self.cdv(operand),
-            _ => {},
+            _ => {}
         }
     }
 
     pub fn output(&self) -> String {
-        self.output.iter().enumerate().map(|(i, v)| {
-            match i {
+        self.output
+            .iter()
+            .enumerate()
+            .map(|(i, v)| match i {
                 0 => format!("{v}"),
-                _ => format!(",{v}")
-            }
-        }).collect()
+                _ => format!(",{v}"),
+            })
+            .collect()
     }
 
     fn combo_operand(&self, operand: i8) -> ComputerResults<i32> {
