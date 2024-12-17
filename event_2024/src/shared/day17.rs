@@ -184,6 +184,8 @@ impl ProgramDuplicator {
             instructions: instructions,
         }
     }
+
+    pub fn smallest_a() -> usize {}
 }
 
 #[cfg(test)]
