@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct Point {
     x: usize,
     y: usize,
@@ -9,6 +10,7 @@ impl Point {
     }
 }
 
+#[derive(Debug)]
 pub struct Map {
     data: Vec<Vec<char>>,
     start: Point,
