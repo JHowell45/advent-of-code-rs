@@ -21,7 +21,7 @@ mod tests {
         // assert_eq!(duplicator.smallest_a(), Some(117440));
         let mut comp = Computer::define_registers(2024, 0, 0);
         // comp.run(program.clone());
-        println!("\n");
+        // println!("\n");
         assert_eq!(comp.smallest_a(program), 117440);
     }
 }
