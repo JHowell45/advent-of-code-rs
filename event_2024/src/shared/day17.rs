@@ -171,7 +171,8 @@ pub struct ProgramDuplicator {
     register_b: u64,
     register_c: u64,
     output: Vec<i8>,
-    instructions: Vec<i8>
+    instructions: Vec<i8>,
+    jump: bool,
 }
 
 impl ProgramDuplicator {
@@ -182,6 +183,7 @@ impl ProgramDuplicator {
             register_c: 0,
             output: Vec::new(),
             instructions: instructions,
+            jump: false,
         }
     }
 
@@ -194,6 +196,23 @@ impl ProgramDuplicator {
         }
         return 0;
     }
+
+    fn adv(&mut self, operand: i8) {}
+    
+    fn bxl(&mut self, operand: i8) {}
+
+    fn bst(&mut self, operand: i8) {}
+
+    fn jnz(&mut self, operand: i8) {}
+
+    fn bxc(&mut self, operand: i8) {}
+
+    fn out(&mut self, operand: i8) {}
+
+    fn bdv(&mut self, operand: i8) {}
+
+    fn cdv(&mut self, operand: i8) {}
+
 }
 
 #[cfg(test)]
