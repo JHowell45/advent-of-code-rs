@@ -13,14 +13,13 @@ impl Computer {
         }
     }
 
-    pub fn run(&self, instructions: Vec<i32>) {
-        for (p, (op, operand)) in instructions
-            .chunks(2)
-            .into_iter()
-            .map(|chunk| (chunk[0], chunk[1]))
-            .enumerate()
-        {
-            println!("{p:}: {op:} => {operand:}");
+    pub fn run(&mut self, instructions: Vec<i32>) {
+        while self.instruction_p < instructions.len() - 1 {
+            let op = instructions[self.instruction_p];
+            let operand = instructions[self.instruction_p + 1];
+
+            println!("{:}: {op:} => {operand:}", self.instruction_p);
+            self.instruction_p += 2;
         }
     }
 }

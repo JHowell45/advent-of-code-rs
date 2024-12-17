@@ -1,7 +1,7 @@
 use event_2024::shared::day17::Computer;
 
 fn main() {
-    let computer = Computer::new();
+    let mut computer = Computer::new();
     computer.run(vec![0, 1, 2, 3])
 }
 
