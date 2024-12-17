@@ -83,5 +83,27 @@ impl PathFinder {
 
 #[cfg(test)]
 mod tests {
+    use super::PathFinder;
 
+    #[rstest]
+    #[case("###############
+#.......#....E#
+#.#.###.#.###.#
+#.....#.#...#.#
+#.###.#####.#.#
+#.#.#.......#.#
+#.#.#####.###.#
+#...........#.#
+###.#.#####.#.#
+#...#.....#.#.#
+#.#.#.###.#.#.#
+#.....#...#.#.#
+#.###.#.#.#.#.#
+#S..#.....#...#
+###############
+")]
+    fn example(map: &str) {
+        let path_finder: PathFinder = PathFinder::from_string(map;
+        println!("{path_finder:?}");
+    }
 }
