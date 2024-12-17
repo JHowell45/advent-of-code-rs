@@ -9,4 +9,14 @@ fn main() {
 }
 
 #[cfg(test)]
-mod tests {}
+mod tests {
+    use super::*;
+    use rstest::rstest;
+
+    #[rstest]
+    fn example() {
+        let mut com = Computer::define_registers(729, 0, 0);
+        com.run(vec![0, 1, 5, 4, 3, 0]);
+        assert_eq!(com.output, vec![4, 6, 3, 5, 6, 3, 5, 2, 1, 0])
+    }
+}
