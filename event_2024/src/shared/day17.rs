@@ -72,7 +72,7 @@ impl Computer {
         while self.instruction_p < instructions.len() - 1 {
             let op: OpCode = OpCode::from(instructions[self.instruction_p]);
             let operand: i8 = instructions[self.instruction_p + 1];
-            println!("{} : {op:?} -> {operand}", self.instruction_p);
+            // println!("{} : {op:?} -> {operand}", self.instruction_p);
             self.run_instruction(op, operand);
             match self.jumped {
                 true => self.jumped = false,
@@ -224,7 +224,7 @@ impl ProgramDuplicator {
                 true => {}
                 false => {
                     for a in 0..8 {
-                        let dup = ProgramDuplicator::next_instance(
+                        let mut dup = ProgramDuplicator::next_instance(
                             Some(a),
                             self.register_b,
                             self.register_c,
