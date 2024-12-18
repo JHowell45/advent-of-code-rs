@@ -1,4 +1,4 @@
-use pathfinding::directed::astar;
+use pathfinding::prelude::astar;
 use regex::Regex;
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -12,7 +12,7 @@ impl Point {
         Self { x, y }
     }
 
-    pub fn distance(&self, other: Point) -> u32 {
+    pub fn distance(&self, other: &Point) -> u32 {
         (self.x.abs_diff(other.x) + self.y.abs_diff(other.y)) as u32
     }
 }
@@ -57,11 +57,11 @@ impl MemorySpace {
         self.display_space();
         let result = astar(
             &start,
-            |p| p.successors(),
+            |p| self.point_successors(p),
             |p| p.distance(&end) / 3,
             |p| *p == end,
         );
-        return 0;
+        return result;
     }
 
     pub fn display_space(&self) {
@@ -74,7 +74,7 @@ impl MemorySpace {
         println!();
     }
 
-    fn point_successors(&self, point: Point) -> Vec<(Point, u32)> {}
+    fn point_successors(&self, point: &Point) -> Vec<(Point, u32)> {}
 }
 
 #[cfg(test)]
