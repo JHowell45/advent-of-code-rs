@@ -84,7 +84,6 @@ impl Computer {
                     if self.output != instructions[0..self.output.len()] {
                         break;
                     } else {
-
                         println!("{self:?}");
                     }
                 }

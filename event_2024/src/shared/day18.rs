@@ -1,29 +1,36 @@
+use pathfinding::directed::astar;
 use regex::Regex;
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Point {
     pub x: usize,
-    pub y: usize
+    pub y: usize,
 }
 
 impl Point {
     pub fn new(x: usize, y: usize) -> Self {
         Self { x, y }
     }
+
+    pub fn distance(&self, other: Point) -> u32 {
+        (self.x.abs_diff(other.x) + self.y.abs_diff(other.y)) as u32
+    }
 }
 
 pub struct MemorySpace {
     range: usize,
     space: Vec<Vec<char>>,
-    bytes: Vec<Point>
+    bytes: Vec<Point>,
 }
 
 impl MemorySpace {
     pub fn new(range: usize, bytes: Vec<Point>) -> Self {
         Self {
             range: range,
-            space: (0..=range).map(|_| (0..=range).map(|_| '.').collect()).collect(),
-            bytes: bytes
+            space: (0..=range)
+                .map(|_| (0..=range).map(|_| '.').collect())
+                .collect(),
+            bytes: bytes,
         }
     }
 
@@ -31,18 +38,29 @@ impl MemorySpace {
         let mut bytes: Vec<Point> = Vec::new();
         let pattern = Regex::new(r"(?<x>\d+),(?<y>\d+)").unwrap();
         for (_, [x, y]) in pattern.captures_iter(puzzle).map(|c| c.extract()) {
-            bytes.push(Point::new(x.parse::<usize>().unwrap(), y.parse::<usize>().unwrap()));
+            bytes.push(Point::new(
+                x.parse::<usize>().unwrap(),
+                y.parse::<usize>().unwrap(),
+            ));
         }
         Self::new(range, bytes)
     }
 
     pub fn least_steps(&mut self, bytes: usize) -> usize {
+        let start = Point::new(0, 0);
+        let end = Point::new(self.range, self.range);
         self.display_space();
         for idx in 0..bytes {
             let p = &self.bytes[idx];
             self.space[p.y][p.x] = '#';
         }
         self.display_space();
+        let result = astar(
+            &start,
+            |p| p.successors(),
+            |p| p.distance(&end) / 3,
+            |p| *p == end,
+        );
         return 0;
     }
 
@@ -55,6 +73,8 @@ impl MemorySpace {
         }
         println!();
     }
+
+    fn point_successors(&self, point: Point) -> Vec<(Point, u32)> {}
 }
 
 #[cfg(test)]
@@ -63,7 +83,9 @@ mod tests {
     use rstest::rstest;
 
     #[rstest]
-    #[case(6, "5,4
+    #[case(
+        6,
+        "5,4
 4,2
 4,5
 3,0
@@ -87,8 +109,16 @@ mod tests {
 1,0
 0,5
 1,6
-2,0", 12, 22)]
-    fn example(#[case] range: usize, #[case] input: &str, #[case] bytes: usize, #[case] steps: usize) {
+2,0",
+        12,
+        22
+    )]
+    fn example(
+        #[case] range: usize,
+        #[case] input: &str,
+        #[case] bytes: usize,
+        #[case] steps: usize,
+    ) {
         let mut space = MemorySpace::from_string(range, input);
         assert_eq!(space.least_steps(bytes), steps);
     }
