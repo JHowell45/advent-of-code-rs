@@ -74,7 +74,22 @@ impl MemorySpace {
         println!();
     }
 
-    fn point_successors(&self, point: &Point) -> Vec<(Point, u32)> {}
+    fn point_successors(&self, p: &Point) -> Vec<(Point, u32)> {
+        let mut valid_points: Vec<(Point, u32)> = Vec::new();
+        if p.x > 0 && self.space[p.y][p.x - 1] != '#' {
+            valid_points.push((Point::new(p.x - 1, p.y), 1));
+        }
+        if p.x < self.range && self.space[p.y][p.x + 1] != '#' {
+            valid_points.push((Point::new(p.x + 1, p.y), 1));
+        }
+        if p.y > 0 && self.space[p.y - 1][p.x] != '#' {
+            valid_points.push((Point::new(p.x, p.y - 1), 1));
+        }
+        if p.y < self.range && self.space[p.y + 1][p.x] != '#' {
+            valid_points.push((Point::new(p.x, p.y + 1), 1));
+        }
+        return valid_points;
+    }
 }
 
 #[cfg(test)]
