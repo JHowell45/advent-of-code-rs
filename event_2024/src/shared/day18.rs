@@ -2,12 +2,12 @@ use regex::Regex;
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Point {
-    x: u8,
-    y: u8
+    pub x: usize,
+    pub y: usize
 }
 
 impl Point {
-    pub fn new(x: u8, y: u8) -> Self {
+    pub fn new(x: usize, y: usize) -> Self {
         Self { x, y }
     }
 }
@@ -31,13 +31,19 @@ impl MemorySpace {
         let mut bytes: Vec<Point> = Vec::new();
         let pattern = Regex::new(r"(?<x>\d+),(?<y>\d+)").unwrap();
         for (_, [x, y]) in pattern.captures_iter(puzzle).map(|c| c.extract()) {
-            bytes.push(Point::new(x.parse::<u8>().unwrap(), y.parse::<u8>().unwrap()));
+            bytes.push(Point::new(x.parse::<usize>().unwrap(), y.parse::<usize>().unwrap()));
         }
         Self::new(range, bytes)
     }
 
     pub fn least_steps(&mut self, bytes: usize) -> usize {
-
+        self.display_space();
+        for idx in 0..bytes {
+            let p = &self.bytes[idx];
+            self.space[p.y][p.x] = '#';
+        }
+        self.display_space();
+        return 0;
     }
 
     pub fn display_space(&self) {
