@@ -1,7 +1,9 @@
+use std::u64;
+
 use itertools::Itertools;
 use regex::Regex;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum OpCode {
     ADV,
     BXL,
@@ -69,17 +71,47 @@ impl Computer {
     }
 
     pub fn smallest_a(&mut self, instructions: Vec<i8>) -> u64 {
-        self.instruction_p = instructions.len();
-        while self.instruction_p > 0 {
-            match self.jumped {
-                true => self.jumped = false,
-                false => self.instruction_p -= 2,
+        let mut starting_a: u64 = u64::MAX;
+        // self.instruction_p = instructions.len();
+        while self.output != instructions {
+            self.reset(starting_a, 0, 0);
+            // println!("START: {self:?}");
+            while self.instruction_p < instructions.len() - 1 {
+                let op: OpCode = OpCode::from(instructions[self.instruction_p]);
+                let operand: i8 = instructions[self.instruction_p + 1];
+                self.run_instruction(op, operand);
+                if self.output.len() > 1 {
+                    if self.output != instructions[0..self.output.len()] {
+                        break;
+                    } else {
+
+                        println!("{self:?}");
+                    }
+                }
+                // println!(
+                //     "{} : {op:?} -> {operand} || {:?} | {:?}",
+                //     self.instruction_p / 2,
+                //     self.registers,
+                //     self.output
+                // );
+                match self.jumped {
+                    true => self.jumped = false,
+                    false => self.instruction_p += 2,
+                }
             }
-            let op: OpCode = OpCode::from(instructions[self.instruction_p]);
-            let operand: i8 = instructions[self.instruction_p + 1];
-            println!("{} : {op:?} -> {operand} || {:?} | {:?}", self.instruction_p / 2, self.registers, self.output);
-            self.run_instruction(op, operand);
+            // println!("{self:?}");
+            starting_a -= 1;
         }
+        // while self.instruction_p > 0 {
+        //     match self.jumped {
+        //         true => self.jumped = false,
+        //         false => self.instruction_p -= 2,
+        //     }
+        //     let op: OpCode = OpCode::from(instructions[self.instruction_p]);
+        //     let operand: i8 = instructions[self.instruction_p + 1];
+        //     self.run_instruction(op, operand);
+        //     println!("{} : {op:?} -> {operand} || {:?} | {:?}", self.instruction_p / 2, self.registers, self.output);
+        // }
         return self.registers[0];
     }
 
@@ -87,8 +119,13 @@ impl Computer {
         while self.instruction_p < instructions.len() - 1 {
             let op: OpCode = OpCode::from(instructions[self.instruction_p]);
             let operand: i8 = instructions[self.instruction_p + 1];
-            println!("{} : {op:?} -> {operand} || {:?} | {:?}", self.instruction_p / 2, self.registers, self.output);
             self.run_instruction(op, operand);
+            println!(
+                "{} : {op:?} -> {operand} || {:?} | {:?}",
+                self.instruction_p / 2,
+                self.registers,
+                self.output
+            );
             match self.jumped {
                 true => self.jumped = false,
                 false => self.instruction_p += 2,
@@ -178,76 +215,6 @@ impl Computer {
         self.registers[2] = c;
         self.jumped = false;
         self.instruction_p = 0;
-    }
-}
-
-pub struct ProgramDuplicator {
-    register_a: Option<u64>,
-    register_b: Option<u64>,
-    register_c: Option<u64>,
-    output: Vec<i8>,
-    instructions: Vec<i8>,
-    jump: bool,
-    pointer: usize,
-}
-
-impl ProgramDuplicator {
-    pub fn new(instructions: Vec<i8>) -> Self {
-        let p = instructions.len() - 2;
-        Self {
-            register_a: Some(2024),
-            register_b: None,
-            register_c: None,
-            output: Vec::new(),
-            instructions: instructions,
-            jump: false,
-            pointer: p,
-        }
-    }
-
-    pub fn next_instance(
-        a: Option<u64>,
-        b: Option<u64>,
-        c: Option<u64>,
-        instructions: Vec<i8>,
-    ) -> Self {
-        let p = instructions.len() - 2;
-        Self {
-            register_a: a,
-            register_b: b,
-            register_c: c,
-            output: Vec::new(),
-            instructions: instructions,
-            jump: true,
-            pointer: p,
-        }
-    }
-
-    pub fn smallest_a(&mut self) -> Option<usize> {
-        // let op: OpCode = OpCode::from(self.instructions[self.pointer]);
-        // let operand = self.instructions[self.pointer + 1];
-        // return self.run_instruction(op, operand);
-        while self.pointer < self.instructions.len() - 1 {
-            let op: OpCode = OpCode::from(self.instructions[self.pointer]);
-            let operand = self.instructions[self.pointer + 1];
-            println!("{} : {op:?} -> {operand:}", self.pointer);
-        }
-        return None;
-    }
-
-    fn run_instruction(&mut self, op: OpCode, operand: i8) -> Option<usize> {
-        let mut a: Option<usize> = None;
-        match op {
-            OpCode::ADV => {}
-            OpCode::BXL => {}
-            OpCode::BST => {}
-            OpCode::JNZ => {}
-            OpCode::BXC => {}
-            OpCode::OUT => {}
-            OpCode::BDV => {}
-            OpCode::CDV => {}
-        }
-        return a;
     }
 }
 

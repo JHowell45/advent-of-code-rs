@@ -1,17 +1,18 @@
 use core::file_reader::get_file_contents;
 
-use event_2024::shared::day17::{Computer, ProgramDuplicator};
+use event_2024::shared::day17::Computer;
 
 fn main() {
-    let (_, program) = Computer::from_string(get_file_contents(2024, 17).as_str());
-    let mut dup = ProgramDuplicator::new(program);
-    println!("Smallest A {:?}", dup.smallest_a());
+    let (mut computer, program) = Computer::from_string(get_file_contents(2024, 17).as_str());
+    // computer.run(program);
+    computer.smallest_a(program);
+    // let mut dup = ProgramDuplicator::new(program);
+    // println!("Smallest A {:?}", dup.smallest_a());
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use event_2024::shared::day17::ProgramDuplicator;
     use rstest::rstest;
 
     #[rstest]
