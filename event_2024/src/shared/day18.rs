@@ -11,20 +11,28 @@ impl Point {
 }
 
 pub struct MemorySpace {
-    space: usize,
+    range: usize,
+    space: Vec<Vec<char>>,
     bytes: Vec<Point>
 }
 
 impl MemorySpace {
     pub fn new(range: usize, bytes: Vec<Point>) -> Self {
         Self {
-            space: range,
+            range: range,
+            space: (0..=range).map(|_| (0..=range).map(|_| '.').collect()).collect(),
             bytes: bytes
         }
     }
 
     pub fn display_space(&self) {
-
+        for y in self.space {
+            for c in y.iter() {
+                print!("{c}");
+            }
+            println!();
+        }
+        println!();
     }
 }
 
@@ -32,4 +40,7 @@ impl MemorySpace {
 mod tests {
     use super::*;
     use rstest::rstest;
+
+    #[rstest]
+    #[case(6)]
 }
