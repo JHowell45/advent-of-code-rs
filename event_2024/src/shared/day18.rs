@@ -37,7 +37,7 @@ impl MemorySpace {
     }
 
     pub fn display_space(&self) {
-        for y in self.space {
+        for y in self.space.iter() {
             for c in y.iter() {
                 print!("{c}");
             }
