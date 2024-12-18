@@ -49,19 +49,55 @@ impl MemorySpace {
     pub fn least_steps(&mut self, bytes: usize) -> usize {
         let start = Point::new(0, 0);
         let end = Point::new(self.range, self.range);
+
         self.display_space();
         for idx in 0..bytes {
             let p = &self.bytes[idx];
             self.space[p.y][p.x] = '#';
         }
         self.display_space();
-        let result = astar(
+
+        astar(
             &start,
             |p| self.point_successors(p),
             |p| p.distance(&end) / 3,
             |p| *p == end,
-        );
-        return result.unwrap().1 as usize;
+        ).unwrap().1 as usize
+    }
+
+    pub fn failure_byte(&mut self, start_point: usize) -> Point {
+        if start_point < 1 {
+            panic!("Starting point can't be less than 1!!!");
+        }
+        let mut idx = start_point;
+        let start = Point::new(0, 0);
+        let end = Point::new(self.range, self.range);
+
+        let mut p: &Point = &self.bytes[idx];
+
+        for i in 0..=idx {
+            p = &self.bytes[i];
+            self.space[p.y][p.x] = '#';
+        }
+
+        loop {
+            let result = astar(
+                &start,
+                |p| self.point_successors(p),
+                |p| p.distance(&end) / 3,
+                |p| *p == end,
+            );
+
+            if result.is_none() {
+                break;
+            }
+
+            p = &self.bytes[idx];
+            self.space[p.y][p.x] = '#';
+            idx += 1;
+        }
+        return p.clone();
+
     }
 
     pub fn display_space(&self) {
