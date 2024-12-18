@@ -78,7 +78,7 @@ mod tests {
 0,5
 1,6
 2,0", 12, 22)]
-    fn example(#[case] range: usize, #[case] input: &str, #[case] steps: usize, #[case] steps: usize) {
-        let space = MemorySpace::
+    fn example(#[case] range: usize, #[case] input: &str, #[case] bytes: usize, #[case] steps: usize) {
+        let space = MemorySpace::from_string(range, input);
     }
 }
