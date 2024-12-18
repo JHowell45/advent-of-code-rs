@@ -36,6 +36,10 @@ impl MemorySpace {
         Self::new(range, bytes)
     }
 
+    pub fn least_steps(&mut self, bytes: usize) -> usize {
+
+    }
+
     pub fn display_space(&self) {
         for y in self.space.iter() {
             for c in y.iter() {
@@ -79,6 +83,7 @@ mod tests {
 1,6
 2,0", 12, 22)]
     fn example(#[case] range: usize, #[case] input: &str, #[case] bytes: usize, #[case] steps: usize) {
-        let space = MemorySpace::from_string(range, input);
+        let mut space = MemorySpace::from_string(range, input);
+        assert_eq!(space.least_steps(bytes), steps);
     }
 }
