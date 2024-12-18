@@ -61,7 +61,7 @@ impl MemorySpace {
             |p| p.distance(&end) / 3,
             |p| *p == end,
         );
-        return result;
+        return result.unwrap().1 as usize;
     }
 
     pub fn display_space(&self) {
