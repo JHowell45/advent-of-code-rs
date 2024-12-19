@@ -22,7 +22,7 @@ impl Onsen {
                 return true;
             }
         }
-        false
+        return false;
     }
 }
 
