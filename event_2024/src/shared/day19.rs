@@ -14,7 +14,7 @@ impl Onsen {
     pub fn validate_rack(&self, rack: &str) -> bool {
         for towel in self.towels.iter() {
             println!("Towel: {towel:} | Rack: {rack:}");
-            println!("Rack Subset: {:?}", &rack[0..towel.len()]);
+            // println!("Rack Subset: {:?}", &rack[0..towel.len()]);
             if rack == towel {
                 return true
             }
