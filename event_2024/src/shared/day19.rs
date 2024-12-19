@@ -16,7 +16,9 @@ impl Onsen {
         let mut start_idx: usize = 0;
         let mut offset: usize = 1;
         while start_idx < rack.len() - 1 {
-            println!("{:?}", rack[start_idx..start_idx + offset]);
+            let check = rack[start_idx..start_idx + offset].iter().collect::<String>();
+            println!("{:?}", check);
+            start_idx += 1;
         }
         false
     }
