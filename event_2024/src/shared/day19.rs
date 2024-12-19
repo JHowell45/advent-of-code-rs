@@ -18,7 +18,7 @@ impl Onsen {
             if rack == towel {
                 return true
             }
-            if rack.starts_with(towel) && self.validate_rack(&rack[0..towel.len()]) {
+            if rack.starts_with(towel) && self.validate_rack(&rack[towel.len()..]) {
                 return true;
             }
         }
