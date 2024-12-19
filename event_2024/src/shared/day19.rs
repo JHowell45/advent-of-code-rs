@@ -1,24 +1,26 @@
 use std::collections::HashSet;
 
 pub struct Onsen {
-    towels: HashSet<String>
+    towels: HashSet<String>,
 }
 
 impl Onsen {
     pub fn from_string(towels: &str) -> Self {
         Self {
-            towels: HashSet::from_iter(towels.split(", ").map(|t| t.to_string()))
+            towels: HashSet::from_iter(towels.split(", ").map(|t| t.to_string())),
         }
     }
 
     pub fn validate_rack(&self, rack: &str) -> bool {
-        let rack: Vec<char> = rack.chars().collect();
-        let mut start_idx: usize = 0;
-        let mut offset: usize = 1;
-        while start_idx < rack.len() - 1 {
-            let check = rack[start_idx..start_idx + offset].iter().collect::<String>();
-            println!("{:?}", check);
-            start_idx += 1;
+        for towel in self.towels.iter() {
+            println!("Towel: {towel:} | Rack: {rack:}");
+            println!("Rack Subset: {:?}", &rack[0..towel.len()]);
+            if rack == towel {
+                return true
+            }
+            if rack.starts_with(towel) && self.validate_rack(&rack[0..towel.len()]) {
+                return true;
+            }
         }
         false
     }
