@@ -4,6 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-rstest = "0.23.0"
-core = { path = "../core" }
-md5 = "0.7.0"
+rstest = { workspace = true }
+core = { workspace = true }
+md5 = "0.8.0"

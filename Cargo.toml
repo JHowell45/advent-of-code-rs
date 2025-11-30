@@ -1,6 +1,9 @@
 [workspace]
 resolver = "1"
-
 members = [
     "core", "event_2015", "event_2024",
 ]
+
+[workspace.dependencies]
+rstest = "0.26.1"
+core = { path = "./core" }
