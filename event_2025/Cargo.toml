@@ -5,4 +5,4 @@ edition = "2024"
 
 [dependencies]
 rstest = { workspace = true }
-core = { workspace = true }
+aoc_core = { workspace = true }

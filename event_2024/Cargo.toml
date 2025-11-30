@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 rstest = { workspace = true }
-core = { workspace = true }
+aoc_core = { workspace = true }
 regex = "1.11.1"
 pathfinding = "4.12.0"
 itertools = "0.14.0"

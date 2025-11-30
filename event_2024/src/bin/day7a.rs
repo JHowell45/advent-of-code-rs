@@ -1,4 +1,4 @@
-use core::file_reader::get_file_contents;
+use aoc_core::file_reader::get_file_contents;
 
 use event_2024::shared::day7::{sum_of_valid_results, Operator};
 
@@ -46,7 +46,7 @@ mod tests {
         #[case] expected: bool,
     ) {
         assert_eq!(
-            validate_equation(result, numbers, [Operator::Add, Operator::Multiply]),
+            validate_equation(result, numbers, &vec![Operator::Add, Operator::Multiply]),
             expected
         );
     }
@@ -65,6 +65,6 @@ mod tests {
         3749
     )]
     fn example(#[case] data: &str, #[case] expected: i64) {
-        assert_eq!(sum_of_valid_results(data), expected);
+        assert_eq!(sum_of_valid_results(data, vec![Operator::Add, Operator::Multiply]), expected);
     }
 }

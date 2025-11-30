@@ -1,9 +1,9 @@
 [workspace]
 resolver = "1"
 members = [
-    "core", "event_2015", "event_2024", "event_2025",
+    "aoc_core", "event_2015", "event_2024", "event_2025",
 ]
 
 [workspace.dependencies]
 rstest = "0.26.1"
-core = { path = "./core" }
+aoc_core = { path = "./aoc_core" }

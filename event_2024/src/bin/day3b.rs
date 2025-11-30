@@ -1,4 +1,4 @@
-use core::file_reader::get_file_contents;
+use aoc_core::file_reader::get_file_contents;
 use event_2024::shared::day3::mul_sum;
 use regex::Regex;
 

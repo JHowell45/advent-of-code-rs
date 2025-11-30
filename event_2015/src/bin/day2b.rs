@@ -1,4 +1,4 @@
-use core::file_reader::get_file_contents;
+use aoc_core::file_reader::get_file_contents;
 
 use event_2015::shared::day2::Present;
 

@@ -5,5 +5,5 @@ edition = "2021"
 
 [dependencies]
 rstest = { workspace = true }
-core = { workspace = true }
+aoc_core = { workspace = true }
 md5 = "0.8.0"
