@@ -62,7 +62,9 @@ impl MemorySpace {
             |p| self.point_successors(p),
             |p| p.distance(&end) / 3,
             |p| *p == end,
-        ).unwrap().1 as usize
+        )
+        .unwrap()
+        .1 as usize
     }
 
     pub fn failure_byte(&mut self, start_point: usize) -> Point {
@@ -97,7 +99,6 @@ impl MemorySpace {
             idx += 1;
         }
         return p.clone();
-
     }
 
     pub fn display_space(&self) {
