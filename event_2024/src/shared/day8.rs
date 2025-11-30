@@ -41,10 +41,6 @@ impl Point {
         }
         return p;
     }
-
-    fn distance(&self) -> i32 {
-        self.x.abs() + self.y.abs()
-    }
 }
 
 impl Add for Point {
@@ -188,7 +184,7 @@ impl FrequencyMap {
 
     pub fn inline_antinode_locations(&self) -> usize {
         let mut inline_antinodes: HashSet<Point> = HashSet::new();
-        for (k, points) in self.antennna_locations.iter() {
+        for (_k, points) in self.antennna_locations.iter() {
             for x in repeat_n(points.iter(), 2).multi_cartesian_product() {
                 let (a, b) = (x[0], x[1]);
                 if a != b {

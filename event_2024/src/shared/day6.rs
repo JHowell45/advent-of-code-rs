@@ -1,8 +1,5 @@
 use std::{
-    collections::{binary_heap::Iter, HashMap, HashSet},
-    io::stdout,
-    iter::Map,
-    process::exit,
+    collections::{HashMap, HashSet},
     thread::sleep,
     time::Duration,
 };
@@ -277,6 +274,7 @@ impl PatrolMap {
         count
     }
 
+    #[allow(dead_code)]
     fn debug_display(&self) {
         self.display_map();
         sleep(Duration::from_millis(50));

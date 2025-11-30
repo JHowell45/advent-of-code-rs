@@ -1,6 +1,5 @@
 use std::u64;
 
-use itertools::Itertools;
 use regex::Regex;
 
 #[derive(Debug, Clone, Copy)]
