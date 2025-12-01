@@ -1,15 +1,5 @@
-
-
 use aoc_core::file_reader::get_file_contents;
-
-fn parse_rotation(rotation: &str) -> i32 {
-    &rotation[1..].parse::<i32>().unwrap()
-        * match rotation.chars().nth(0).unwrap() {
-            'L' => -1,
-            'R' => 1,
-            _ => panic!("Invalid rotation type!!"),
-        }
-}
+use event_2025::shared::day1::parse_rotation;
 
 fn rotate(current_position: i32, rotation: i32) -> i32 {
     (current_position + rotation).rem_euclid(100)
@@ -31,14 +21,6 @@ pub fn main() {
 mod tests {
     use super::*;
     use rstest::rstest;
-
-    #[rstest]
-    #[case("L68", -68)]
-    #[case("R68", 68)]
-    fn test_parse_rotation(#[case] input: &str, #[case] expected: i32) {
-        assert_eq!(parse_rotation(input), expected);
-    }
-
     #[rstest]
     #[case(50, "L68", 82)]
     #[case(82, "L30", 52)]
@@ -50,7 +32,7 @@ mod tests {
     #[case(99, "L99", 0)]
     #[case(0, "R14", 14)]
     #[case(14, "L82", 32)]
-    fn example(#[case] start: i32, #[case] rotation: &str, #[case] expected: i32) {
+    fn test_rotate(#[case] start: i32, #[case] rotation: &str, #[case] expected: i32) {
         assert_eq!(rotate(start, parse_rotation(rotation)), expected);
     }
 }
