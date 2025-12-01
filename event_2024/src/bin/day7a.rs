@@ -65,6 +65,9 @@ mod tests {
         3749
     )]
     fn example(#[case] data: &str, #[case] expected: i64) {
-        assert_eq!(sum_of_valid_results(data, vec![Operator::Add, Operator::Multiply]), expected);
+        assert_eq!(
+            sum_of_valid_results(data, vec![Operator::Add, Operator::Multiply]),
+            expected
+        );
     }
 }
