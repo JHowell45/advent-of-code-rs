@@ -2,20 +2,14 @@ use aoc_core::file_reader::get_file_contents;
 
 use event_2025::shared::day1::parse_rotation;
 
-fn calculate_clicks(curr: i32, rot: i32) -> u32 {
-    let temp = curr + rot;
-    let mut res = (temp / 100).abs();
-    if curr != 0 && temp <= 0 {
-        res += 1;
-    }
-    println!("curr = {curr} | rotate = {rot} | res = {res} | temp = {temp}");
-    return res.try_into().unwrap();
-}
-
 fn rotate(current_position: i32, rotation: i32) -> (i32, u32) {
     let current_pos: i32 = (current_position + rotation).rem_euclid(100);
-
-    (current_pos, calculate_clicks(current_position, rotation))
+    let temp: i32 = current_position + rotation;
+    let mut clicks: i32 = (temp / 100).abs();
+    if current_position != 0 && temp <= 0 {
+        clicks += 1;
+    }
+    (current_pos, clicks.try_into().unwrap())
 }
 
 pub fn main() {
