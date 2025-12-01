@@ -3,7 +3,12 @@ use aoc_core::file_reader::get_file_contents;
 use event_2025::shared::day1::parse_rotation;
 
 fn rotate(current_position: i32, rotation: i32) -> (i32, i32) {
-    ((current_position + rotation).rem_euclid(100), 0)
+    let current_pos: i32 = (current_position + rotation).rem_euclid(100);
+    let mut clicks: i32 = (current_position - rotation) / 100;
+    if current_pos == 0 {
+        clicks += 1;
+    }
+    (current_pos, clicks)
 }
 
 pub fn main() {
