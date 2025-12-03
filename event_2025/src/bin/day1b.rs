@@ -5,7 +5,10 @@ use event_2025::shared::day1::parse_rotation;
 fn rotate(current_position: i32, rotation: i32) -> (i32, u32) {
     let temp: i32 = current_position + rotation;
     let clicks: i32 = (temp / 100).abs() + (current_position != 0 && temp <= 0) as i32;
-    ((current_position + rotation).rem_euclid(100), clicks.try_into().unwrap())
+    (
+        (current_position + rotation).rem_euclid(100),
+        clicks.try_into().unwrap(),
+    )
 }
 
 pub fn main() {
