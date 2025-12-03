@@ -13,7 +13,7 @@ impl Bank {
                 .filter(|b| !b.is_empty())
                 .map(|b| b.parse::<u8>().unwrap())
                 .collect(),
-        };
+        }
     }
 
     fn max_joltage(&self) -> u32 {
@@ -34,7 +34,7 @@ impl Bank {
         let max = (first_v.to_string() + second_v.to_string().as_str())
             .parse::<u32>()
             .unwrap();
-        println!("{:?} || {}", self.batteries, max);
+        println!("{:?} || {}", self.batteries.iter().map(|b| b.to_string()).collect::<Vec<String>>().join(""), max);
         return max;
     }
 }
@@ -64,7 +64,16 @@ mod tests {
     #[case("811111111111119", 89)]
     #[case("234234234234278", 78)]
     #[case("818181911112111", 92)]
-    fn test_(#[case] batteries: &str, #[case] max_joltage: u32) {
+    fn test_max_joltage_examples(#[case] batteries: &str, #[case] max_joltage: u32) {
+        assert_eq!(Bank::new(batteries).max_joltage(), max_joltage);
+    }
+
+
+    #[rstest]
+    #[case("4123535244222342322334342233754335452333242522124322242423331132232242422443224231234323332243364522", 76)]
+    #[case("7422233222252253222214221121222522222222216221232324271142242222222225251222323122427715322322522211", 77)]
+    #[case("4136245552627274422451334432874465293326332243613632456443355732542694531343332248246255266565233636", 99)]
+    fn test_max_joltage_actual(#[case] batteries: &str, #[case] max_joltage: u32) {
         assert_eq!(Bank::new(batteries).max_joltage(), max_joltage);
     }
 
