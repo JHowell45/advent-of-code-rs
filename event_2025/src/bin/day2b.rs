@@ -8,7 +8,7 @@ fn check_number_repetitions(number: &str) -> bool {
             let mut safe: bool = true;
             for n in 0..number.len() / split {
                 let a: usize = split * n;
-                let b: usize = split * (n+1);
+                let b: usize = split * (n + 1);
                 let chunk = &number[a..b];
                 // println!("Number: {} || Split: {} || [a: {}, b: {}] || Chunk: {} || Curr: {:?}", number, split, a, b, chunk, curr);
                 match curr {
