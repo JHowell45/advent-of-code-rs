@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use aoc_core::file_reader::get_file_contents;
 
 fn sum_invalid_ids_from_range(id_range: &str) -> u64 {
