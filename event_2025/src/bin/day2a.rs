@@ -23,16 +23,17 @@ fn sum_invalid_ids_from_range(id_range: &str) -> u64 {
 }
 
 fn sum_invalid_ids(ids: String) -> u64 {
-    let mut invalid_id_sum: u64 = 0;
-    for id_range in ids.split(',').into_iter() {
-        invalid_id_sum += sum_invalid_ids_from_range(id_range);
-    }
-    return invalid_id_sum;
+    ids.split(",")
+        .into_iter()
+        .map(|id_range| sum_invalid_ids_from_range(id_range))
+        .sum()
 }
 
 fn main() {
-    let result = sum_invalid_ids(get_file_contents(2025, 2));
-    println!("Sum of invalid IDs: {result}");
+    println!(
+        "Sum of invalid IDs: {}",
+        sum_invalid_ids(get_file_contents(2025, 2))
+    );
 }
 
 #[cfg(test)]
