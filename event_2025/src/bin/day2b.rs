@@ -2,7 +2,6 @@ use aoc_core::file_reader::get_file_contents;
 
 fn check_number_repetitions(number: &str) -> bool {
     let mut split: usize = (number.len() / 2) + 1;
-    println!("Number: {number}");
     while split > 0 {
         let mut curr: Option<&str> = None;
         if number.len() != split && number.len() % split == 0 {
@@ -11,7 +10,7 @@ fn check_number_repetitions(number: &str) -> bool {
                 let a: usize = split * n;
                 let b: usize = split * (n+1);
                 let chunk = &number[a..b];
-                println!("Number: {} || Split: {} || [a: {}, b: {}] || Chunk: {} || Curr: {:?}", number, split, a, b, chunk, curr);
+                // println!("Number: {} || Split: {} || [a: {}, b: {}] || Chunk: {} || Curr: {:?}", number, split, a, b, chunk, curr);
                 match curr {
                     None => curr = Some(chunk),
                     Some(c) => {
@@ -37,7 +36,6 @@ fn sum_invalid_ids_from_range(id_range: &str) -> u64 {
         .split("-")
         .map(|x| x.trim().parse::<i64>().unwrap())
         .collect();
-    println!("Min: {} || Max: {}", ids[0], ids[1]);
     for number in ids[0]..=ids[1] {
         let num_str: String = number.to_string();
         if num_str.chars().nth(0).unwrap() == '0' {
@@ -99,7 +97,7 @@ mod tests {
     #[case("446443-446449", 446446)]
     #[case("38593856-38593862", 38593859)]
     #[case("565653-565659", 565656)]
-    #[case("824824821-824824827", 38593859)]
+    #[case("824824821-824824827", 824824824)]
     #[case("2121212118-2121212124", 2121212121)]
     fn test_sum_invalid_ids_from_range(#[case] id_range: &str, #[case] expected: u64) {
         assert_eq!(sum_invalid_ids_from_range(id_range), expected);
