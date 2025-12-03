@@ -10,12 +10,8 @@ fn sum_invalid_ids_from_range(id_range: &str) -> u64 {
         let num_str: String = number.to_string();
         if num_str.chars().nth(0).unwrap() == '0' {
             sum += number as u64;
-            continue;
-        }
-        let check_split: bool = &num_str[0..num_str.len() / 2] == &num_str[num_str.len() / 2..];
-        if num_str.len() % 2 == 0 && check_split {
+        } else if num_str.len() % 2 == 0 && &num_str[0..num_str.len() / 2] == &num_str[num_str.len() / 2..] {
             sum += number as u64;
-            continue;
         }
     }
     return sum;

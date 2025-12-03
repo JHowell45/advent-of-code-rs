@@ -1,7 +1,34 @@
 use aoc_core::file_reader::get_file_contents;
 
 fn check_number_repetitions(number: &str) -> bool {
-    true
+    let mut split: usize = (number.len() / 2) + 1;
+    println!("Number: {number}");
+    while split > 0 {
+        let mut curr: Option<&str> = None;
+        if number.len() != split && number.len() % split == 0 {
+            let mut safe: bool = true;
+            for n in 0..number.len() / split {
+                let a: usize = split * n;
+                let b: usize = split * (n+1);
+                let chunk = &number[a..b];
+                println!("Number: {} || Split: {} || [a: {}, b: {}] || Chunk: {} || Curr: {:?}", number, split, a, b, chunk, curr);
+                match curr {
+                    None => curr = Some(chunk),
+                    Some(c) => {
+                        if c != chunk {
+                            safe = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            if safe {
+                return true;
+            }
+        }
+        split -= 1;
+    }
+    return false;
 }
 
 fn sum_invalid_ids_from_range(id_range: &str) -> u64 {
@@ -10,15 +37,13 @@ fn sum_invalid_ids_from_range(id_range: &str) -> u64 {
         .split("-")
         .map(|x| x.trim().parse::<i64>().unwrap())
         .collect();
+    println!("Min: {} || Max: {}", ids[0], ids[1]);
     for number in ids[0]..=ids[1] {
         let num_str: String = number.to_string();
         if num_str.chars().nth(0).unwrap() == '0' {
             sum += number as u64;
-            continue;
-        }
-        if num_str.len() % 2 == 0 && check_number_repetitions(num_str.as_str()) {
+        } else if check_number_repetitions(num_str.as_str()) {
             sum += number as u64;
-            continue;
         }
     }
     return sum;
@@ -51,12 +76,33 @@ mod tests {
     #[case("15", false)]
     #[case("16", false)]
     #[case("22", true)]
+    #[case("99", true)]
+    #[case("111", true)]
     #[case("1010", true)]
     #[case("123123", true)]
     #[case("222222", true)]
-    #[case("123123123", false)]
+    #[case("123123123", true)]
+    #[case("1188511885", true)]
+    #[case("1188511886", false)]
+    #[case("1188511884", false)]
     fn test_check_number_repetitions(#[case] value: &str, #[case] expected: bool) {
         assert_eq!(check_number_repetitions(value), expected);
+    }
+
+    #[rstest]
+    #[case("11-22", 33)]
+    #[case("95-115", 210)]
+    #[case("998-1012", 2009)]
+    #[case("1188511880-1188511890", 1188511885)]
+    #[case("222220-222224", 222222)]
+    #[case("1698522-1698528", 0)]
+    #[case("446443-446449", 446446)]
+    #[case("38593856-38593862", 38593859)]
+    #[case("565653-565659", 565656)]
+    #[case("824824821-824824827", 38593859)]
+    #[case("2121212118-2121212124", 2121212121)]
+    fn test_sum_invalid_ids_from_range(#[case] id_range: &str, #[case] expected: u64) {
+        assert_eq!(sum_invalid_ids_from_range(id_range), expected);
     }
 
     #[rstest]
