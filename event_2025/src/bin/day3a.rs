@@ -20,7 +20,7 @@ impl Bank {
         let mut first_v: u8 = 0;
         let mut first_i: usize = self.batteries.len() + 100;
         for (idx, battery) in self.batteries.iter().rev().skip(1).enumerate() {
-            if *battery > first_v {
+            if *battery >= first_v {
                 first_v = *battery;
                 first_i = self.batteries.len() - 1 - idx;
             }
@@ -34,7 +34,6 @@ impl Bank {
         let max = (first_v.to_string() + second_v.to_string().as_str())
             .parse::<u32>()
             .unwrap();
-        println!("{:?} || {}", self.batteries.iter().map(|b| b.to_string()).collect::<Vec<String>>().join(""), max);
         return max;
     }
 }
