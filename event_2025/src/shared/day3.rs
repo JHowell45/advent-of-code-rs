@@ -51,7 +51,11 @@ mod tests {
     #[case("811111111111119", 12, 811111111119)]
     #[case("234234234234278", 12, 434234234278)]
     #[case("818181911112111", 12, 888911112111)]
-    fn test_max_joltage_examples(#[case] batteries: &str,#[case] n: usize, #[case] max_joltage: u64) {
+    fn test_max_joltage_examples(
+        #[case] batteries: &str,
+        #[case] n: usize,
+        #[case] max_joltage: u64,
+    ) {
         assert_eq!(Bank::new(batteries).max_joltage(n), max_joltage);
     }
 
@@ -71,7 +75,11 @@ mod tests {
         2,
         99
     )]
-    fn test_max_joltage_actual(#[case] batteries: &str, #[case] n: usize,#[case] max_joltage: u64) {
+    fn test_max_joltage_actual(
+        #[case] batteries: &str,
+        #[case] n: usize,
+        #[case] max_joltage: u64,
+    ) {
         assert_eq!(Bank::new(batteries).max_joltage(n), max_joltage);
     }
 }
