@@ -5,7 +5,7 @@ fn maximum_bank_joltage_sum(banks: String) -> u64 {
     banks
         .lines()
         .into_iter()
-        .map(|batteries| Bank::new(batteries).max_joltage_n(12))
+        .map(|batteries| Bank::new(batteries).max_joltage(12))
         .sum()
 }
 
