@@ -132,7 +132,7 @@ mod tests {
     fn test_max_joltage_n_actual(
         #[case] batteries: &str,
         #[case] n: usize,
-        #[case] max_joltage: u32,
+        #[case] max_joltage: u64,
     ) {
         assert_eq!(Bank::new(batteries).max_joltage_n(2), max_joltage);
     }
