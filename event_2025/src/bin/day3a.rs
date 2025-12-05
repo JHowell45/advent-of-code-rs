@@ -1,11 +1,11 @@
 use aoc_core::file_reader::get_file_contents;
 use event_2025::shared::day3::Bank;
 
-fn maximum_bank_joltage_sum(banks: String) -> u32 {
+fn maximum_bank_joltage_sum(banks: String) -> u64 {
     banks
         .lines()
         .into_iter()
-        .map(|batteries| Bank::new(batteries).max_joltage())
+        .map(|batteries| Bank::new(batteries).max_joltage_n(2))
         .sum()
 }
 
@@ -29,7 +29,7 @@ mod tests {
 818181911112111",
         357
     )]
-    fn example(#[case] banks: &str, #[case] maximum_joltage_sum: u32) {
+    fn example(#[case] banks: &str, #[case] maximum_joltage_sum: u64) {
         assert_eq!(
             maximum_bank_joltage_sum(String::from(banks)),
             maximum_joltage_sum

@@ -39,27 +39,17 @@ impl Bank {
 
         for current_battery_idx in (0..total_activated_batteries).rev() {
             let mut current_v: u8 = 0;
-            let mut current_index: usize = total_batteries + 100;
+            let mut current_index: Option<usize> = None;
+            let max: usize = total_batteries - current_battery_idx;
 
-            println!(
-                "Total: {} || Current: {} || Latest: {} || Max: {}",
-                total_activated_batteries, current_index, latest_idx, current_battery_idx
-            );
-
-            for (idx, battery) in self.batteries[latest_idx..current_battery_idx]
-                .iter()
-                .rev()
-                .enumerate()
-            {
-                if *battery >= current_v {
-                    println!("idx: {} || v: {}", idx, battery);
+            for (idx, battery) in self.batteries[latest_idx..max].iter().enumerate() {
+                if *battery > current_v {
                     current_v = *battery;
-                    current_index = idx + 1;
+                    current_index = Some(idx);
                 }
             }
-            max_joltage += (current_v as i64 * 10_i64.pow(current_battery_idx as u32 + 1)) as u64;
-            latest_idx = current_index;
-            println!("Max Joltage: {} || Latest Idx: {}", max_joltage, latest_idx);
+            max_joltage += (current_v as i64 * 10_i64.pow(current_battery_idx as u32)) as u64;
+            latest_idx += current_index.unwrap() + 1;
         }
         return max_joltage;
     }
@@ -134,6 +124,6 @@ mod tests {
         #[case] n: usize,
         #[case] max_joltage: u64,
     ) {
-        assert_eq!(Bank::new(batteries).max_joltage_n(2), max_joltage);
+        assert_eq!(Bank::new(batteries).max_joltage_n(n), max_joltage);
     }
 }
