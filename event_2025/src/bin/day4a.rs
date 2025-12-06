@@ -4,6 +4,7 @@ use aoc_core::file_reader::get_file_contents;
 enum GridMarker {
     Empty,
     Paper,
+    Reachable,
 }
 
 #[derive(Debug)]
@@ -38,35 +39,96 @@ impl Grid {
             .map(|(idx, m)| match m {
                 GridMarker::Paper => (self.get_neighbour_count(idx) < 4) as u32,
                 GridMarker::Empty => 0,
+                GridMarker::Reachable => panic!("What's that doing there?"),
             })
             .sum()
+    }
+
+    pub fn debug_map(&self) {
+        let debug_map = self.map.iter().enumerate().map(|(idx, m)| match m {
+            GridMarker::Paper => {
+                if self.get_neighbour_count(idx) < 4 {
+                    GridMarker::Reachable
+                } else {
+                    GridMarker::Paper
+                }
+            }
+            GridMarker::Empty => GridMarker::Empty,
+            GridMarker::Reachable => GridMarker::Reachable,
+        });
+        for (idx, v) in debug_map.enumerate() {
+            print!(
+                "{}",
+                match v {
+                    GridMarker::Empty => ".",
+                    GridMarker::Paper => "@",
+                    GridMarker::Reachable => "x",
+                }
+            );
+            if (idx + 1) % self.x_size == 0 {
+                print!("\n");
+            }
+        }
     }
 
     pub fn get_neighbour_count(&self, index: usize) -> usize {
         let mut neighbours: usize = 0;
         let left_check: bool = index > 0 && (index + 1) % self.x_size != 0;
-        let top_check: bool = index >= self.x_size;
+        let right_check: bool = index % self.x_size < self.x_size - 1;
+        let top_check: bool = index > self.x_size;
         let bottom_check: bool = index < (self.x_size * (self.y_size - 1));
 
         if left_check {
-            neighbours += match self.map[index - 1] {
+            let left_index: usize = index - 1;
+            neighbours += match self.map[left_index] {
                 GridMarker::Paper => 1,
                 _ => 0,
+            };
+            if top_check {
+                neighbours += match self.map[left_index - (self.x_size)] {
+                    GridMarker::Paper => 1,
+                    _ => 0,
+                }
+            }
+            if bottom_check {
+                neighbours += match self.map[left_index + (self.x_size)] {
+                    GridMarker::Paper => 1,
+                    _ => 0,
+                }
+            }
+        }
+        if right_check {
+            let right_index: usize = index + 1;
+            neighbours += match self.map[right_index] {
+                GridMarker::Paper => 1,
+                _ => 0,
+            };
+
+            if top_check {
+                neighbours += match self.map[right_index - (self.x_size)] {
+                    GridMarker::Paper => 1,
+                    _ => 0,
+                }
+            }
+            if bottom_check {
+                neighbours += match self.map[right_index + (self.x_size)] {
+                    GridMarker::Paper => 1,
+                    _ => 0,
+                }
             }
         }
         if top_check {
             neighbours += match self.map[index - self.x_size] {
                 GridMarker::Paper => 1,
                 _ => 0,
-            }
+            };
         }
         if bottom_check {
             neighbours += match self.map[index + self.x_size] {
                 GridMarker::Paper => 1,
                 _ => 0,
-            }
+            };
         }
-        println!("Index: {} || Neighbours: {}", index, neighbours);
         return neighbours;
     }
 }
@@ -98,6 +160,32 @@ mod tests {
     }
 
     #[rstest]
+    #[case(2, 3)]
+    #[case(3, 3)]
+    #[case(6, 3)]
+    #[case(7, 4)]
+    #[case(12, 6)]
+    #[case(10, 2)]
+    fn example_neighbour_count(#[case] index: usize, #[case] expected_neighbours: usize) {
+        assert_eq!(
+            Grid::from_str(
+                "..@@.@@@@.
+@@@.@.@.@@
+@@@@@.@.@@
+@.@@@@..@.
+@@.@@@@.@@
+.@@@@@@@.@
+.@.@.@.@@@
+@.@@@.@@@@
+.@@@@@@@@.
+@.@.@@@.@."
+            )
+            .get_neighbour_count(index),
+            expected_neighbours
+        );
+    }
+
+    #[rstest]
     #[case(
         "..@@.@@@@.
 @@@.@.@.@@
@@ -113,7 +201,8 @@ mod tests {
     )]
     fn example(#[case] paper_grid: &str, #[case] expected: u32) {
         let grid: Grid = Grid::from_str(paper_grid);
-        println!("{:?}", grid);
+        println!("{:?}\n", grid);
+        grid.debug_map();
         assert_eq!(Grid::from_str(paper_grid).accessible_rolls(), expected);
     }
 }
