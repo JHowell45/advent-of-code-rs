@@ -36,13 +36,13 @@ impl Grid {
             .iter()
             .enumerate()
             .map(|(idx, m)| match m {
-                GridMarker::Paper => self.can_access_marker(idx) as u32,
+                GridMarker::Paper => (self.get_neighbour_count(idx) < 4) as u32,
                 GridMarker::Empty => 0,
             })
             .sum()
     }
 
-    fn can_access_marker(&self, index: usize) -> bool {
+    pub fn get_neighbour_count(&self, index: usize) -> usize {
         let mut neighbours: usize = 0;
         let left_check: bool = index > 0 && (index + 1) % self.x_size != 0;
         let top_check: bool = index >= self.x_size;
@@ -67,7 +67,7 @@ impl Grid {
             }
         }
         println!("Index: {} || Neighbours: {}", index, neighbours);
-        neighbours < 4
+        return neighbours;
     }
 }
 
