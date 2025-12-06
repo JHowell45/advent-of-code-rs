@@ -1,5 +1,3 @@
-use std::{thread, time};
-
 #[derive(Debug, Clone, Copy)]
 pub enum GridMarker {
     Empty,
@@ -89,6 +87,7 @@ impl Grid {
             }
         }
     }
+
     pub fn get_neighbour_count(&self, index: usize, map: &Vec<GridMarker>) -> usize {
         let mut neighbours: usize = 0;
         let left_check: bool = index > 0 && index % self.x_size != 0;
