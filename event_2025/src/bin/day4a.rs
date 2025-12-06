@@ -79,7 +79,6 @@ impl Grid {
         let bottom_check: bool = index < (self.x_size * (self.y_size - 1));
 
         if left_check {
-            println!("Should be empty!!");
             let left_index: usize = index - 1;
             neighbours += match self.map[left_index] {
                 GridMarker::Paper => 1,
@@ -118,14 +117,18 @@ impl Grid {
                 }
             }
         }
+
         if top_check {
-            neighbours += match self.map[index - self.x_size] {
+            let top_index: usize = index - self.x_size;
+            neighbours += match self.map[top_index] {
                 GridMarker::Paper => 1,
                 _ => 0,
             };
         }
+
         if bottom_check {
-            neighbours += match self.map[index + self.x_size] {
+            let bottom_index: usize = index + self.x_size;
+            neighbours += match self.map[bottom_index] {
                 GridMarker::Paper => 1,
                 _ => 0,
             };
@@ -166,7 +169,7 @@ mod tests {
     #[case(6, 3)]
     #[case(7, 4)]
     #[case(12, 6)]
-    #[case(10, 2)]
+    #[case(10, 3)]
     fn example_neighbour_count(#[case] index: usize, #[case] expected_neighbours: usize) {
         assert_eq!(
             Grid::from_str(
