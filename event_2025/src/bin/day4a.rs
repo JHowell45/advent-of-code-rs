@@ -137,7 +137,10 @@ impl Grid {
     }
 }
 
-fn main() {}
+fn main() {
+    let grid: Grid = Grid::from_str(get_file_contents(2025, 4).as_str());
+    println!("Total number of rolls accessible by forklift: {}", grid.accessible_rolls());
+}
 
 #[cfg(test)]
 mod tests {
