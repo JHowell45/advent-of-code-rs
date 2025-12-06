@@ -73,12 +73,13 @@ impl Grid {
 
     pub fn get_neighbour_count(&self, index: usize) -> usize {
         let mut neighbours: usize = 0;
-        let left_check: bool = index > 0 && (index + 1) % self.x_size != 0;
+        let left_check: bool = index > 0 && index % self.x_size != 0;
         let right_check: bool = index % self.x_size < self.x_size - 1;
         let top_check: bool = index > self.x_size;
         let bottom_check: bool = index < (self.x_size * (self.y_size - 1));
 
         if left_check {
+            println!("Should be empty!!");
             let left_index: usize = index - 1;
             neighbours += match self.map[left_index] {
                 GridMarker::Paper => 1,
