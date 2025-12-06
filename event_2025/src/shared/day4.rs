@@ -1,4 +1,6 @@
-#[derive(Debug)]
+use std::{thread, time};
+
+#[derive(Debug, Clone, Copy)]
 pub enum GridMarker {
     Empty,
     Paper,
@@ -7,7 +9,7 @@ pub enum GridMarker {
 
 #[derive(Debug)]
 pub struct Grid {
-    map: Vec<GridMarker>,
+    pub map: Vec<GridMarker>,
     pub x_size: usize,
     pub y_size: usize,
 }
@@ -35,26 +37,45 @@ impl Grid {
             .iter()
             .enumerate()
             .map(|(idx, m)| match m {
-                GridMarker::Paper => (self.get_neighbour_count(idx) < 4) as u32,
+                GridMarker::Paper => (self.get_neighbour_count(idx, &self.map) < 4) as u32,
                 GridMarker::Empty => 0,
                 GridMarker::Reachable => panic!("What's that doing there?"),
             })
             .sum()
     }
 
-    pub fn debug_map(&self) {
-        let debug_map = self.map.iter().enumerate().map(|(idx, m)| match m {
-            GridMarker::Paper => {
-                if self.get_neighbour_count(idx) < 4 {
-                    GridMarker::Reachable
-                } else {
-                    GridMarker::Paper
+    pub fn recursive_accessible_rolls(&mut self) -> u32 {
+        let mut rolls_removed: Option<u32> = None;
+        let mut total_rolls: u32 = 0;
+        let mut updated_map: Vec<GridMarker> = self.map.clone();
+
+        while rolls_removed.is_none() || rolls_removed > Some(0) {
+            let map_clone: Vec<GridMarker> = updated_map.clone();
+            rolls_removed = Some(0);
+            for (idx, marker) in updated_map.iter_mut().enumerate() {
+                match marker {
+                    GridMarker::Paper => {
+                        let neighbours: usize = self.get_neighbour_count(idx, &map_clone.clone());
+                        if neighbours < 4 {
+                            rolls_removed = match rolls_removed {
+                                None => Some(1),
+                                Some(x) => Some(x + 1),
+                            };
+                            *marker = GridMarker::Reachable;
+                        }
+                    }
+                    _ => {}
                 }
             }
-            GridMarker::Empty => GridMarker::Empty,
-            GridMarker::Reachable => GridMarker::Reachable,
-        });
-        for (idx, v) in debug_map.enumerate() {
+            if let Some(rolls) = rolls_removed {
+                total_rolls += rolls;
+            }
+        }
+        return total_rolls;
+    }
+
+    pub fn display_debug_map(&self, map: &Vec<GridMarker>) {
+        for (idx, v) in map.iter().enumerate() {
             print!(
                 "{}",
                 match v {
@@ -68,8 +89,7 @@ impl Grid {
             }
         }
     }
-
-    pub fn get_neighbour_count(&self, index: usize) -> usize {
+    pub fn get_neighbour_count(&self, index: usize, map: &Vec<GridMarker>) -> usize {
         let mut neighbours: usize = 0;
         let left_check: bool = index > 0 && index % self.x_size != 0;
         let right_check: bool = index % self.x_size < self.x_size - 1;
@@ -78,18 +98,18 @@ impl Grid {
 
         if left_check {
             let left_index: usize = index - 1;
-            neighbours += match self.map[left_index] {
+            neighbours += match map[left_index] {
                 GridMarker::Paper => 1,
                 _ => 0,
             };
             if top_check {
-                neighbours += match self.map[left_index - (self.x_size)] {
+                neighbours += match map[left_index - (self.x_size)] {
                     GridMarker::Paper => 1,
                     _ => 0,
                 }
             }
             if bottom_check {
-                neighbours += match self.map[left_index + (self.x_size)] {
+                neighbours += match map[left_index + (self.x_size)] {
                     GridMarker::Paper => 1,
                     _ => 0,
                 }
@@ -97,19 +117,19 @@ impl Grid {
         }
         if right_check {
             let right_index: usize = index + 1;
-            neighbours += match self.map[right_index] {
+            neighbours += match map[right_index] {
                 GridMarker::Paper => 1,
                 _ => 0,
             };
 
             if top_check {
-                neighbours += match self.map[right_index - (self.x_size)] {
+                neighbours += match map[right_index - (self.x_size)] {
                     GridMarker::Paper => 1,
                     _ => 0,
                 }
             }
             if bottom_check {
-                neighbours += match self.map[right_index + (self.x_size)] {
+                neighbours += match map[right_index + (self.x_size)] {
                     GridMarker::Paper => 1,
                     _ => 0,
                 }
@@ -118,7 +138,7 @@ impl Grid {
 
         if top_check {
             let top_index: usize = index - self.x_size;
-            neighbours += match self.map[top_index] {
+            neighbours += match map[top_index] {
                 GridMarker::Paper => 1,
                 _ => 0,
             };
@@ -126,7 +146,7 @@ impl Grid {
 
         if bottom_check {
             let bottom_index: usize = index + self.x_size;
-            neighbours += match self.map[bottom_index] {
+            neighbours += match map[bottom_index] {
                 GridMarker::Paper => 1,
                 _ => 0,
             };
@@ -167,9 +187,8 @@ mod tests {
     #[case(12, 6)]
     #[case(10, 3)]
     fn example_neighbour_count(#[case] index: usize, #[case] expected_neighbours: usize) {
-        assert_eq!(
-            Grid::from_str(
-                "..@@.@@@@.
+        let grid: Grid = Grid::from_str(
+            "..@@.@@@@.
 @@@.@.@.@@
 @@@@@.@.@@
 @.@@@@..@.
@@ -178,9 +197,10 @@ mod tests {
 .@.@.@.@@@
 @.@@@.@@@@
 .@@@@@@@@.
-@.@.@@@.@."
-            )
-            .get_neighbour_count(index),
+@.@.@@@.@.",
+        );
+        assert_eq!(
+            grid.get_neighbour_count(index, &grid.map),
             expected_neighbours
         );
     }

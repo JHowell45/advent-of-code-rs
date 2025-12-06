@@ -2,10 +2,10 @@ use aoc_core::file_reader::get_file_contents;
 use event_2025::shared::day4::Grid;
 
 fn main() {
-    let grid: Grid = Grid::from_str(get_file_contents(2025, 4).as_str());
+    let mut grid: Grid = Grid::from_str(get_file_contents(2025, 4).as_str());
     println!(
         "Total number of rolls accessible by forklift: {}",
-        grid.accessible_rolls()
+        grid.recursive_accessible_rolls()
     );
 }
 
@@ -26,10 +26,10 @@ mod tests {
 @.@@@.@@@@
 .@@@@@@@@.
 @.@.@@@.@.",
-        13
+        43
     )]
-    fn example(#[case] paper_grid: &str, #[case] expected: u32) {
-        let grid: Grid = Grid::from_str(paper_grid);
-        assert_eq!(grid.accessible_rolls(), expected);
+    fn example(#[case] input: &str, #[case] expected: u32) {
+        let mut grid: Grid = Grid::from_str(input);
+        assert_eq!(grid.recursive_accessible_rolls(), expected);
     }
 }
