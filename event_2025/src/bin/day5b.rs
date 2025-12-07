@@ -1,40 +1,10 @@
 use aoc_core::file_reader::get_file_contents;
-
-struct FreshRange(u64, u64);
-
-fn total_fresh_ids(ranges: &str) -> u64 {
-    let mut fresh_ranges: Vec<FreshRange> = Vec::new();
-    for range in ranges.lines() {
-        let parsed_range: Vec<u64> = range
-            .split("-")
-            .map(|v| v.parse::<u64>().unwrap())
-            .collect();
-        let fresh_range = FreshRange(parsed_range[0], parsed_range[1]);
-        if fresh_ranges.is_empty() {
-            fresh_ranges.push(fresh_range);
-        } else {
-        }
-    }
-    fresh_ranges.iter().map(|range| range.1 - range.0).sum()
-}
+use event_2025::shared::day5::FreshIngredientDB;
 
 fn main() {
+    let fresh_db = FreshIngredientDB::from_str(get_file_contents(2025, 5).as_str());
     println!(
         "The total number of fresh IDs is: {}",
-        total_fresh_ids(get_file_contents(2025, 5).as_str())
+        fresh_db.total_fresh_ids()
     );
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn example() {
-        let data: &str = "3-5
-10-14
-16-20
-12-18";
-        assert_eq!(total_fresh_ids(data), 14);
-    }
 }

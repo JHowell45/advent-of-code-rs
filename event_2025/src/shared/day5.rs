@@ -25,6 +25,10 @@ impl FreshIngredientDB {
         }
         false
     }
+
+    pub fn total_fresh_ids(&self) -> u64 {
+        0
+    }
 }
 
 #[cfg(test)]
@@ -47,5 +51,16 @@ mod tests {
 12-18",
         );
         assert_eq!(fresh_db.is_fresh(check_id), expected);
+    }
+
+    #[test]
+    fn test_total_fresh_ids() {
+        let fresh_db: FreshIngredientDB = FreshIngredientDB::from_str(
+            "3-5
+10-14
+16-20
+12-18",
+        );
+        assert_eq!(fresh_db.total_fresh_ids(), 14);
     }
 }
