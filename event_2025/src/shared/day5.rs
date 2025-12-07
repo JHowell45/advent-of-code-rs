@@ -1,7 +1,8 @@
-pub struct IdRange(u64, u64);
+#[derive(Clone, Copy)]
+pub struct FreshRange(u64, u64);
 
 pub struct FreshIngredientDB {
-    id_ranges: Vec<IdRange>,
+    id_ranges: Vec<FreshRange>,
 }
 
 impl FreshIngredientDB {
@@ -11,9 +12,9 @@ impl FreshIngredientDB {
                 .lines()
                 .map(|line| {
                     let x: Vec<u64> = line.split("-").map(|v| v.parse::<u64>().unwrap()).collect();
-                    IdRange(x[0], x[1])
+                    FreshRange(x[0], x[1])
                 })
-                .collect::<Vec<IdRange>>(),
+                .collect::<Vec<FreshRange>>(),
         }
     }
 
@@ -27,7 +28,8 @@ impl FreshIngredientDB {
     }
 
     pub fn total_fresh_ids(&self) -> u64 {
-        0
+        let mut fresh_ranges: Vec<FreshRange> = self.id_ranges.clone();
+        fresh_ranges.iter().map(|range| range.1 - range.0).sum()
     }
 }
 
