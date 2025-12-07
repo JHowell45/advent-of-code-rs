@@ -1,8 +1,13 @@
 use aoc_core::file_reader::get_file_contents;
 
+struct FreshRange(u64, u64);
 
-fn total_fresh_ids(ranges: &str) -> u32 {
-
+fn total_fresh_ids(ranges: &str) -> u64 {
+    let parsed_ranges: Vec<FreshRange> = Vec::new();
+    for range in ranges.lines() {
+        let parsed_range: Vec<u64> = range.split("-").map(|v| v.parse::<u64>().unwrap()).collect();
+    }
+    parsed_ranges.iter().map(|range| range.1 - range.0).sum()
 }
 
 fn main() {
@@ -19,6 +24,6 @@ mod tests {
 10-14
 16-20
 12-18";
-        assert_eq!(total_fresh_ids(), 14);
+        assert_eq!(total_fresh_ids(data), 14);
     }
 }
