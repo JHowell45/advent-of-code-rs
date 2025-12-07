@@ -28,7 +28,10 @@ impl FreshIngredientDB {
     }
 
     pub fn total_fresh_ids(&self) -> u64 {
-        let mut fresh_ranges: Vec<FreshRange> = self.id_ranges.clone();
+        let mut fresh_ranges: Vec<FreshRange> = Vec::new();
+        for range in self.id_ranges.iter() {
+            
+        }
         fresh_ranges.iter().map(|range| range.1 - range.0).sum()
     }
 }
