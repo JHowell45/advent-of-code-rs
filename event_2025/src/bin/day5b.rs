@@ -3,15 +3,19 @@ use aoc_core::file_reader::get_file_contents;
 struct FreshRange(u64, u64);
 
 fn total_fresh_ids(ranges: &str) -> u64 {
-    let parsed_ranges: Vec<FreshRange> = Vec::new();
+    let mut fresh_ranges: Vec<FreshRange> = Vec::new();
     for range in ranges.lines() {
         let parsed_range: Vec<u64> = range
             .split("-")
             .map(|v| v.parse::<u64>().unwrap())
             .collect();
         let fresh_range = FreshRange(parsed_range[0], parsed_range[1]);
+        if fresh_ranges.is_empty() {
+            fresh_ranges.push(fresh_range);
+        } else {
+        }
     }
-    parsed_ranges.iter().map(|range| range.1 - range.0).sum()
+    fresh_ranges.iter().map(|range| range.1 - range.0).sum()
 }
 
 fn main() {

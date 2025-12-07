@@ -1,33 +1,5 @@
 use aoc_core::file_reader::get_file_contents;
-
-struct IdRange(u64, u64);
-
-struct FreshIngredientDB {
-    id_ranges: Vec<IdRange>,
-}
-
-impl FreshIngredientDB {
-    fn from_str(ingredients_list: &str) -> Self {
-        Self {
-            id_ranges: ingredients_list
-                .lines()
-                .map(|line| {
-                    let x: Vec<u64> = line.split("-").map(|v| v.parse::<u64>().unwrap()).collect();
-                    IdRange(x[0], x[1])
-                })
-                .collect::<Vec<IdRange>>(),
-        }
-    }
-
-    pub fn is_fresh(&self, id: u64) -> bool {
-        for range in self.id_ranges.iter() {
-            if range.0 <= id && range.1 >= id {
-                return true;
-            }
-        }
-        false
-    }
-}
+use event_2025::shared::day5::FreshIngredientDB;
 
 fn fresh_ingredient_sum(input: String) -> u32 {
     let data = input.split("\n\n").collect::<Vec<&str>>();
@@ -52,23 +24,6 @@ fn main() {
 mod tests {
     use super::*;
     use rstest::rstest;
-
-    #[rstest]
-    #[case(1, false)]
-    #[case(5, true)]
-    #[case(8, false)]
-    #[case(11, true)]
-    #[case(17, true)]
-    #[case(32, false)]
-    fn example(#[case] check_id: u64, #[case] expected: bool) {
-        let fresh_db: FreshIngredientDB = FreshIngredientDB::from_str(
-            "3-5
-10-14
-16-20
-12-18",
-        );
-        assert_eq!(fresh_db.is_fresh(check_id), expected);
-    }
 
     #[rstest]
     #[case(
